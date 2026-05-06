@@ -1,6 +1,5 @@
 ---
 import FadeUp from "./FadeUp.astro";
-import MockCharitySite from "./MockCharitySite.astro";
 
 const stats = [
   { v: "$50", l: "NZD / month, all-in" },
@@ -17,8 +16,8 @@ const stats = [
 
     <FadeUp delay={60}>
       <h1 class="headline">
-        Software that doesn't take<br />
-        <span class="accent">from the work.</span>
+        Software that doesn't<br />
+        <span class="accent">take from charity work.</span>
       </h1>
     </FadeUp>
 
@@ -46,14 +45,23 @@ const stats = [
             <div class="dots">
               <span></span><span></span><span></span>
             </div>
-            <div class="window-url">
+            <a class="window-url" href="https://volunteers.everybodyeats.nz" target="_blank" rel="noopener">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 11V7a4 4 0 1 1 8 0v4M5 11h14v9H5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              everybodyeats.nz
-            </div>
+              volunteers.everybodyeats.nz
+              <svg class="ext" width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 5h5v5M19 5L10 14M19 14v5H5V5h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
             <div class="window-meta">Live · NZ-hosted</div>
           </div>
           <div class="window-frame">
-            <MockCharitySite scheme="warm" />
+            <div class="iframe-skeleton" aria-hidden="true"></div>
+            <iframe
+              class="live-preview"
+              src="https://volunteers.everybodyeats.nz"
+              title="Volunteers — Everybody Eats"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              onload="this.classList.add('is-loaded')"
+            ></iframe>
           </div>
         </div>
       </div>
@@ -93,11 +101,11 @@ const stats = [
   .headline {
     font-family: var(--font-sans);
     font-weight: 500;
-    font-size: clamp(48px, 7.4vw, 96px);
+    font-size: clamp(44px, 6.6vw, 88px);
     line-height: 1.02;
     letter-spacing: -0.035em;
     margin: 24px 0 0;
-    max-width: 17ch;
+    text-wrap: balance;
   }
 
   .accent {
@@ -177,6 +185,18 @@ const stats = [
     padding: 4px 12px;
     font-family: var(--font-mono);
     font-size: 11px;
+    color: var(--ink-2);
+    text-decoration: none;
+    transition: border-color 160ms ease, color 160ms ease;
+  }
+
+  .window-url:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .window-url .ext {
+    opacity: 0.5;
   }
 
   .window-meta {
@@ -198,8 +218,46 @@ const stats = [
   }
 
   .window-frame {
-    aspect-ratio: 16 / 9;
+    position: relative;
+    aspect-ratio: 16 / 10;
     background: #fff;
+    overflow: hidden;
+  }
+
+  .iframe-skeleton {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, #fbf6ee 0%, #f3ece0 100%);
+    background-image:
+      linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+    animation: shimmer 1.6s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -100% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .iframe-skeleton { animation: none; }
+  }
+
+  .live-preview {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #fff;
+    opacity: 0;
+    transition: opacity 320ms ease;
+  }
+
+  .live-preview.is-loaded {
+    opacity: 1;
   }
 
   .stats {
@@ -262,6 +320,7 @@ const stats = [
     .inner { padding: 48px var(--pad-x) 48px; }
     .headline { letter-spacing: -0.03em; }
     .window-meta { display: none; }
+    .window-frame { aspect-ratio: 4 / 5; }
     .stats {
       grid-template-columns: 1fr 1fr;
     }
