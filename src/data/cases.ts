@@ -15,7 +15,7 @@ export interface CaseStudy {
 export const CASES: CaseStudy[] = [
   {
     name: "Everybody Eats",
-    kicker: "Web · iOS · Android",
+    kicker: "Pay-as-you-feel restaraunts",
     blurb:
       "A booking system, volunteer roster, and donation flow built around their three-course pay-what-feels-right dining model — plus native iOS and Android apps for volunteers to pick up shifts on the move. Replaced four separate tools.",
     metrics: [
