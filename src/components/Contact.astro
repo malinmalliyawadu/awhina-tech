@@ -1,0 +1,225 @@
+---
+import FadeUp from "./FadeUp.astro";
+---
+
+<section id="contact" class="contact">
+  <div class="grid">
+    <FadeUp>
+      <div class="mono kicker">§ V. Get in touch</div>
+      <h2 class="title serif">
+        Tell us<br /><span class="italic">about the work.</span>
+      </h2>
+      <p class="lede">
+        We'll reply within two working days. No sales process — just a
+        conversation about what your charity actually needs.
+      </p>
+      <div class="mono details">
+        <div>✉  kia ora@awhina.tech</div>
+        <div>☎  +64 21 ███ ████</div>
+        <div>◎  Tāmaki Makaurau · Te Whanganui-a-Tara</div>
+      </div>
+    </FadeUp>
+
+    <FadeUp delay={100}>
+      <form class="form" data-contact-form>
+        <div class="field">
+          <label class="mono" for="contact-name">Your name</label>
+          <input
+            id="contact-name"
+            name="name"
+            class="input"
+            placeholder="Anahera Williams"
+            required
+          />
+        </div>
+        <div class="field">
+          <label class="mono" for="contact-charity">Your charity</label>
+          <input
+            id="contact-charity"
+            name="charity"
+            class="input"
+            placeholder="The name your community knows"
+          />
+        </div>
+        <div class="field">
+          <label class="mono" for="contact-email">Email</label>
+          <input
+            id="contact-email"
+            name="email"
+            type="email"
+            class="input"
+            placeholder="you@charity.org.nz"
+            required
+          />
+        </div>
+        <div class="field">
+          <label class="mono" for="contact-message">What are you trying to do?</label>
+          <textarea
+            id="contact-message"
+            name="message"
+            class="input textarea"
+            rows="4"
+            placeholder="A booking system, a website, a donation flow..."
+            required
+          ></textarea>
+        </div>
+        <button type="submit" class="submit serif">Send →</button>
+        <div class="status mono" data-form-status hidden></div>
+      </form>
+    </FadeUp>
+  </div>
+
+  <footer class="footer mono">
+    <span>Awhina Tech · Aotearoa New Zealand</span>
+    <span class="footer-tag">Mahi tahi tātou — let's work together</span>
+  </footer>
+</section>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
+  const status = document.querySelector<HTMLElement>("[data-form-status]");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!status) return;
+    status.hidden = false;
+    status.textContent = "Thanks — we'll be back in touch within two working days.";
+    form.reset();
+  });
+</script>
+
+<style>
+  .contact {
+    padding: 120px var(--pad-x) 80px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 96px;
+  }
+
+  .kicker {
+    margin-bottom: 32px;
+  }
+
+  .title {
+    font-size: 88px;
+    line-height: 0.95;
+    margin: 0 0 32px;
+    letter-spacing: -0.022em;
+  }
+
+  .italic {
+    font-style: italic;
+  }
+
+  .lede {
+    font-size: 17px;
+    line-height: 1.55;
+    opacity: 0.78;
+    max-width: 420px;
+    margin: 0 0 32px;
+  }
+
+  .details > div {
+    margin-bottom: 8px;
+  }
+
+  .details > div:last-child {
+    margin-bottom: 0;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .field label {
+    display: block;
+    margin-bottom: 4px;
+    opacity: 0.6;
+  }
+
+  .input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--ink);
+    padding: 12px 0;
+    font-family: inherit;
+    font-size: 16px;
+    color: inherit;
+    width: 100%;
+    outline: none;
+  }
+
+  .input:focus {
+    border-bottom-color: var(--pounamu);
+  }
+
+  .textarea {
+    resize: vertical;
+  }
+
+  .submit {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 20px 32px;
+    font-size: 22px;
+    font-style: italic;
+    cursor: pointer;
+    margin-top: 16px;
+    align-self: flex-start;
+    letter-spacing: -0.022em;
+  }
+
+  .submit:hover {
+    opacity: 0.85;
+  }
+
+  .submit:focus-visible {
+    outline: 2px solid var(--pounamu);
+    outline-offset: 2px;
+  }
+
+  .status {
+    color: var(--pounamu);
+    margin-top: 8px;
+  }
+
+  .footer {
+    margin-top: 96px;
+    padding-top: 32px;
+    border-top: 1px solid var(--ink);
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .footer-tag {
+    opacity: 0.6;
+  }
+
+  @media (max-width: 960px) {
+    .contact {
+      padding: 80px var(--pad-x) 64px;
+    }
+
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 56px;
+    }
+
+    .title {
+      font-size: 56px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .title {
+      font-size: 40px;
+    }
+  }
+</style>

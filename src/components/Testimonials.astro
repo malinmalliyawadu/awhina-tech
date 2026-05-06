@@ -1,0 +1,88 @@
+---
+import FadeUp from "./FadeUp.astro";
+
+const quotes = [
+  {
+    q: "We were paying $480 a month across four tools that didn't talk to each other. Awhina rebuilt the whole stack as one site for the cost of a tank of petrol.",
+    a: "Operations lead",
+    o: "Everybody Eats",
+  },
+  {
+    q: "It's the first time we've worked with a tech vendor who actually understood what a koha is, and didn't try to make us run it through a credit card processor that takes a cut.",
+    a: "Communications",
+    o: "Compassion Soup Kitchen",
+  },
+];
+---
+
+<section class="testimonials">
+  <FadeUp>
+    <div class="mono section-label">§ III. Said about the work</div>
+  </FadeUp>
+
+  <div class="grid">
+    {
+      quotes.map((t, i) => (
+        <FadeUp delay={i * 100}>
+          <blockquote>
+            <p class="quote serif">
+              <span class="mark">“</span>{t.q}<span class="mark">”</span>
+            </p>
+            <div class="mono attr">{t.a} · {t.o}</div>
+          </blockquote>
+        </FadeUp>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .testimonials {
+    padding: 96px var(--pad-x);
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .section-label {
+    margin-bottom: 48px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+  }
+
+  blockquote {
+    margin: 0;
+  }
+
+  .quote {
+    font-size: 32px;
+    line-height: 1.25;
+    margin: 0 0 24px;
+    font-weight: 400;
+  }
+
+  .mark {
+    opacity: 0.4;
+  }
+
+  .attr {
+    opacity: 0.7;
+  }
+
+  @media (max-width: 960px) {
+    .testimonials {
+      padding: 72px var(--pad-x);
+    }
+
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .quote {
+      font-size: 24px;
+    }
+  }
+</style>

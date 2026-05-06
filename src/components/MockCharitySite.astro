@@ -1,0 +1,208 @@
+---
+import type { CharityScheme } from "../data/cases";
+
+interface Props {
+  scheme?: CharityScheme;
+  brand?: string;
+  kicker?: string;
+  headline?: string;
+  body?: string;
+  nav?: string[];
+  primaryCta?: string;
+  secondaryCta?: string;
+  tiles?: { value: string; label: string }[];
+}
+
+const {
+  scheme = "warm",
+  brand = "Everybody Eats",
+  kicker = "Pay-as-you-feel dining",
+  headline = "A restaurant where every plate is shared.",
+  body = "Three-course meals, restaurant-quality, pay what feels right. Tāmaki Makaurau & Te Whanganui-a-Tara.",
+  nav = ["About", "Our kai", "Volunteer", "Donate"],
+  primaryCta = "Book a table",
+  secondaryCta = "Volunteer",
+  tiles = [
+    { value: "12,400", label: "meals served this month" },
+    { value: "2", label: "locations open" },
+    { value: "37", label: "shifts this week" },
+  ],
+} = Astro.props;
+---
+
+<div class={`mock mock-${scheme}`}>
+  <div class="mock-nav">
+    <div class="mock-brand">{brand}</div>
+    <div class="mock-links">
+      {nav.map((n) => <span>{n}</span>)}
+    </div>
+  </div>
+
+  <div class="mock-hero">
+    <div>
+      <div class="mock-kicker">⏤ {kicker}</div>
+      <h1 class="mock-headline">{headline}</h1>
+      <p class="mock-body">{body}</p>
+      <div class="mock-ctas">
+        <div class="mock-cta-primary">{primaryCta}</div>
+        <div class="mock-cta-secondary">{secondaryCta}</div>
+      </div>
+    </div>
+    <div class="mock-image"></div>
+  </div>
+
+  <div class="mock-tiles">
+    {
+      tiles.map((t) => (
+        <div class="mock-tile">
+          <div class="mock-tile-v">{t.value}</div>
+          <div class="mock-tile-l">{t.label}</div>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .mock {
+    --bg: #fbf6ee;
+    --ink: #22201c;
+    --accent: #c8541f;
+    --soft: #e8dfcd;
+
+    width: 100%;
+    height: 100%;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mock-forest {
+    --bg: #f1ede4;
+    --ink: #1c241e;
+    --accent: #345d3e;
+    --soft: #dde2d3;
+  }
+
+  .mock-sea {
+    --bg: #eef1f0;
+    --ink: #1a2624;
+    --accent: #2c5e6b;
+    --soft: #d3dcdb;
+  }
+
+  .mock-nav {
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--soft);
+  }
+
+  .mock-brand {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  .mock-links {
+    display: flex;
+    gap: 16px;
+    font-size: 11px;
+    opacity: 0.7;
+  }
+
+  .mock-hero {
+    padding: 28px 22px 20px;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 18px;
+    align-items: center;
+  }
+
+  .mock-kicker {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .mock-headline {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 10px;
+  }
+
+  .mock-body {
+    font-size: 11px;
+    line-height: 1.5;
+    opacity: 0.75;
+    margin: 0 0 14px;
+  }
+
+  .mock-ctas {
+    display: flex;
+    gap: 8px;
+  }
+
+  .mock-cta-primary {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 7px 12px;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+  }
+
+  .mock-cta-secondary {
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    padding: 7px 12px;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+  }
+
+  .mock-image {
+    aspect-ratio: 4 / 5;
+    background: var(--soft);
+    background-image: repeating-linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent) 8%, transparent) 0 1px,
+      transparent 1px 8px
+    );
+    border: 1px solid var(--soft);
+  }
+
+  .mock-tiles {
+    padding: 10px 22px 22px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+
+  .mock-tile {
+    border: 1px solid var(--soft);
+    padding: 10px 12px;
+    font-size: 10px;
+    line-height: 1.3;
+  }
+
+  .mock-tile-v {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .mock-tile-l {
+    opacity: 0.65;
+    font-size: 9px;
+  }
+</style>

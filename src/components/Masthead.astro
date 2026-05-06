@@ -1,0 +1,54 @@
+---
+---
+
+<header class="masthead">
+  <div class="mono">Issue 01 · Aotearoa · Est. 2024</div>
+  <div class="wordmark serif">Awhina <span class="wordmark-italic">Tech</span></div>
+  <a class="mono email" href="mailto:kia ora@awhina.tech">kia ora@awhina.tech</a>
+</header>
+
+<style>
+  .masthead {
+    padding: 20px var(--pad-x);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--ink);
+    gap: 24px;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .wordmark {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.022em;
+  }
+
+  .wordmark-italic {
+    font-style: italic;
+    opacity: 0.55;
+  }
+
+  .email {
+    text-decoration: none;
+  }
+
+  .email:hover {
+    color: var(--pounamu);
+  }
+
+  @media (max-width: 640px) {
+    .masthead {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+  }
+</style>

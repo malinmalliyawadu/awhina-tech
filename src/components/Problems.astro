@@ -1,0 +1,110 @@
+---
+import FadeUp from "./FadeUp.astro";
+import { PROBLEMS } from "../data/problems";
+---
+
+<section class="problems">
+  <FadeUp>
+    <div class="header">
+      <div class="mono">§ I. The case</div>
+      <h2 class="title serif">
+        Charity tech is a quiet scandal. Funders pay for software; software
+        companies pay their executives.
+      </h2>
+    </div>
+  </FadeUp>
+
+  <div class="grid">
+    {
+      PROBLEMS.map((p, i) => (
+        <FadeUp delay={i * 80}>
+          <div class="card">
+            <div class="mono key">{p.k}</div>
+            <h3 class="card-title serif">{p.t}</h3>
+            <p class="card-body">{p.b}</p>
+          </div>
+        </FadeUp>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .problems {
+    padding: 96px var(--pad-x);
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .header {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 64px;
+    margin-bottom: 56px;
+  }
+
+  .title {
+    font-size: 56px;
+    line-height: 1.05;
+    margin: 0;
+    max-width: 900px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px 80px;
+    padding-left: calc(25% - 16px);
+  }
+
+  .card {
+    border-top: 2px solid var(--ink);
+    padding-top: 16px;
+  }
+
+  .key {
+    margin-bottom: 12px;
+    color: var(--clay);
+  }
+
+  .card-title {
+    font-size: 24px;
+    line-height: 1.2;
+    margin: 0 0 12px;
+    font-weight: 500;
+  }
+
+  .card-body {
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    opacity: 0.75;
+  }
+
+  @media (max-width: 960px) {
+    .problems {
+      padding: 72px var(--pad-x);
+    }
+
+    .header {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .title {
+      font-size: 40px;
+    }
+
+    .grid {
+      grid-template-columns: 1fr;
+      padding-left: 0;
+      gap: 40px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .title {
+      font-size: 32px;
+    }
+  }
+</style>

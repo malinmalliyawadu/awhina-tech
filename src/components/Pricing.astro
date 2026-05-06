@@ -1,0 +1,117 @@
+---
+import FadeUp from "./FadeUp.astro";
+
+const props = [
+  ["Custom build", "Designed and developed for your charity, not configured from a template"],
+  ["Hosting included", "Fast, secure, hosted on infrastructure we manage"],
+  ["Ongoing support", "We answer the phone. We make changes. No ticket queues"],
+] as const;
+---
+
+<section class="pricing">
+  <FadeUp>
+    <div class="grid">
+      <div class="mono label">§ IV. The fee</div>
+      <div>
+        <div class="price-row">
+          <span class="price serif">$50</span>
+          <span class="mono unit">NZD / month · everything in</span>
+        </div>
+        <div class="props">
+          {
+            props.map(([h, b]) => (
+              <div>
+                <div class="prop-h serif">{h}</div>
+                <div class="prop-b">{b}</div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </FadeUp>
+</section>
+
+<style>
+  .pricing {
+    padding: 96px var(--pad-x);
+    border-bottom: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 64px;
+    align-items: end;
+  }
+
+  .label {
+    opacity: 0.6;
+  }
+
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .price {
+    font-size: 144px;
+    line-height: 0.9;
+    letter-spacing: -0.022em;
+  }
+
+  .unit {
+    opacity: 0.7;
+  }
+
+  .props {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(245, 241, 234, 0.2);
+    max-width: 900px;
+  }
+
+  .prop-h {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  .prop-b {
+    font-size: 13px;
+    line-height: 1.5;
+    opacity: 0.7;
+  }
+
+  @media (max-width: 960px) {
+    .pricing {
+      padding: 72px var(--pad-x);
+    }
+
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .price {
+      font-size: 96px;
+    }
+
+    .props {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .price {
+      font-size: 80px;
+    }
+  }
+</style>

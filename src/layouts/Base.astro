@@ -1,0 +1,46 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Awhina Tech — Custom websites & apps for Aotearoa's charities",
+  description = "We build custom websites and apps for Aotearoa's charities. $50 NZD a month, all-in. Hosting and ongoing support included.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en-NZ">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f5f1ea" />
+    <link rel="icon" href="data:," />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+
+    <script>
+      // Scroll-triggered fade-up — one-shot per element.
+      const els = document.querySelectorAll<HTMLElement>(".fade-up");
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            const el = entry.target as HTMLElement;
+            const delay = Number(el.dataset.delay ?? 0);
+            window.setTimeout(() => el.classList.add("is-visible"), delay);
+            io.unobserve(el);
+          }
+        },
+        { threshold: 0.15 },
+      );
+      els.forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>
