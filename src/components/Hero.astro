@@ -1,6 +1,6 @@
 ---
 import FadeUp from "./FadeUp.astro";
-import Screenshot from "./Screenshot.astro";
+import MockCharitySite from "./MockCharitySite.astro";
 ---
 
 <section class="hero">
@@ -28,11 +28,7 @@ import Screenshot from "./Screenshot.astro";
     <FadeUp delay={150}>
       <div class="mock-wrap">
         <div class="mock-frame">
-          <Screenshot
-            src="screenshots/everybody-eats-hero.png"
-            alt="Everybody Eats homepage — 'Making a difference one plate at a time'"
-            loading="eager"
-          />
+          <MockCharitySite scheme="warm" />
         </div>
         <div class="mono caption">FIG. 01 — A booking & roster site for Everybody Eats</div>
       </div>

@@ -22,8 +22,8 @@ export const CASES: CaseStudy[] = [
       { v: "$0", l: "transaction fees absorbed" },
     ],
     scheme: "warm",
-    image: "screenshots/everybody-eats-roster.png",
-    imageAlt: "Everybody Eats admin dashboard showing shift management",
+    image: "screenshots/everybody-eats-hero.png",
+    imageAlt: "Everybody Eats homepage — 'Making a difference one plate at a time'",
   },
   {
     name: "Fair Food NZ",
