@@ -51,8 +51,18 @@ import { CASES } from "../data/cases";
                   </a>
                 </div>
                 <div class="image">
-                  <div class="image-frame">
+                  <div class:list={["image-frame", c.phoneImage && "has-phone"]}>
                     <Screenshot src={c.image} alt={c.imageAlt} />
+                    {c.phoneImage && (
+                      <div class="phone-overlay" aria-hidden="false">
+                        <div class="phone-frame">
+                          <Screenshot
+                            src={c.phoneImage}
+                            alt={c.phoneImageAlt ?? ""}
+                          />
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </article>
@@ -231,6 +241,69 @@ import { CASES } from "../data/cases";
     box-shadow:
       0 1px 2px rgba(14, 20, 19, 0.05),
       0 20px 40px -20px rgba(14, 20, 19, 0.18);
+    position: relative;
+  }
+
+  /* iPhone silhouette overlay — bottom-right of the web frame */
+  .phone-overlay {
+    position: absolute;
+    right: 5.5%;
+    bottom: 5%;
+    width: 22%;
+    aspect-ratio: 1206 / 2622;
+    pointer-events: none;
+  }
+
+  /* Volume rocker on the left of the chassis */
+  .phone-overlay::before {
+    content: "";
+    position: absolute;
+    left: -1.6%;
+    top: 22%;
+    width: 1.8%;
+    height: 14%;
+    background: #0a0e0d;
+    border-radius: 1.5px 0 0 1.5px;
+  }
+
+  /* Power button on the right of the chassis */
+  .phone-overlay::after {
+    content: "";
+    position: absolute;
+    right: -1.6%;
+    top: 26%;
+    width: 1.8%;
+    height: 9%;
+    background: #0a0e0d;
+    border-radius: 0 1.5px 1.5px 0;
+  }
+
+  .phone-frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #0e1413;
+    border-radius: 14% / 6.5%;
+    padding: 2.5%;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.08) inset,
+      0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+      0 18px 38px -10px rgba(14, 20, 19, 0.45),
+      0 4px 10px -2px rgba(14, 20, 19, 0.25);
+    overflow: hidden;
+  }
+
+  .phone-frame :global(.screenshot) {
+    border-radius: 11% / 5%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 720px) {
+    .phone-overlay {
+      width: 28%;
+      right: 4%;
+      bottom: 4%;
+    }
   }
 
   @media (max-width: 1024px) {

@@ -8,22 +8,28 @@ export interface CaseStudy {
   scheme: CharityScheme;
   image: string;
   imageAlt: string;
+  phoneImage?: string;
+  phoneImageAlt?: string;
 }
 
 export const CASES: CaseStudy[] = [
   {
     name: "Everybody Eats",
-    kicker: "Pay-as-you-feel restaurant",
+    kicker: "Web · iOS · Android",
     blurb:
-      "A booking system, volunteer roster, and donation flow built around their three-course pay-what-feels-right dining model. Replaced four separate tools.",
+      "A booking system, volunteer roster, and donation flow built around their three-course pay-what-feels-right dining model — plus native iOS and Android apps for volunteers to pick up shifts on the move. Replaced four separate tools.",
     metrics: [
       { v: "37%", l: "fewer no-shows" },
       { v: "4 → 1", l: "tools consolidated" },
-      { v: "$0", l: "transaction fees absorbed" },
+      { v: "iOS + Android", l: "shipped alongside the web" },
     ],
     scheme: "warm",
     image: "screenshots/everybody-eats-hero.png",
-    imageAlt: "Everybody Eats homepage — 'Making a difference one plate at a time'",
+    imageAlt:
+      "Everybody Eats homepage — 'Making a difference one plate at a time'",
+    phoneImage: "screenshots/everybody-eats-app.png",
+    phoneImageAlt:
+      "Everybody Eats volunteer app — open shifts and 'What's happening' feed",
   },
   {
     name: "Fair Food NZ",
@@ -51,6 +57,7 @@ export const CASES: CaseStudy[] = [
     ],
     scheme: "sea",
     image: "screenshots/compassion.png",
-    imageAlt: "Compassion Soup Kitchen volunteer site, 'Every meal is an act of aroha'",
+    imageAlt:
+      "Compassion Soup Kitchen volunteer site, 'Every meal is an act of aroha'",
   },
 ];
