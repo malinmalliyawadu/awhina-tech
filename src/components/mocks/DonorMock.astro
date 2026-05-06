@@ -1,0 +1,149 @@
+---
+import StatCard from "./StatCard.astro";
+
+const DONORS = [
+  { initials: "RH", name: "Rangi Hape", note: "Monthly · since Jul 2023", amount: "$120", tone: "pounamu" },
+  { initials: "MO", name: "Mere O'Connell", note: "One-off · 12 Mar 2026", amount: "$500", tone: "kowhai" },
+  { initials: "TW", name: "Te Awhina Whānau Trust", note: "Quarterly · since Feb 2024", amount: "$2,500", tone: "clay" },
+  { initials: "JS", name: "James Sefuiva", note: "Monthly · since Sep 2025", amount: "$45", tone: "pounamu" },
+];
+
+const STAT_ICON = "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z";
+---
+
+<div class="donors">
+  <div class="head">
+    <div class="title">Recent supporters</div>
+    <div class="filter">
+      <span>This month</span>
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="rows">
+    {DONORS.map((d) => (
+      <div class="row">
+        <div class:list={["avatar", `tone-${d.tone}`]}>{d.initials}</div>
+        <div class="meta">
+          <div class="name">{d.name}</div>
+          <div class="note">{d.note}</div>
+        </div>
+        <div class="amount">{d.amount}</div>
+      </div>
+    ))}
+  </div>
+
+  <StatCard
+    title="Monthly giving"
+    iconPath={STAT_ICON}
+    stats={[
+      { value: "$4,820", label: "This month", accent: "pounamu" },
+      { value: "47", label: "Active donors", accent: "ink" },
+    ]}
+  />
+</div>
+
+<style>
+  .donors {
+    display: grid;
+    gap: 12px;
+  }
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .title {
+    font-size: 15.5px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    color: var(--muted);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 3px 10px;
+  }
+
+  .rows {
+    display: grid;
+    gap: 6px;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    transition: background 160ms ease;
+  }
+
+  .row:hover {
+    background: var(--surface-2);
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .avatar.tone-pounamu {
+    background: var(--pounamu-soft);
+    color: var(--pounamu);
+  }
+
+  .avatar.tone-kowhai {
+    background: #fbf2db;
+    color: var(--kowhai);
+  }
+
+  .avatar.tone-clay {
+    background: #f5e3d8;
+    color: var(--clay);
+  }
+
+  .name {
+    font-size: 13.5px;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  .note {
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+
+  .amount {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+
+  @media (max-width: 720px) {
+    .row { padding: 8px 10px; gap: 10px; }
+    .avatar { width: 28px; height: 28px; font-size: 10px; }
+  }
+</style>

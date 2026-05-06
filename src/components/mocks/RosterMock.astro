@@ -1,0 +1,150 @@
+---
+import StatCard from "./StatCard.astro";
+
+const SHIFTS = [
+  { name: "Kitchen prep", time: "3:00 — 5:30pm", filled: 5, total: 6 },
+  { name: "Floor service", time: "5:30 — 9:00pm", filled: 8, total: 10 },
+  { name: "Dish team", time: "7:00 — 10:00pm", filled: 4, total: 4 },
+];
+
+const STAT_ICON = "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2";
+---
+
+<div class="roster">
+  <div class="head">
+    <div>
+      <div class="kicker">Tuesday roster</div>
+      <div class="title">Pay-what-you-can dinner</div>
+    </div>
+    <div class="date">12 Mar</div>
+  </div>
+
+  <div class="rows">
+    {SHIFTS.map((s) => (
+      <div class="row">
+        <div class="row-meta">
+          <div class="name">{s.name}</div>
+          <div class="time">{s.time}</div>
+        </div>
+        <div class="dots" aria-label={`${s.filled} of ${s.total} filled`}>
+          {Array.from({ length: s.total }).map((_, i) => (
+            <span class:list={["dot", i < s.filled && "is-filled"]} />
+          ))}
+        </div>
+        <div class="count">
+          <span class="count-v">{s.filled}</span>
+          <span class="count-d">/{s.total}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <StatCard
+    title="Shifts filled"
+    iconPath={STAT_ICON}
+    stats={[
+      { value: "17/20", label: "Tonight's shifts", accent: "pounamu" },
+      { value: "+3", label: "Since this morning", accent: "ink" },
+    ]}
+  />
+</div>
+
+<style>
+  .roster {
+    display: grid;
+    gap: 16px;
+  }
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .title {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .date {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .rows {
+    display: grid;
+    gap: 10px;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+
+  .name {
+    font-size: 13.5px;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  .time {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--muted);
+  }
+
+  .dots {
+    display: inline-flex;
+    gap: 4px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1.2px solid #c9c8bf;
+    background: transparent;
+  }
+
+  .dot.is-filled {
+    background: var(--pounamu);
+    border-color: var(--pounamu);
+  }
+
+  .count {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    min-width: 36px;
+    text-align: right;
+  }
+
+  .count-v {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  @media (max-width: 720px) {
+    .row { padding: 10px 12px; gap: 10px; }
+    .dot { width: 8px; height: 8px; }
+  }
+</style>

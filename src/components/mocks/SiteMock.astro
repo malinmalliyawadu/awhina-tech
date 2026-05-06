@@ -1,0 +1,220 @@
+---
+import StatCard from "./StatCard.astro";
+
+const STAT_ICON = "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z M2 12h20 M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z";
+---
+
+<div class="site">
+  <div class="page">
+    <div class="page-nav">
+      <div class="nav-logo">
+        <span class="logo-mark"></span>
+        <span class="logo-text">Te Awhina Trust</span>
+      </div>
+      <div class="nav-links" aria-hidden="true">
+        <span></span><span></span><span></span>
+        <span class="nav-cta"></span>
+      </div>
+    </div>
+
+    <div class="page-hero">
+      <div class="hero-eyebrow">Community kitchen</div>
+      <div class="hero-title">
+        Kai for our people, <span class="hero-accent">cooked together.</span>
+      </div>
+      <div class="hero-lede"></div>
+      <div class="hero-lede short"></div>
+      <div class="hero-actions" aria-hidden="true">
+        <span class="hero-btn primary"></span>
+        <span class="hero-btn ghost"></span>
+      </div>
+    </div>
+
+    <div class="page-image" aria-hidden="true">
+      <div class="img-bands">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <div class="page-body">
+      <div class="bar w-100"></div>
+      <div class="bar w-92"></div>
+      <div class="bar w-78"></div>
+      <div class="bar w-60"></div>
+    </div>
+  </div>
+
+  <StatCard
+    title="Lighthouse"
+    iconPath={STAT_ICON}
+    stats={[
+      { value: "99", label: "Performance", accent: "pounamu" },
+      { value: "100", label: "Accessibility", accent: "ink" },
+    ]}
+  />
+</div>
+
+<style>
+  .site {
+    display: grid;
+    gap: 0;
+  }
+
+  .page {
+    display: grid;
+    gap: 18px;
+  }
+
+  .page-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-mark {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    background: var(--pounamu);
+  }
+
+  .logo-text {
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .nav-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .nav-links > span {
+    width: 28px;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--line);
+  }
+
+  .nav-links .nav-cta {
+    width: 56px;
+    height: 18px;
+    border-radius: 999px;
+    background: var(--ink);
+  }
+
+  .page-hero {
+    display: grid;
+    gap: 9px;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--pounamu);
+  }
+
+  .hero-title {
+    font-size: 18px;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+    max-width: 16ch;
+  }
+
+  .hero-accent {
+    color: var(--pounamu);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .hero-lede {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--line);
+    width: 80%;
+    margin-top: 4px;
+  }
+
+  .hero-lede.short {
+    width: 55%;
+  }
+
+  .hero-actions {
+    display: inline-flex;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .hero-btn {
+    display: inline-block;
+    height: 22px;
+    border-radius: 4px;
+  }
+
+  .hero-btn.primary {
+    width: 70px;
+    background: var(--ink);
+  }
+
+  .hero-btn.ghost {
+    width: 60px;
+    background: transparent;
+    border: 1px solid var(--line);
+  }
+
+  .page-image {
+    aspect-ratio: 16 / 6;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--pounamu-soft) 0%, #f5e3d8 100%);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .img-bands {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 6px;
+    padding: 12px;
+  }
+
+  .img-bands > span {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 2px;
+  }
+
+  .img-bands > span:nth-child(1) { width: 30%; }
+  .img-bands > span:nth-child(2) { width: 18%; }
+  .img-bands > span:nth-child(3) { width: 24%; }
+
+  .page-body {
+    display: grid;
+    gap: 6px;
+  }
+
+  .bar {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--line);
+  }
+
+  .bar.w-100 { width: 100%; }
+  .bar.w-92 { width: 92%; }
+  .bar.w-78 { width: 78%; }
+  .bar.w-60 { width: 60%; }
+</style>

@@ -1,0 +1,473 @@
+---
+import FadeUp from "./FadeUp.astro";
+import { CAPABILITIES } from "../data/capabilities";
+import BrowserFrame from "./mocks/BrowserFrame.astro";
+import RosterMock from "./mocks/RosterMock.astro";
+import BookingMock from "./mocks/BookingMock.astro";
+import DonorMock from "./mocks/DonorMock.astro";
+import InsightsMock from "./mocks/InsightsMock.astro";
+import SiteMock from "./mocks/SiteMock.astro";
+
+const ICONS: Record<string, string> = {
+  users:
+    "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75",
+  calendar:
+    "M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z M16 2v4 M8 2v4 M3 10h18",
+  heart:
+    "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",
+  chart: "M3 3v18h18 M7 14l4-4 4 4 5-5",
+  globe:
+    "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z M2 12h20 M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z",
+};
+
+const URLS: Record<string, string> = {
+  rostering: "app.example.org.nz/rosters",
+  bookings: "app.example.org.nz/bookings",
+  donors: "app.example.org.nz/supporters",
+  insights: "app.example.org.nz/reports",
+  site: "example.org.nz",
+};
+---
+
+<section id="capabilities" class="caps">
+  <div class="inner">
+    <FadeUp>
+      <div class="header">
+        <span class="eyebrow">What we build</span>
+        <h2 class="title">
+          Five kinds of work, all built into one site you actually own.
+        </h2>
+        <p class="lede">
+          A custom build replaces the SaaS subscriptions you'd otherwise stitch
+          together. Pick a starting point — most charities end up with three or
+          four of these in their first build.
+        </p>
+      </div>
+    </FadeUp>
+
+    <FadeUp delay={80}>
+      <div class="tabs">
+        <div
+          class="pills"
+          role="tablist"
+          aria-label="Capability areas"
+          data-tablist
+        >
+          <span class="pill-indicator" aria-hidden="true" data-indicator></span>
+          {
+            CAPABILITIES.map((c, i) => (
+              <button
+                type="button"
+                role="tab"
+                id={`cap-tab-${c.id}`}
+                aria-controls={`cap-panel-${c.id}`}
+                aria-selected={i === 0 ? "true" : "false"}
+                tabindex={i === 0 ? 0 : -1}
+                class="pill"
+                data-target={c.id}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d={ICONS[c.iconKey]} stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>{c.label}</span>
+              </button>
+            ))
+          }
+        </div>
+
+        <div class="panels">
+          {
+            CAPABILITIES.map((c, i) => (
+              <div
+                role="tabpanel"
+                id={`cap-panel-${c.id}`}
+                aria-labelledby={`cap-tab-${c.id}`}
+                data-panel={c.id}
+                data-active={i === 0 ? "true" : "false"}
+                class="panel"
+              >
+                <div class="text">
+                  <span class="icon-badge" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                      <path d={ICONS[c.iconKey]} stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <h3 class="panel-title">{c.headline}</h3>
+                  <p class="panel-body">{c.body}</p>
+                  <a class="panel-cta" href={c.ctaHref}>
+                    {c.ctaLabel}
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                      <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </div>
+
+                <div class="mock-wrap">
+                  <BrowserFrame url={URLS[c.id]}>
+                    {c.id === "rostering" && <RosterMock />}
+                    {c.id === "bookings" && <BookingMock />}
+                    {c.id === "donors" && <DonorMock />}
+                    {c.id === "insights" && <InsightsMock />}
+                    {c.id === "site" && <SiteMock />}
+                  </BrowserFrame>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </FadeUp>
+  </div>
+</section>
+
+<script>
+  const lists = document.querySelectorAll<HTMLElement>("[data-tablist]");
+
+  lists.forEach((list) => {
+    const tabs = Array.from(
+      list.querySelectorAll<HTMLButtonElement>('[role="tab"]')
+    );
+    const root = list.closest(".tabs");
+    if (!root) return;
+
+    const panels = Array.from(
+      root.querySelectorAll<HTMLElement>('[role="tabpanel"]')
+    );
+    const indicator = list.querySelector<HTMLElement>("[data-indicator]");
+
+    const moveIndicator = (pill: HTMLElement, instant = false) => {
+      if (!indicator) return;
+      if (instant) indicator.classList.add("is-instant");
+      indicator.style.transform = `translateX(${pill.offsetLeft}px)`;
+      indicator.style.width = `${pill.offsetWidth}px`;
+      if (instant) {
+        // force reflow then drop the override on next frame
+        void indicator.offsetWidth;
+        requestAnimationFrame(() => indicator.classList.remove("is-instant"));
+      }
+    };
+
+    const select = (id: string, focus = false) => {
+      let activeTab: HTMLButtonElement | null = null;
+      tabs.forEach((t) => {
+        const isActive = t.dataset.target === id;
+        t.setAttribute("aria-selected", isActive ? "true" : "false");
+        t.setAttribute("tabindex", isActive ? "0" : "-1");
+        if (isActive) activeTab = t;
+        if (isActive && focus) t.focus();
+      });
+      panels.forEach((p) => {
+        p.dataset.active = p.dataset.panel === id ? "true" : "false";
+      });
+      if (activeTab) moveIndicator(activeTab);
+    };
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const id = tab.dataset.target;
+        if (id) select(id);
+      });
+    });
+
+    list.addEventListener("keydown", (e: KeyboardEvent) => {
+      const current = tabs.findIndex(
+        (t) => t.getAttribute("aria-selected") === "true"
+      );
+      if (current < 0) return;
+
+      let next = current;
+      if (e.key === "ArrowRight") next = (current + 1) % tabs.length;
+      else if (e.key === "ArrowLeft")
+        next = (current - 1 + tabs.length) % tabs.length;
+      else if (e.key === "Home") next = 0;
+      else if (e.key === "End") next = tabs.length - 1;
+      else return;
+
+      e.preventDefault();
+      const id = tabs[next].dataset.target;
+      if (id) select(id, true);
+    });
+
+    // Initial position (no animation) + reposition on resize
+    const initial = tabs.find((t) => t.getAttribute("aria-selected") === "true");
+    if (initial) {
+      // wait a frame so layout is settled (fonts, etc.)
+      requestAnimationFrame(() => moveIndicator(initial, true));
+    }
+
+    let resizeFrame = 0;
+    window.addEventListener("resize", () => {
+      const active = tabs.find(
+        (t) => t.getAttribute("aria-selected") === "true"
+      );
+      if (!active) return;
+      cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(() => moveIndicator(active, true));
+    });
+  });
+</script>
+
+<style>
+  .caps {
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 112px var(--pad-x);
+  }
+
+  .header {
+    display: grid;
+    gap: 12px;
+    max-width: 720px;
+    margin-bottom: 56px;
+  }
+
+  .title {
+    font-size: clamp(32px, 4.2vw, 52px);
+    line-height: 1.08;
+    letter-spacing: -0.028em;
+    font-weight: 500;
+    margin: 8px 0 0;
+  }
+
+  .lede {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 8px 0 0;
+    max-width: 60ch;
+  }
+
+  /* Pills */
+  .pills {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 6px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    margin-bottom: 56px;
+  }
+
+  .pill-indicator {
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    left: 0;
+    width: 0;
+    border-radius: 999px;
+    background: var(--pounamu-soft);
+    box-shadow:
+      0 1px 2px rgba(14, 20, 19, 0.04),
+      0 4px 10px rgba(47, 93, 58, 0.08);
+    transform: translateX(0);
+    transition:
+      transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      width 320ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    pointer-events: none;
+    will-change: transform, width;
+  }
+
+  .pill-indicator.is-instant {
+    transition: none;
+  }
+
+  .pill {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 220ms ease;
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .pill:hover {
+    color: var(--ink);
+  }
+
+  .pill[aria-selected="true"] {
+    color: var(--pounamu);
+  }
+
+  .pill svg {
+    flex-shrink: 0;
+  }
+
+  .pill:focus-visible {
+    outline: 2px solid var(--pounamu);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pill-indicator {
+      transition: none;
+    }
+  }
+
+  /* Panels */
+  .panels {
+    position: relative;
+  }
+
+  .panel {
+    display: none;
+    grid-template-columns: 5fr 7fr;
+    gap: 64px;
+    align-items: center;
+    padding: 56px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, #f4f7f1 0%, #f9faf5 100%);
+    border: 1px solid var(--line);
+  }
+
+  .panel[data-active="true"] {
+    display: grid;
+    animation: panel-in 260ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  @keyframes panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .text {
+    display: grid;
+    gap: 16px;
+    align-content: start;
+  }
+
+  .icon-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--pounamu);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .panel-title {
+    font-size: clamp(26px, 2.6vw, 34px);
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+    font-weight: 500;
+    margin: 4px 0 0;
+    max-width: 22ch;
+  }
+
+  .panel-body {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    margin: 0;
+    max-width: 50ch;
+  }
+
+  .panel-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 2px;
+    margin-top: 4px;
+    align-self: start;
+    justify-self: start;
+    transition: color 160ms ease;
+  }
+
+  .panel-cta:hover {
+    color: var(--pounamu);
+  }
+
+  .mock-wrap {
+    position: relative;
+    padding-right: 14px;
+    padding-bottom: 22px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .panel[data-active="true"] {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .panel {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding: 40px;
+    }
+    .mock-wrap {
+      max-width: 580px;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .pills {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      border-radius: var(--radius-md);
+    }
+    .pills::-webkit-scrollbar {
+      display: none;
+    }
+    .pill {
+      flex: 0 0 auto;
+      padding: 9px 14px;
+      font-size: 13px;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .inner {
+      padding: 72px var(--pad-x);
+    }
+    .panel {
+      padding: 24px;
+      gap: 32px;
+    }
+    .mock-wrap {
+      padding-right: 0;
+    }
+    .header {
+      margin-bottom: 40px;
+    }
+    .pills {
+      margin-bottom: 32px;
+    }
+  }
+</style>

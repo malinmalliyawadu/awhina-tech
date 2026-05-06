@@ -1,0 +1,225 @@
+---
+import StatCard from "./StatCard.astro";
+
+// Simple Mar 2026 grid: starts on Sunday. 31 days.
+const DAYS = ["S", "M", "T", "W", "T", "F", "S"];
+const FIRST_OFFSET = 0; // Mar 1 is a Sunday
+const TOTAL = 31;
+const HIGHLIGHTS = [4, 7, 11, 14, 18, 21, 25, 28]; // event days
+const TODAY = 12;
+
+const cells: ({ d: number; hl: boolean; today: boolean } | null)[] = [];
+for (let i = 0; i < FIRST_OFFSET; i++) cells.push(null);
+for (let d = 1; d <= TOTAL; d++) {
+  cells.push({ d, hl: HIGHLIGHTS.includes(d), today: d === TODAY });
+}
+
+const STAT_ICON = "M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z M16 2v4 M8 2v4 M3 10h18";
+---
+
+<div class="bookings">
+  <div class="head">
+    <div class="title">March bookings</div>
+    <div class="legend">
+      <span class="dot dot-event"></span> event
+      <span class="sep"></span>
+      <span class="dot dot-today"></span> today
+    </div>
+  </div>
+
+  <div class="grid">
+    {DAYS.map((d) => <div class="weekday">{d}</div>)}
+    {cells.map((c) => (
+      c === null ? (
+        <div class="cell empty" />
+      ) : (
+        <div class:list={["cell", c.hl && "has-event", c.today && "is-today"]}>
+          <span class="num">{c.d}</span>
+          {c.hl && <span class="event-dot" aria-hidden="true" />}
+        </div>
+      )
+    ))}
+  </div>
+
+  <div class="event">
+    <div class="event-date">
+      <span class="event-day">14</span>
+      <span class="event-mon">Sat Mar</span>
+    </div>
+    <div class="event-meta">
+      <div class="event-title">Volunteer training, autumn cohort</div>
+      <div class="event-sub">9:00am · Tāmaki kitchen · 12 of 24 spots</div>
+    </div>
+  </div>
+
+  <StatCard
+    title="Spots remaining"
+    iconPath={STAT_ICON}
+    stats={[
+      { value: "12/30", label: "Sat training", accent: "pounamu" },
+      { value: "60", label: "Booked this month", accent: "ink" },
+    ]}
+  />
+</div>
+
+<style>
+  .bookings {
+    display: grid;
+    gap: 14px;
+  }
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .title {
+    font-size: 15.5px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .legend {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .legend .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 2px;
+  }
+
+  .legend .dot-event { background: var(--pounamu); }
+  .legend .dot-today { background: var(--kowhai); }
+
+  .legend .sep {
+    width: 1px;
+    height: 10px;
+    background: var(--line);
+    margin: 0 4px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+
+  .weekday {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--muted);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 4px 0;
+  }
+
+  .cell {
+    aspect-ratio: 1 / 1;
+    border-radius: 6px;
+    background: var(--surface-2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    position: relative;
+  }
+
+  .cell.empty {
+    background: transparent;
+  }
+
+  .cell .num {
+    font-size: 11px;
+    color: var(--ink-2);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cell.has-event {
+    background: var(--pounamu-soft);
+  }
+
+  .cell.has-event .num {
+    color: var(--pounamu);
+    font-weight: 600;
+  }
+
+  .event-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--pounamu);
+  }
+
+  .cell.is-today {
+    background: #fbf3df;
+    outline: 1.5px solid var(--kowhai);
+    outline-offset: -1.5px;
+  }
+
+  .cell.is-today .num {
+    color: var(--kowhai);
+    font-weight: 700;
+  }
+
+  .event {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 14px;
+    padding: 12px 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    align-items: center;
+  }
+
+  .event-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+    padding-right: 14px;
+    border-right: 1px solid var(--line);
+  }
+
+  .event-day {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .event-mon {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+  }
+
+  .event-title {
+    font-size: 13.5px;
+    font-weight: 500;
+    margin-bottom: 3px;
+  }
+
+  .event-sub {
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+</style>
