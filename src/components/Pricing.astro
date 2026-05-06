@@ -1,117 +1,254 @@
 ---
 import FadeUp from "./FadeUp.astro";
 
-const props = [
-  ["Custom build", "Designed and developed for your charity, not configured from a template"],
-  ["Hosting included", "Fast, secure, hosted on infrastructure we manage"],
-  ["Ongoing support", "We answer the phone. We make changes. No ticket queues"],
-] as const;
+const includes = [
+  {
+    h: "Custom build",
+    b: "Designed and developed for your charity, not configured from a template.",
+  },
+  {
+    h: "Hosting included",
+    b: "Fast, secure, NZ-friendly infrastructure we manage end-to-end.",
+  },
+  {
+    h: "Ongoing support",
+    b: "We answer the phone. We make changes. No ticket queues, no upsells.",
+  },
+  {
+    h: "No per-donor fees",
+    b: "Your reward for serving more people is not a bigger invoice.",
+  },
+  {
+    h: "Owned outright",
+    b: "Your data, your domain, your code. Walk away any time — we'll help.",
+  },
+  {
+    h: "Aotearoa-built",
+    b: "Built in Tāmaki Makaurau & Te Whanganui-a-Tara, in your timezone.",
+  },
+];
 ---
 
-<section class="pricing">
-  <FadeUp>
-    <div class="grid">
-      <div class="mono label">§ IV. The fee</div>
-      <div>
-        <div class="price-row">
-          <span class="price serif">$50</span>
-          <span class="mono unit">NZD / month · everything in</span>
+<section id="pricing" class="pricing">
+  <div class="inner">
+    <FadeUp>
+      <div class="header">
+        <span class="eyebrow">The fee</span>
+        <h2 class="title">One flat price. Everything in.</h2>
+      </div>
+    </FadeUp>
+
+    <FadeUp delay={80}>
+      <div class="card">
+        <div class="card-top">
+          <div class="price-block">
+            <div class="price-row">
+              <span class="currency">NZD</span>
+              <span class="price">$50</span>
+              <span class="per">/ month</span>
+            </div>
+            <div class="price-foot">
+              <span class="dot" aria-hidden="true"></span>
+              No setup fees · No transaction fees · Cancel any time
+            </div>
+          </div>
+
+          <div class="cta-block">
+            <p class="pitch">
+              About the cost of a phone plan, for a custom site, hosting, and a
+              real human on the end of an email.
+            </p>
+            <div class="cta-row">
+              <a href="#contact" class="btn btn-primary">
+                Start a conversation
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+              <a href="#work" class="btn btn-ghost">See the work</a>
+            </div>
+          </div>
         </div>
-        <div class="props">
+
+        <div class="includes">
           {
-            props.map(([h, b]) => (
-              <div>
-                <div class="prop-h serif">{h}</div>
-                <div class="prop-b">{b}</div>
+            includes.map((it) => (
+              <div class="include">
+                <span class="check" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                <div>
+                  <div class="include-h">{it.h}</div>
+                  <div class="include-b">{it.b}</div>
+                </div>
               </div>
             ))
           }
         </div>
       </div>
-    </div>
-  </FadeUp>
+    </FadeUp>
+  </div>
 </section>
 
 <style>
   .pricing {
-    padding: 96px var(--pad-x);
-    border-bottom: 1px solid var(--ink);
-    background: var(--ink);
-    color: var(--paper);
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--line);
   }
 
-  .grid {
+  .inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 112px var(--pad-x);
+  }
+
+  .header {
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 64px;
-    align-items: end;
+    gap: 12px;
+    max-width: 720px;
+    margin-bottom: 56px;
   }
 
-  .label {
-    opacity: 0.6;
+  .title {
+    font-size: clamp(32px, 4.2vw, 52px);
+    line-height: 1.08;
+    letter-spacing: -0.028em;
+    font-weight: 500;
+    margin: 8px 0 0;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+
+  .card-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    padding: 48px;
+    align-items: end;
+    border-bottom: 1px solid var(--line);
+    background:
+      radial-gradient(60% 100% at 0% 0%, rgba(47, 93, 58, 0.06), transparent 60%),
+      var(--surface);
   }
 
   .price-row {
     display: flex;
     align-items: baseline;
-    gap: 16px;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .currency {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
   }
 
   .price {
-    font-size: 144px;
+    font-size: clamp(72px, 10vw, 128px);
+    font-weight: 500;
+    letter-spacing: -0.045em;
     line-height: 0.9;
-    letter-spacing: -0.022em;
+    color: var(--ink);
   }
 
-  .unit {
-    opacity: 0.7;
+  .per {
+    font-size: 18px;
+    color: var(--muted);
+    font-weight: 500;
   }
 
-  .props {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 32px;
-    padding-top: 32px;
-    border-top: 1px solid rgba(245, 241, 234, 0.2);
-    max-width: 900px;
-  }
-
-  .prop-h {
-    font-size: 22px;
-    margin-bottom: 8px;
-  }
-
-  .prop-b {
+  .price-foot {
+    margin-top: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-size: 13px;
-    line-height: 1.5;
-    opacity: 0.7;
+    color: var(--muted);
+    font-weight: 500;
   }
 
-  @media (max-width: 960px) {
-    .pricing {
-      padding: 72px var(--pad-x);
-    }
-
-    .grid {
-      grid-template-columns: 1fr;
-      gap: 32px;
-    }
-
-    .price {
-      font-size: 96px;
-    }
-
-    .props {
-      grid-template-columns: 1fr;
-      gap: 24px;
-    }
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--pounamu);
+    box-shadow: 0 0 0 4px rgba(47, 93, 58, 0.16);
   }
 
-  @media (max-width: 640px) {
-    .price {
-      font-size: 80px;
+  .pitch {
+    margin: 0 0 20px;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 36ch;
+  }
+
+  .cta-row {
+    display: inline-flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .includes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+  }
+
+  .include {
+    background: var(--surface);
+    padding: 28px 32px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .check {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: var(--pounamu-soft);
+    color: var(--pounamu);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .include-h {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+
+  .include-b {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  @media (max-width: 1024px) {
+    .card-top {
+      grid-template-columns: 1fr;
+      gap: 28px;
+      padding: 36px;
+      align-items: start;
     }
+    .includes { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 720px) {
+    .inner { padding: 72px var(--pad-x); }
+    .card-top { padding: 28px; }
+    .includes { grid-template-columns: 1fr; }
+    .include { padding: 22px 24px; }
   }
 </style>

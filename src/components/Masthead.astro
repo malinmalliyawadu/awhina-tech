@@ -1,54 +1,148 @@
 ---
+const navLinks = [
+  { href: "#work", label: "Work" },
+  { href: "#pricing", label: "Pricing" },
+  { href: "#contact", label: "Contact" },
+];
 ---
 
 <header class="masthead">
-  <div class="mono">Issue 01 · Aotearoa · Est. 2024</div>
-  <div class="wordmark serif">Awhina <span class="wordmark-italic">Tech</span></div>
-  <a class="mono email" href="mailto:kia ora@awhina.tech">kia ora@awhina.tech</a>
+  <div class="inner">
+    <a href="/" class="brand" aria-label="Awhina Tech home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 18 L12 4 L20 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 14 H16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="brand-word">Awhina<span class="brand-dot">.</span>tech</span>
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      {navLinks.map((l) => <a href={l.href}>{l.label}</a>)}
+    </nav>
+
+    <div class="cta">
+      <span class="status">
+        <span class="status-dot" aria-hidden="true"></span>
+        Taking on 2 charities this quarter
+      </span>
+      <a href="#contact" class="btn btn-primary">Get in touch</a>
+    </div>
+  </div>
 </header>
 
 <style>
   .masthead {
-    padding: 20px var(--pad-x);
-    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: saturate(140%) blur(8px);
+    -webkit-backdrop-filter: saturate(140%) blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 14px var(--pad-x);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--ink);
-    gap: 24px;
+    gap: 32px;
   }
 
-  .mono {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .wordmark {
-    font-family: var(--font-serif);
-    font-size: 22px;
-    font-weight: 500;
-    letter-spacing: -0.022em;
-  }
-
-  .wordmark-italic {
-    font-style: italic;
-    opacity: 0.55;
-  }
-
-  .email {
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     text-decoration: none;
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    font-size: 17px;
   }
 
-  .email:hover {
+  .brand-mark {
+    display: inline-flex;
+    width: 26px;
+    height: 26px;
+    align-items: center;
+    justify-content: center;
     color: var(--pounamu);
   }
 
-  @media (max-width: 640px) {
-    .masthead {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 12px;
+  .brand-mark svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .brand-dot {
+    color: var(--pounamu);
+  }
+
+  .nav {
+    justify-self: center;
+    display: flex;
+    gap: 28px;
+    font-size: 14px;
+  }
+
+  .nav a {
+    color: var(--ink-2);
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    transition: color 160ms ease;
+  }
+
+  .nav a:hover {
+    color: var(--pounamu);
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--pounamu);
+    box-shadow: 0 0 0 4px rgba(47, 93, 58, 0.16);
+  }
+
+  @media (max-width: 1024px) {
+    .nav {
+      display: none;
+    }
+    .inner {
+      grid-template-columns: auto 1fr auto;
+    }
+    .nav {
+      display: none;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .status {
+      display: none;
+    }
+    .inner {
+      grid-template-columns: 1fr auto;
+      gap: 16px;
     }
   }
 </style>

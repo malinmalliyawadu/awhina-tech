@@ -1,18 +1,32 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 
 :root {
-  --paper: #f5f1ea;
-  --ink: #1c1a17;
-  --pounamu: #345d3e;
-  --kowhai: #d4a017;
-  --clay: #c8541f;
-  --rule-soft: rgba(28, 26, 23, 0.15);
+  --surface: #ffffff;
+  --surface-2: #fafaf7;
+  --surface-3: #f3f2ed;
+  --ink: #0e1413;
+  --ink-2: #2a2f2d;
+  --muted: #6b716e;
+  --line: #e5e4dd;
+  --line-strong: #1a1f1d;
 
-  --font-serif: "Newsreader", "Fraunces", Georgia, serif;
-  --font-sans: "Inter Tight", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --pounamu: #2f5d3a;
+  --pounamu-soft: #e9efe6;
+  --kowhai: #b8881b;
+  --clay: #b04a1f;
 
-  --pad-x: 56px;
+  --font-sans: "Inter Tight", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --pad-x: 64px;
+  --container: 1240px;
+
+  --shadow-card: 0 1px 2px rgba(14, 20, 19, 0.04), 0 6px 20px rgba(14, 20, 19, 0.06);
+  --shadow-soft: 0 1px 0 rgba(14, 20, 19, 0.03), 0 1px 2px rgba(14, 20, 19, 0.05);
 }
 
 * {
@@ -25,39 +39,122 @@ body {
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--paper);
+  background: var(--surface);
   color: var(--ink);
   font-family: var(--font-sans);
-  font-feature-settings: "ss01", "cv11";
+  font-feature-settings: "ss01", "cv11", "tnum" 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.005em;
 }
 
 a {
   color: inherit;
 }
 
+::selection {
+  background: var(--pounamu);
+  color: #fff;
+}
+
 .mono {
   font-family: var(--font-mono);
   font-size: 11px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
+  color: var(--muted);
 }
 
-.serif {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  letter-spacing: -0.022em;
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--pounamu);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
-/* Fade-up entrance — initial state; toggled by IntersectionObserver in layout script */
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 1px;
+  background: currentColor;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--surface);
+  border-color: var(--ink);
+}
+
+.btn-primary:hover {
+  background: var(--pounamu);
+  border-color: var(--pounamu);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.btn-ghost:hover {
+  border-color: var(--ink);
+  background: var(--surface-2);
+}
+
+.btn-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 2px;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+
+.btn-link:hover {
+  color: var(--pounamu);
+  border-bottom-color: var(--pounamu);
+}
+
 .fade-up {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(16px);
   transition:
-    opacity 900ms cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 900ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    opacity 600ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
   will-change: opacity, transform;
 }
 
@@ -73,15 +170,18 @@ a {
     transform: none;
     transition: none;
   }
-}
-
-@media (max-width: 960px) {
-  :root {
-    --pad-x: 32px;
+  html {
+    scroll-behavior: auto;
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 1024px) {
+  :root {
+    --pad-x: 40px;
+  }
+}
+
+@media (max-width: 720px) {
   :root {
     --pad-x: 24px;
   }

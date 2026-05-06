@@ -1,77 +1,132 @@
 ---
 import FadeUp from "./FadeUp.astro";
+
+const details = [
+  {
+    label: "Email",
+    value: "kiaora@awhina.tech",
+    href: "mailto:kiaora@awhina.tech",
+    icon: "M3 7l9 6 9-6M3 7v10h18V7M3 7l9-4 9 4",
+  },
+  {
+    label: "Phone",
+    value: "+64 21 ███ ████",
+    href: null,
+    icon: "M5 4h4l2 5-3 2a12 12 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A18 18 0 0 1 3 6a2 2 0 0 1 2-2",
+  },
+  {
+    label: "Based in",
+    value: "Tāmaki Makaurau · Te Whanganui-a-Tara",
+    href: null,
+    icon: "M12 22s7-7 7-13a7 7 0 0 0-14 0c0 6 7 13 7 13zM12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4z",
+  },
+];
 ---
 
 <section id="contact" class="contact">
-  <div class="grid">
-    <FadeUp>
-      <div class="mono kicker">§ V. Get in touch</div>
-      <h2 class="title serif">
-        Tell us<br /><span class="italic">about the work.</span>
-      </h2>
-      <p class="lede">
-        We'll reply within two working days. No sales process — just a
-        conversation about what your charity actually needs.
-      </p>
-      <div class="mono details">
-        <div>✉  kia ora@awhina.tech</div>
-        <div>☎  +64 21 ███ ████</div>
-        <div>◎  Tāmaki Makaurau · Te Whanganui-a-Tara</div>
-      </div>
-    </FadeUp>
+  <div class="inner">
+    <div class="grid">
+      <FadeUp>
+        <div class="left">
+          <span class="eyebrow">Get in touch</span>
+          <h2 class="title">Tell us about the work.</h2>
+          <p class="lede">
+            We'll reply within two working days. No sales process — just a
+            conversation about what your charity actually needs.
+          </p>
 
-    <FadeUp delay={100}>
-      <form class="form" data-contact-form>
-        <div class="field">
-          <label class="mono" for="contact-name">Your name</label>
-          <input
-            id="contact-name"
-            name="name"
-            class="input"
-            placeholder="Anahera Williams"
-            required
-          />
+          <ul class="details">
+            {
+              details.map((d) => (
+                <li class="detail">
+                  <span class="detail-icon" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d={d.icon} stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                  <div>
+                    <div class="detail-label">{d.label}</div>
+                    {d.href ? (
+                      <a href={d.href} class="detail-value">{d.value}</a>
+                    ) : (
+                      <div class="detail-value">{d.value}</div>
+                    )}
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
         </div>
-        <div class="field">
-          <label class="mono" for="contact-charity">Your charity</label>
-          <input
-            id="contact-charity"
-            name="charity"
-            class="input"
-            placeholder="The name your community knows"
-          />
-        </div>
-        <div class="field">
-          <label class="mono" for="contact-email">Email</label>
-          <input
-            id="contact-email"
-            name="email"
-            type="email"
-            class="input"
-            placeholder="you@charity.org.nz"
-            required
-          />
-        </div>
-        <div class="field">
-          <label class="mono" for="contact-message">What are you trying to do?</label>
-          <textarea
-            id="contact-message"
-            name="message"
-            class="input textarea"
-            rows="4"
-            placeholder="A booking system, a website, a donation flow..."
-            required
-          ></textarea>
-        </div>
-        <button type="submit" class="submit serif">Send →</button>
-        <div class="status mono" data-form-status hidden></div>
-      </form>
-    </FadeUp>
+      </FadeUp>
+
+      <FadeUp delay={100}>
+        <form class="form" data-contact-form>
+          <div class="row">
+            <div class="field">
+              <label for="contact-name">Your name</label>
+              <input
+                id="contact-name"
+                name="name"
+                placeholder="Anahera Williams"
+                required
+              />
+            </div>
+            <div class="field">
+              <label for="contact-charity">Your charity</label>
+              <input
+                id="contact-charity"
+                name="charity"
+                placeholder="The name your community knows"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label for="contact-email">Email</label>
+            <input
+              id="contact-email"
+              name="email"
+              type="email"
+              placeholder="you@charity.org.nz"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="contact-message">What are you trying to do?</label>
+            <textarea
+              id="contact-message"
+              name="message"
+              rows="5"
+              placeholder="A booking system, a website, a donation flow…"
+              required
+            ></textarea>
+          </div>
+          <div class="actions">
+            <button type="submit" class="btn btn-primary">
+              Send message
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <span class="form-note">We reply within 2 working days.</span>
+          </div>
+          <div class="status" data-form-status hidden role="status" aria-live="polite"></div>
+        </form>
+      </FadeUp>
+    </div>
   </div>
 
-  <footer class="footer mono">
-    <span>Awhina Tech · Aotearoa New Zealand</span>
-    <span class="footer-tag">Mahi tahi tātou — let's work together</span>
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="foot-brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 18 L12 4 L20 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 14 H16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="foot-word">Awhina<span class="foot-dot">.</span>tech</span>
+      </div>
+      <div class="foot-meta">
+        Aotearoa New Zealand · Mahi tahi tātou — let's work together
+      </div>
+      <div class="foot-copy">© {new Date().getFullYear()} Awhina Tech</div>
+    </div>
   </footer>
 </section>
 
@@ -89,137 +144,220 @@ import FadeUp from "./FadeUp.astro";
 
 <style>
   .contact {
-    padding: 120px var(--pad-x) 80px;
+    background: var(--surface);
+  }
+
+  .inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 112px var(--pad-x) 80px;
   }
 
   .grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 96px;
-  }
-
-  .kicker {
-    margin-bottom: 32px;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 80px;
   }
 
   .title {
-    font-size: 88px;
-    line-height: 0.95;
-    margin: 0 0 32px;
-    letter-spacing: -0.022em;
-  }
-
-  .italic {
-    font-style: italic;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-weight: 500;
+    margin: 12px 0 16px;
   }
 
   .lede {
     font-size: 17px;
     line-height: 1.55;
-    opacity: 0.78;
-    max-width: 420px;
-    margin: 0 0 32px;
+    color: var(--muted);
+    margin: 0 0 36px;
+    max-width: 44ch;
   }
 
-  .details > div {
-    margin-bottom: 8px;
-  }
-
-  .details > div:last-child {
-    margin-bottom: 0;
-  }
-
-  .form {
+  .details {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 16px;
+  }
+
+  .detail {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .detail-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--pounamu-soft);
+    color: var(--pounamu);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .detail-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+
+  .detail-value {
+    font-size: 15px;
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  a.detail-value:hover { color: var(--pounamu); }
+
+  .form {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
 
   .field label {
-    display: block;
-    margin-bottom: 4px;
-    opacity: 0.6;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-2);
+    letter-spacing: -0.005em;
   }
 
-  .input {
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid var(--ink);
-    padding: 12px 0;
+  .field input,
+  .field textarea {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
     font-family: inherit;
-    font-size: 16px;
-    color: inherit;
+    font-size: 15px;
+    color: var(--ink);
     width: 100%;
     outline: none;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
   }
 
-  .input:focus {
-    border-bottom-color: var(--pounamu);
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: rgba(14, 20, 19, 0.35);
   }
 
-  .textarea {
+  .field input:focus,
+  .field textarea:focus {
+    border-color: var(--pounamu);
+    box-shadow: 0 0 0 3px rgba(47, 93, 58, 0.14);
+  }
+
+  .field textarea {
     resize: vertical;
+    min-height: 120px;
   }
 
-  .submit {
-    background: var(--ink);
-    color: var(--paper);
-    border: none;
-    padding: 20px 32px;
-    font-size: 22px;
-    font-style: italic;
-    cursor: pointer;
-    margin-top: 16px;
-    align-self: flex-start;
-    letter-spacing: -0.022em;
-  }
-
-  .submit:hover {
-    opacity: 0.85;
-  }
-
-  .submit:focus-visible {
-    outline: 2px solid var(--pounamu);
-    outline-offset: 2px;
-  }
-
-  .status {
-    color: var(--pounamu);
-    margin-top: 8px;
-  }
-
-  .footer {
-    margin-top: 96px;
-    padding-top: 32px;
-    border-top: 1px solid var(--ink);
+  .actions {
     display: flex;
-    justify-content: space-between;
-    gap: 24px;
+    align-items: center;
+    gap: 16px;
+    margin-top: 4px;
     flex-wrap: wrap;
   }
 
-  .footer-tag {
-    opacity: 0.6;
+  .form-note {
+    font-size: 12px;
+    color: var(--muted);
   }
 
-  @media (max-width: 960px) {
-    .contact {
-      padding: 80px var(--pad-x) 64px;
-    }
+  .status {
+    margin-top: 4px;
+    font-size: 13px;
+    color: var(--pounamu);
+    font-weight: 500;
+  }
 
-    .grid {
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .footer-inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 28px var(--pad-x);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .foot-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: -0.018em;
+  }
+
+  .brand-mark {
+    display: inline-flex;
+    width: 22px;
+    height: 22px;
+    color: var(--pounamu);
+    align-items: center;
+    justify-content: center;
+  }
+  .brand-mark svg { width: 18px; height: 18px; }
+  .foot-dot { color: var(--pounamu); }
+
+  .foot-meta {
+    justify-self: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .foot-copy {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  @media (max-width: 1024px) {
+    .grid { grid-template-columns: 1fr; gap: 56px; }
+  }
+
+  @media (max-width: 720px) {
+    .inner { padding: 72px var(--pad-x) 56px; }
+    .form { padding: 24px; }
+    .row { grid-template-columns: 1fr; }
+    .footer-inner {
       grid-template-columns: 1fr;
-      gap: 56px;
+      gap: 8px;
+      text-align: left;
     }
-
-    .title {
-      font-size: 56px;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .title {
-      font-size: 40px;
-    }
+    .foot-meta { justify-self: start; }
   }
 </style>
