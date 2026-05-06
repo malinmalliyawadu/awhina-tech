@@ -6,6 +6,8 @@ export interface CaseStudy {
   blurb: string;
   metrics: { v: string; l: string }[];
   scheme: CharityScheme;
+  image: string;
+  imageAlt: string;
 }
 
 export const CASES: CaseStudy[] = [
@@ -20,6 +22,8 @@ export const CASES: CaseStudy[] = [
       { v: "$0", l: "transaction fees absorbed" },
     ],
     scheme: "warm",
+    image: "screenshots/everybody-eats-roster.png",
+    imageAlt: "Everybody Eats admin dashboard showing shift management",
   },
   {
     name: "Fair Food NZ",
@@ -32,6 +36,8 @@ export const CASES: CaseStudy[] = [
       { v: "30+", l: "partner orgs onboarded" },
     ],
     scheme: "forest",
+    image: "screenshots/fair-food.png",
+    imageAlt: "Fair Food NZ homepage with programmes and impact statistics",
   },
   {
     name: "Compassion Soup Kitchen",
@@ -44,5 +50,7 @@ export const CASES: CaseStudy[] = [
       { v: "92%", l: "shifts filled in advance" },
     ],
     scheme: "sea",
+    image: "screenshots/compassion.png",
+    imageAlt: "Compassion Soup Kitchen volunteer site, 'Every meal is an act of aroha'",
   },
 ];

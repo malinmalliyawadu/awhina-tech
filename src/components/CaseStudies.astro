@@ -1,6 +1,6 @@
 ---
 import FadeUp from "./FadeUp.astro";
-import MockCharitySite from "./MockCharitySite.astro";
+import Screenshot from "./Screenshot.astro";
 import { CASES } from "../data/cases";
 
 const splitItalic = (name: string) => {
@@ -48,7 +48,7 @@ const splitItalic = (name: string) => {
               </div>
               <div class="image">
                 <div class="image-frame">
-                  <MockCharitySite scheme={c.scheme} brand={c.name} kicker={c.kicker} />
+                  <Screenshot src={c.image} alt={c.imageAlt} />
                 </div>
               </div>
             </article>
