@@ -1,7 +1,6 @@
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: "https://malinmalliyawadu.github.io",
-  base: "/awhina-tech",
+  site: "https://awhinatech.nz",
   trailingSlash: "ignore",
 });
