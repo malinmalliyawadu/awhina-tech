@@ -170,6 +170,20 @@ import FadeUp from "./FadeUp.astro";
   textarea?.addEventListener("input", autosize);
   requestAnimationFrame(autosize);
 
+  // Prefill the message from any link with [data-prefill]. Only overwrites
+  // an empty textarea so we don't trample what someone's already typed.
+  document.addEventListener("click", (event) => {
+    const target = event.target as Element | null;
+    const link = target?.closest<HTMLAnchorElement>("a[data-prefill]");
+    if (!link || !textarea) return;
+    const prefill = link.dataset.prefill?.trim();
+    if (!prefill) return;
+    if (textarea.value.trim() === "") {
+      textarea.value = prefill;
+      autosize();
+    }
+  });
+
   form?.addEventListener("submit", (event) => {
     event.preventDefault();
     if (!form || !thanks) return;

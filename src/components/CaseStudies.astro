@@ -45,7 +45,11 @@ import { CASES } from "../data/cases";
                       </div>
                     ))}
                   </div>
-                  <a class="case-link" href="#contact">
+                  <a
+                    class="case-link"
+                    href="#contact"
+                    data-prefill={`We saw your work with ${c.name} and we're after something similar — keen to talk through what we've got in mind.`}
+                  >
                     Talk about a build like this
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </a>
