@@ -1,11 +1,40 @@
 ---
 import FadeUp from "./FadeUp.astro";
 
-const stats = [
-  { v: "$50", l: "NZD / month, all-in" },
-  { v: "3", l: "charities served" },
-  { v: "0", l: "per-donor fees" },
+const zeros = [
+  "per-volunteer fees",
+  "per-seat fees",
+  "paid add-ons",
+  "usage caps",
+  "locked-in contracts",
+  "ticket queues",
+  "sales calls",
 ];
+
+const tabs = [
+  {
+    id: "ee",
+    label: "Everybody Eats",
+    url: "volunteers.everybodyeats.nz",
+    src: "https://volunteers.everybodyeats.nz",
+    title: "Volunteers — Everybody Eats",
+  },
+  {
+    id: "ff",
+    label: "Fair Food NZ",
+    url: "fairfood.awhinatech.nz",
+    src: "https://fairfood.awhinatech.nz/",
+    title: "Fair Food NZ",
+  },
+  {
+    id: "cs",
+    label: "Compassion",
+    url: "compassion.awhinatech.nz",
+    src: "https://compassion.awhinatech.nz/",
+    title: "Compassion Soup Kitchen",
+  },
+];
+const initial = tabs[0];
 ---
 
 <section class="hero">
@@ -41,23 +70,47 @@ const stats = [
     <FadeUp delay={200}>
       <div class="showcase">
         <div class="window">
+          <div class="tab-strip" role="tablist" aria-label="Live charity sites">
+            {tabs.map((t, i) => (
+              <button
+                type="button"
+                role="tab"
+                id={`tab-${t.id}`}
+                class:list={["tab", i === 0 && "is-active"]}
+                aria-selected={i === 0 ? "true" : "false"}
+                aria-controls="live-preview-panel"
+                tabindex={i === 0 ? 0 : -1}
+                data-src={t.src}
+                data-url={t.url}
+                data-title={t.title}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
           <div class="window-bar">
             <div class="dots">
               <span></span><span></span><span></span>
             </div>
-            <a class="window-url" href="https://volunteers.everybodyeats.nz" target="_blank" rel="noopener">
+            <a class="window-url" id="window-url" href={initial.src} target="_blank" rel="noopener">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 11V7a4 4 0 1 1 8 0v4M5 11h14v9H5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              volunteers.everybodyeats.nz
+              <span data-url-text>{initial.url}</span>
               <svg class="ext" width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 5h5v5M19 5L10 14M19 14v5H5V5h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <div class="window-meta">Live</div>
           </div>
-          <div class="window-frame">
+          <div
+            class="window-frame"
+            id="live-preview-panel"
+            role="tabpanel"
+            aria-labelledby={`tab-${initial.id}`}
+          >
             <div class="iframe-skeleton" aria-hidden="true"></div>
             <iframe
+              id="live-preview"
               class="live-preview"
-              src="https://volunteers.everybodyeats.nz"
-              title="Volunteers — Everybody Eats"
+              src={initial.src}
+              title={initial.title}
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
               onload="this.classList.add('is-loaded')"
@@ -69,12 +122,27 @@ const stats = [
 
     <FadeUp delay={260}>
       <dl class="stats">
-        {stats.map((s) => (
-          <div class="stat">
-            <dt class="stat-v">{s.v}</dt>
-            <dd class="stat-l">{s.l}</dd>
-          </div>
-        ))}
+        <div class="stat">
+          <dt class="stat-v">$200</dt>
+          <dd class="stat-l">NZD / month, all-in</dd>
+        </div>
+        <div class="stat">
+          <dt class="stat-v">0</dt>
+          <dd class="cycler">
+            <span class="cycler-sr">
+              No {zeros.slice(0, -1).join(", ")}, or {zeros.at(-1)}.
+            </span>
+            {zeros.map((z, i) => (
+              <span
+                class="cycler-item"
+                aria-hidden="true"
+                style={`--i: ${i}`}
+              >
+                {z}
+              </span>
+            ))}
+          </dd>
+        </div>
         <div class="stat trust">
           <dt class="stat-l muted">Trusted by</dt>
           <dd class="stat-orgs">Everybody Eats · Fair Food NZ · Compassion</dd>
@@ -148,6 +216,65 @@ const stats = [
     box-shadow:
       0 1px 0 rgba(14, 20, 19, 0.04),
       0 24px 60px -20px rgba(14, 20, 19, 0.18);
+  }
+
+  .tab-strip {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    padding: 8px 10px 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tab-strip::-webkit-scrollbar { display: none; }
+
+  .tab {
+    appearance: none;
+    background: transparent;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    padding: 9px 14px 10px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--muted);
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    cursor: pointer;
+    position: relative;
+    transition: color 160ms ease, background 160ms ease;
+  }
+
+  .tab:hover {
+    color: var(--ink-2);
+  }
+
+  .tab.is-active {
+    background: var(--surface-2);
+    border-color: var(--line);
+    color: var(--ink);
+    z-index: 1;
+  }
+
+  /* hide the strip's bottom border under the active tab */
+  .tab.is-active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background: var(--surface-2);
+  }
+
+  .tab:focus-visible {
+    outline: 2px solid var(--pounamu);
+    outline-offset: -2px;
   }
 
   .window-bar {
@@ -265,14 +392,72 @@ const stats = [
     padding: 24px 0 0;
     border-top: 1px solid var(--line);
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 32px;
+    align-items: start;
   }
 
   .stat {
     display: flex;
     flex-direction: column;
     gap: 4px;
+  }
+
+  .cycler {
+    position: relative;
+    height: 1.3em;
+    margin: 0;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: -0.005em;
+    line-height: 1.3;
+    overflow: hidden;
+  }
+
+  .cycler-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .cycler-item {
+    position: absolute;
+    inset: 0;
+    display: block;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: cycle 14s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    animation-delay: calc(var(--i) * 2s);
+  }
+
+  @keyframes cycle {
+    0%        { opacity: 0; transform: translateY(8px); }
+    2%, 13%   { opacity: 1; transform: translateY(0); }
+    15%, 100% { opacity: 0; transform: translateY(-8px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cycler {
+      position: static;
+      height: auto;
+      overflow: visible;
+    }
+    .cycler-item {
+      position: static;
+      display: inline;
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+    .cycler-item:not(:last-child)::after {
+      content: " · ";
+    }
   }
 
   .stat-v {
@@ -314,6 +499,7 @@ const stats = [
       grid-template-columns: repeat(2, 1fr);
       gap: 24px;
     }
+    .stat.trust { grid-column: 1 / -1; }
   }
 
   @media (max-width: 720px) {
@@ -321,8 +507,61 @@ const stats = [
     .headline { letter-spacing: -0.03em; }
     .window-meta { display: none; }
     .window-frame { aspect-ratio: 4 / 5; }
+    .tab { padding: 8px 10px 9px; font-size: 11px; }
     .stats {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
     }
   }
 </style>
+
+<script>
+  const showcase = document.querySelector<HTMLElement>(".showcase");
+  if (showcase) {
+    const tabs = Array.from(
+      showcase.querySelectorAll<HTMLButtonElement>("[role='tab']"),
+    );
+    const iframe = showcase.querySelector<HTMLIFrameElement>("#live-preview");
+    const urlLink = showcase.querySelector<HTMLAnchorElement>("#window-url");
+    const urlText = urlLink?.querySelector<HTMLElement>("[data-url-text]");
+    const panel = showcase.querySelector<HTMLElement>("#live-preview-panel");
+
+    function activate(tab: HTMLButtonElement, focus = false) {
+      if (!iframe || !urlLink || !urlText || !panel) return;
+      for (const t of tabs) {
+        const isActive = t === tab;
+        t.classList.toggle("is-active", isActive);
+        t.setAttribute("aria-selected", isActive ? "true" : "false");
+        t.tabIndex = isActive ? 0 : -1;
+      }
+      const src = tab.dataset.src ?? "";
+      const url = tab.dataset.url ?? "";
+      const title = tab.dataset.title ?? "";
+      // Only swap if the source actually changed — avoids reloading the active tab.
+      if (iframe.getAttribute("src") !== src) {
+        iframe.classList.remove("is-loaded");
+        iframe.src = src;
+        iframe.title = title;
+      }
+      urlLink.href = src;
+      urlText.textContent = url;
+      panel.setAttribute("aria-labelledby", tab.id);
+      if (focus) tab.focus();
+    }
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener("click", () => activate(tab));
+      tab.addEventListener("keydown", (e) => {
+        let target: HTMLButtonElement | null = null;
+        if (e.key === "ArrowRight") target = tabs[(i + 1) % tabs.length];
+        else if (e.key === "ArrowLeft")
+          target = tabs[(i - 1 + tabs.length) % tabs.length];
+        else if (e.key === "Home") target = tabs[0];
+        else if (e.key === "End") target = tabs[tabs.length - 1];
+        if (target) {
+          e.preventDefault();
+          activate(target, true);
+        }
+      });
+    });
+  }
+</script>

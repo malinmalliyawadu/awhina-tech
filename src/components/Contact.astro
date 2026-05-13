@@ -170,15 +170,23 @@ import FadeUp from "./FadeUp.astro";
   textarea?.addEventListener("input", autosize);
   requestAnimationFrame(autosize);
 
-  // Prefill the message from any link with [data-prefill]. Only overwrites
-  // an empty textarea so we don't trample what someone's already typed.
+  // Overwrite if the textarea is empty or still holds one of the known
+  // prefill templates — so swapping between case-study links works, but
+  // custom typing isn't trampled.
+  const templates = new Set<string>();
+  for (const a of document.querySelectorAll<HTMLAnchorElement>("a[data-prefill]")) {
+    const t = a.dataset.prefill?.trim();
+    if (t) templates.add(t);
+  }
+
   document.addEventListener("click", (event) => {
     const target = event.target as Element | null;
     const link = target?.closest<HTMLAnchorElement>("a[data-prefill]");
     if (!link || !textarea) return;
     const prefill = link.dataset.prefill?.trim();
     if (!prefill) return;
-    if (textarea.value.trim() === "") {
+    const current = textarea.value.trim();
+    if (current === "" || templates.has(current)) {
       textarea.value = prefill;
       autosize();
     }

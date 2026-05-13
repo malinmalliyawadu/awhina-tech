@@ -1,6 +1,6 @@
 # Āwhina Tech
 
-> Custom websites and apps for Aotearoa's charities — $50 NZD a month, all-in.
+> Custom websites and apps for Aotearoa's charities — $200 NZD a month, all-in.
 
 The marketing site for [awhinatech.nz](https://awhinatech.nz). Static, fast, intentionally small.
 
@@ -62,7 +62,7 @@ A few things worth knowing if you're editing copy:
 
 - **"Āwhina"** with a macron in display text. The email domain stays `awhinatech.nz` — DNS doesn't allow macrons.
 - te reo Māori words are not italicised (Aotearoa, mahi, koha, whānau, kai)
-- prices in `$NZD` are written as `$50` not `NZ$50`
+- prices in `$NZD` are written as `$200` not `NZ$200`
 - the brand voice is plainspoken, civic-modern — short sentences, no jargon, no startup-y flourishes
 
 ## 📬 Contact

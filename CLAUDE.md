@@ -39,7 +39,7 @@ When adding a section, create a new component in `src/components/`, then import 
 - **"Āwhina"** with a macron in all display copy. The email domain stays `awhinatech.nz` (DNS doesn't allow macrons), and the npm package name stays `awhina-tech`.
 - te reo Māori words are not italicised: Aotearoa, mahi, koha, whānau, kai, kia ora, etc.
 - Use macrons consistently: whānau, Māori, Aotearoa, Te Whanganui-a-Tara, tātou.
-- Prices: `$50` not `NZ$50` or `$50 NZD` (in body copy — the README/sell copy can use `$50 NZD` for clarity to overseas readers).
+- Prices: `$200` not `NZ$200` or `$200 NZD` (in body copy — the README/sell copy can use `$200 NZD` for clarity to overseas readers).
 - Tone is plainspoken, civic-modern. Short sentences. No startup-y flourishes ("game-changing", "revolutionary", "10x"), no marketing fluff. Specific over abstract.
 
 ## Hosting
