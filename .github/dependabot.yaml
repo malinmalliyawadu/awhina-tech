@@ -15,25 +15,14 @@ updates:
         update-types:
           - minor
           - patch
-      next:
+      astro:
         patterns:
-          - "next"
-          - "eslint-config-next"
-          - "@next/*"
-      react:
+          - "astro"
+          - "@astrojs/*"
+      playwright:
         patterns:
-          - "react"
-          - "react-dom"
-          - "@types/react"
-          - "@types/react-dom"
-      prisma:
-        patterns:
-          - "prisma"
-          - "@prisma/*"
-      radix:
-        patterns:
-          - "radix-ui"
-          - "@radix-ui/*"
+          - "playwright"
+          - "@playwright/*"
 
   - package-ecosystem: github-actions
     directory: /
