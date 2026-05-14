@@ -40,6 +40,14 @@ import FadeUp from "./FadeUp.astro";
       <FadeUp delay={100}>
         <div class="letter-shell">
           <form class="letter" data-contact-form>
+            <input
+              type="checkbox"
+              name="botcheck"
+              class="botcheck"
+              tabindex="-1"
+              autocomplete="off"
+              aria-hidden="true"
+            />
             <div class="letter-paper">
               <p class="letter-prose">
                 Kia ora, my name is
@@ -93,12 +101,16 @@ import FadeUp from "./FadeUp.astro";
             </div>
 
             <div class="letter-actions">
-              <button type="submit" class="btn btn-primary">
-                Send it
+              <button type="submit" class="btn btn-primary" data-submit>
+                <span data-submit-label>Send it</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
               <span class="form-note">Usually a day. Always within two.</span>
             </div>
+            <p class="form-error" data-error hidden role="alert">
+              Couldn't send just now — please try again, or email us at
+              <a href="mailto:kiaora@awhinatech.nz" data-error-mailto>kiaora@awhinatech.nz</a>.
+            </p>
           </form>
 
           <div class="thanks" data-thanks hidden>
@@ -192,22 +204,95 @@ import FadeUp from "./FadeUp.astro";
     }
   });
 
-  form?.addEventListener("submit", (event) => {
+  // Web3Forms access key — public by design, domain-bound at api.web3forms.com.
+  const WEB3FORMS_KEY = "e64c02cb-4b7e-4a32-94af-d74d853e29b5";
+
+  const errorEl = document.querySelector<HTMLElement>("[data-error]");
+  const errorMailto = document.querySelector<HTMLAnchorElement>("[data-error-mailto]");
+  const submitBtn = form?.querySelector<HTMLButtonElement>("[data-submit]");
+  const submitLabel = form?.querySelector<HTMLElement>("[data-submit-label]");
+
+  form?.addEventListener("submit", async (event) => {
     event.preventDefault();
-    if (!form || !thanks) return;
-    const nameInput = form.elements.namedItem("name") as HTMLInputElement | null;
-    const charityInput = form.elements.namedItem("charity") as HTMLInputElement | null;
-    const firstName = nameInput?.value?.trim().split(/\s+/)[0];
-    if (thanksTitle) {
-      thanksTitle.textContent = firstName
-        ? `Thanks, ${firstName} — got it.`
-        : "Thanks — got it.";
+    if (!form || !thanks || !submitBtn || !submitLabel) return;
+
+    const formData = new FormData(form);
+    const name = String(formData.get("name") || "").trim();
+    const charity = String(formData.get("charity") || "").trim();
+    const email = String(formData.get("email") || "").trim();
+    const message = String(formData.get("message") || "").trim();
+
+    // Honeypot — bots tend to check every field; humans never see it.
+    if (formData.get("botcheck")) {
+      form.hidden = true;
+      thanks.hidden = true;
+      return;
     }
-    (window as any).posthog?.capture("contact_form_submitted", {
-      has_charity: Boolean(charityInput?.value?.trim()),
-    });
-    form.hidden = true;
-    thanks.hidden = false;
+
+    submitBtn.disabled = true;
+    const originalLabel = submitLabel.textContent;
+    submitLabel.textContent = "Sending…";
+    errorEl?.setAttribute("hidden", "");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          name,
+          charity,
+          email,
+          message,
+          subject: `New enquiry from ${name}${charity ? ` (${charity})` : ""}`,
+          from_name: "Āwhina Tech contact form",
+          replyto: email,
+        }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || `HTTP ${response.status}`);
+      }
+
+      const firstName = name.split(/\s+/)[0];
+      if (thanksTitle) {
+        thanksTitle.textContent = firstName
+          ? `Thanks, ${firstName} — got it.`
+          : "Thanks — got it.";
+      }
+      (window as any).posthog?.capture("contact_form_submitted", {
+        has_charity: Boolean(charity),
+      });
+      form.hidden = true;
+      thanks.hidden = false;
+    } catch (err) {
+      submitBtn.disabled = false;
+      submitLabel.textContent = originalLabel ?? "Send it";
+
+      if (errorMailto) {
+        const lines = [
+          `Kia ora, my name is ${name || "[your name]"}` +
+            (charity ? ` and I help run ${charity}` : "") +
+            ".",
+          email ? `You can reach me at ${email}.` : "",
+          "",
+          message,
+        ].filter(Boolean);
+        const subject = encodeURIComponent(
+          `Enquiry from ${name || "the Āwhina Tech site"}`,
+        );
+        const body = encodeURIComponent(lines.join("\n"));
+        errorMailto.href = `mailto:kiaora@awhinatech.nz?subject=${subject}&body=${body}`;
+      }
+      errorEl?.removeAttribute("hidden");
+
+      (window as any).posthog?.capture("contact_form_failed", {
+        error: err instanceof Error ? err.message : String(err),
+      });
+    }
   });
 
   // Track email and phone link clicks
@@ -428,6 +513,36 @@ import FadeUp from "./FadeUp.astro";
   .form-note {
     font-size: 12px;
     color: var(--muted);
+  }
+
+  .form-error {
+    margin: 14px 0 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--clay, #b34a3a);
+  }
+
+  .form-error a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  /* Honeypot — kept in the DOM (sophisticated bots skip display:none),
+     but moved off-screen and unfocusable. */
+  .botcheck {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
   }
 
   /* Thanks state replaces the form on submit */
