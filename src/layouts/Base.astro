@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import PostHog from "../components/posthog.astro";
 
 interface Props {
   title?: string;
@@ -60,6 +61,7 @@ const orgJsonLd = {
     <meta name="twitter:image" content={ogImage} />
 
     <script type="application/ld+json" set:html={JSON.stringify(orgJsonLd)} />
+    <PostHog />
   </head>
   <body>
     <slot />

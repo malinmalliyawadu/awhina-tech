@@ -196,14 +196,26 @@ import FadeUp from "./FadeUp.astro";
     event.preventDefault();
     if (!form || !thanks) return;
     const nameInput = form.elements.namedItem("name") as HTMLInputElement | null;
+    const charityInput = form.elements.namedItem("charity") as HTMLInputElement | null;
     const firstName = nameInput?.value?.trim().split(/\s+/)[0];
     if (thanksTitle) {
       thanksTitle.textContent = firstName
         ? `Thanks, ${firstName} — got it.`
         : "Thanks — got it.";
     }
+    (window as any).posthog?.capture("contact_form_submitted", {
+      has_charity: Boolean(charityInput?.value?.trim()),
+    });
     form.hidden = true;
     thanks.hidden = false;
+  });
+
+  // Track email and phone link clicks
+  document.querySelector<HTMLAnchorElement>('a[href^="mailto:"]')?.addEventListener("click", () => {
+    (window as any).posthog?.capture("email_link_clicked");
+  });
+  document.querySelector<HTMLAnchorElement>('a[href^="tel:"]')?.addEventListener("click", () => {
+    (window as any).posthog?.capture("phone_link_clicked");
   });
 </script>
 
