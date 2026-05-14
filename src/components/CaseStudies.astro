@@ -49,6 +49,7 @@ import { CASES } from "../data/cases";
                     class="case-link"
                     href="#contact"
                     data-prefill={`We saw your work with ${c.name} and we're after something similar — keen to talk through what we've got in mind.`}
+                    data-case-name={c.name}
                   >
                     Talk about a build like this
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -331,3 +332,13 @@ import { CASES } from "../data/cases";
     .metric-v { font-size: 22px; }
   }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>("a[data-case-name]").forEach((a) => {
+    a.addEventListener("click", () => {
+      (window as any).posthog?.capture("case_study_cta_clicked", {
+        case_name: a.dataset.caseName,
+      });
+    });
+  });
+</script>

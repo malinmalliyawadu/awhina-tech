@@ -1,4 +1,8 @@
 ---
+import { createHash } from "node:crypto";
+import { readFileSync, statSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
 interface Props {
   src: string;
   alt: string;
@@ -9,7 +13,23 @@ const { src, alt, loading = "lazy" } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const cleaned = src.replace(/^\//, "");
-const href = `${base}/${cleaned}`;
+
+const publicDir = fileURLToPath(new URL("../../public/", import.meta.url));
+let version = "";
+try {
+  const filePath = publicDir + cleaned;
+  statSync(filePath);
+  version = createHash("sha1")
+    .update(readFileSync(filePath))
+    .digest("hex")
+    .slice(0, 8);
+} catch {
+  // file not found at build time — fall back to no version, link still renders
+}
+
+const href = version
+  ? `${base}/${cleaned}?v=${version}`
+  : `${base}/${cleaned}`;
 ---
 
 <img class="screenshot" src={href} alt={alt} loading={loading} decoding="async" />
