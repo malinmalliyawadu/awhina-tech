@@ -132,18 +132,18 @@ import { CASES } from "../data/cases";
   }
 
   .case:hover {
-    border-color: rgba(14, 20, 19, 0.18);
+    border-color: var(--border-hover);
     box-shadow: var(--shadow-card);
   }
 
   .case[data-scheme="warm"] {
-    background: linear-gradient(180deg, #fbf6ee 0%, #fdfaf3 100%);
+    background: var(--tint-warm);
   }
   .case[data-scheme="forest"] {
-    background: linear-gradient(180deg, #f1f4ec 0%, #f7f9f3 100%);
+    background: var(--tint-forest);
   }
   .case[data-scheme="sea"] {
-    background: linear-gradient(180deg, #eef2f1 0%, #f4f7f6 100%);
+    background: var(--tint-sea);
   }
 
   .case.image-right {
@@ -202,7 +202,7 @@ import { CASES } from "../data/cases";
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
     padding-top: 24px;
-    border-top: 1px solid rgba(14, 20, 19, 0.08);
+    border-top: 1px solid var(--line);
     margin-bottom: 28px;
   }
 
@@ -239,13 +239,11 @@ import { CASES } from "../data/cases";
 
   .image-frame {
     aspect-ratio: 4 / 3;
-    background: #fff;
+    background: var(--elevated);
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
     overflow: hidden;
-    box-shadow:
-      0 1px 2px rgba(14, 20, 19, 0.05),
-      0 20px 40px -20px rgba(14, 20, 19, 0.18);
+    box-shadow: var(--shadow-card);
     position: relative;
   }
 

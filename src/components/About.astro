@@ -113,7 +113,7 @@ import FadeUp from "./FadeUp.astro";
   }
 
   .card {
-    background: linear-gradient(180deg, #f4f7f1 0%, #f9faf5 100%);
+    background: var(--wash);
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     padding: 36px;
@@ -130,9 +130,7 @@ import FadeUp from "./FadeUp.astro";
     object-fit: cover;
     background: var(--pounamu-soft);
     border: 1px solid var(--line);
-    box-shadow:
-      0 1px 2px rgba(14, 20, 19, 0.06),
-      0 8px 20px rgba(14, 20, 19, 0.08);
+    box-shadow: var(--shadow-card);
     margin-bottom: 8px;
     display: block;
   }
