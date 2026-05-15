@@ -1,14 +1,21 @@
 import { chromium } from "playwright";
 import { fileURLToPath } from "node:url";
+import { existsSync } from "node:fs";
 import path from "node:path";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outDir = path.resolve(__dirname, "../public/screenshots");
+const eeAuth = path.resolve(__dirname, ".auth/everybody-eats.json");
 
 const targets = [
   {
+    // Authenticated volunteer dashboard. Needs a saved session — run
+    // `npm run screenshots:auth` once first (see scripts/auth-everybody-eats.mjs).
     name: "everybody-eats-hero",
-    url: "https://volunteers.everybodyeats.nz/",
+    url: "https://volunteers.everybodyeats.nz/dashboard",
+    storageState: eeAuth,
+    colorScheme: "light",
+    waitForText: /kia ora/i,
   },
   {
     name: "fair-food",
@@ -46,10 +53,25 @@ async function dismissCookies(page) {
   }
 }
 
-async function capture(browser, { name, url }) {
+async function capture(
+  browser,
+  { name, url, storageState, colorScheme, waitForText }
+) {
+  if (storageState && !existsSync(storageState)) {
+    throw new Error(
+      `${name}: no saved session at ${path.relative(
+        process.cwd(),
+        storageState
+      )}.\n` +
+        `  Run \`npm run screenshots:auth\` once to sign in, then re-run.`
+    );
+  }
+
   const context = await browser.newContext({
     viewport: { width: 1440, height: 1080 },
     deviceScaleFactor: 2,
+    ...(colorScheme ? { colorScheme } : {}),
+    ...(storageState ? { storageState } : {}),
     userAgent:
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
   });
@@ -62,6 +84,19 @@ async function capture(browser, { name, url }) {
     await page.goto(url, { waitUntil: "load", timeout: 45000 });
   }
   await dismissCookies(page);
+
+  if (waitForText) {
+    try {
+      await page.getByText(waitForText).first().waitFor({ timeout: 15000 });
+    } catch {
+      await context.close();
+      throw new Error(
+        `${name}: signed-out or expired session (never saw ${waitForText}).\n` +
+          `  Re-run \`npm run screenshots:auth\` to refresh the session, then retry.`
+      );
+    }
+  }
+
   // give animations / lazy images a moment
   await page.waitForTimeout(1500);
   // scroll a touch and back to trigger lazy loads, then settle at top
@@ -77,10 +112,17 @@ async function capture(browser, { name, url }) {
 }
 
 const browser = await chromium.launch();
+let failed = false;
 try {
   for (const t of targets) {
-    await capture(browser, t);
+    try {
+      await capture(browser, t);
+    } catch (err) {
+      failed = true;
+      console.error(`✗ ${err.message}`);
+    }
   }
 } finally {
   await browser.close();
 }
+process.exit(failed ? 1 : 0);
