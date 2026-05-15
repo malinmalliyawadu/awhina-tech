@@ -12,7 +12,7 @@ const targets = [
   },
   {
     name: "fair-food",
-    url: "https://fairfood.awhinatech.nz/",
+    url: "https://volunteer.fairfood.org.nz/",
   },
   {
     name: "compassion",
