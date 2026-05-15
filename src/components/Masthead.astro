@@ -38,10 +38,6 @@ const navLinks = [
           <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
         </svg>
       </button>
-      <span class="status">
-        <span class="status-dot" aria-hidden="true"></span>
-        Taking on 2 charities this quarter
-      </span>
       <a href="#contact" class="btn btn-primary" data-cta-label="Get in touch">Get in touch</a>
     </div>
   </div>
@@ -173,23 +169,6 @@ const navLinks = [
     display: inline-flex;
   }
 
-  .status {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 500;
-  }
-
-  .status-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--pounamu);
-    box-shadow: 0 0 0 4px rgba(47, 93, 58, 0.16);
-  }
-
   @media (max-width: 1024px) {
     .nav {
       display: none;
@@ -203,9 +182,6 @@ const navLinks = [
   }
 
   @media (max-width: 720px) {
-    .status {
-      display: none;
-    }
     .inner {
       grid-template-columns: 1fr auto;
       gap: 16px;
