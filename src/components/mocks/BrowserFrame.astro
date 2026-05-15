@@ -26,13 +26,11 @@ const { url = "example.org.nz" } = Astro.props;
 <style>
   .frame {
     position: relative;
-    background: #fff;
+    background: var(--elevated);
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
     overflow: hidden;
-    box-shadow:
-      0 1px 2px rgba(14, 20, 19, 0.05),
-      0 22px 44px -22px rgba(14, 20, 19, 0.18);
+    box-shadow: var(--shadow-card);
   }
 
   .chrome {
@@ -41,7 +39,7 @@ const { url = "example.org.nz" } = Astro.props;
     align-items: center;
     gap: 14px;
     padding: 10px 14px;
-    background: #f6f5ef;
+    background: var(--chrome-bg);
     border-bottom: 1px solid var(--line);
   }
 
@@ -54,14 +52,14 @@ const { url = "example.org.nz" } = Astro.props;
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background: #d6d4cc;
+    background: var(--chrome-dot);
   }
 
   .urlbar {
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    background: #fff;
+    background: var(--elevated);
     border: 1px solid var(--line);
     border-radius: 999px;
     padding: 4px 12px;

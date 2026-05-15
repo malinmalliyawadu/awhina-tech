@@ -10,6 +10,31 @@ Marketing site for an agency that builds custom websites and apps for Aotearoa's
 - No CSS framework, no UI library, no CMS, no DB
 - Single page: `src/pages/index.astro` imports a sequence of section components
 
+## Design workflow (always do this)
+
+Before any UI, visual, styling, or layout change on this project, **always load both skills first**:
+
+- `ui-ux-pro-max:ui-ux-pro-max` — accessibility/contrast, layout, dark-mode pairing
+- `frontend-design:frontend-design` — aesthetic direction, avoiding generic AI design
+
+This site's design language is hand-tuned and brittle; these skills are not optional here.
+
+## Theming (light + dark)
+
+- The site supports light and dark mode. Theme is resolved before first paint by an
+  inline no-flash script in `src/layouts/Base.astro` and persisted to
+  `localStorage` (`theme` = `light` | `dark`). A toggle lives in `Masthead.astro`.
+- Default follows the visitor's OS preference (`prefers-color-scheme`); the toggle
+  overrides and persists. No-JS visitors still get system dark via the CSS media block.
+- **All colours go through semantic tokens in `src/styles/global.css`.** Never add a
+  raw hex/rgba in a component — add or reuse a token (`--surface`, `--ink`, `--line`,
+  `--elevated`, `--wash`, `--tint-*`, `--*-soft`, `--field-line`, `--chrome-*`, …) so
+  both themes stay in sync.
+- The dark palette is defined **twice** in `global.css` (`:root[data-theme="dark"]`
+  and the `prefers-color-scheme: dark` media block) — keep the two blocks identical.
+- Deliberate exceptions left light in dark mode: the phone bezel in `CaseStudies`,
+  and the Hero showcase iframe (it embeds a real, light external charity site).
+
 ## Common commands
 
 ```bash

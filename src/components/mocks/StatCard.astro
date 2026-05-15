@@ -38,14 +38,12 @@ const { title, iconPath, stats } = Astro.props;
     position: absolute;
     right: -14px;
     bottom: -22px;
-    background: #fff;
+    background: var(--elevated);
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
     padding: 14px 16px;
     min-width: 200px;
-    box-shadow:
-      0 1px 2px rgba(14, 20, 19, 0.05),
-      0 16px 36px -10px rgba(14, 20, 19, 0.22);
+    box-shadow: var(--shadow-card);
   }
 
   .stat-head {

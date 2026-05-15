@@ -1,19 +1,39 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 
 :root {
+  color-scheme: light;
+
   --surface: #ffffff;
   --surface-2: #fafaf7;
   --surface-3: #f3f2ed;
+  --elevated: #ffffff;
   --ink: #0e1413;
   --ink-2: #2a2f2d;
   --muted: #6b716e;
   --line: #e5e4dd;
   --line-strong: #1a1f1d;
+  --border-hover: rgba(14, 20, 19, 0.18);
 
   --pounamu: #2f5d3a;
   --pounamu-soft: #e9efe6;
   --kowhai: #b8881b;
+  --kowhai-soft: #fbf2db;
   --clay: #b04a1f;
+  --clay-soft: #f5e3d8;
+
+  /* Header backdrop, form affordances, browser-chrome (mock) surfaces */
+  --header-bg: rgba(255, 255, 255, 0.85);
+  --field-line: rgba(14, 20, 19, 0.2);
+  --field-line-hover: rgba(14, 20, 19, 0.45);
+  --placeholder: rgba(14, 20, 19, 0.32);
+  --chrome-bg: #f6f5ef;
+  --chrome-dot: #d6d4cc;
+
+  /* Section / card wash gradients (full value tokens, theme-swapped) */
+  --wash: linear-gradient(180deg, #f4f7f1 0%, #f9faf5 100%);
+  --tint-warm: linear-gradient(180deg, #fbf6ee 0%, #fdfaf3 100%);
+  --tint-forest: linear-gradient(180deg, #f1f4ec 0%, #f7f9f3 100%);
+  --tint-sea: linear-gradient(180deg, #eef2f1 0%, #f4f7f6 100%);
 
   --font-sans: "Inter Tight", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
@@ -27,6 +47,90 @@
 
   --shadow-card: 0 1px 2px rgba(14, 20, 19, 0.04), 0 6px 20px rgba(14, 20, 19, 0.06);
   --shadow-soft: 0 1px 0 rgba(14, 20, 19, 0.03), 0 1px 2px rgba(14, 20, 19, 0.05);
+}
+
+/*
+ * Dark theme. The two selectors below are kept in sync deliberately:
+ *  - [data-theme="dark"]            explicit choice (set by the no-flash
+ *                                   script / toggle, persisted in localStorage)
+ *  - prefers-color-scheme: dark     no-JS fallback, unless the visitor has
+ *                                   explicitly chosen light
+ * Edit both blocks together.
+ */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --surface: #0e1413;
+  --surface-2: #161d1a;
+  --surface-3: #1e2622;
+  --elevated: #1b221f;
+  --ink: #eef1ec;
+  --ink-2: #c3c9c1;
+  --muted: #8b938b;
+  --line: #2a322e;
+  --line-strong: #3c453f;
+  --border-hover: rgba(238, 241, 236, 0.24);
+
+  --pounamu: #7fb98c;
+  --pounamu-soft: #16241b;
+  --kowhai: #d9a83a;
+  --kowhai-soft: #2a2212;
+  --clay: #d9784e;
+  --clay-soft: #2c1d15;
+
+  --header-bg: rgba(13, 18, 17, 0.8);
+  --field-line: rgba(238, 241, 236, 0.22);
+  --field-line-hover: rgba(238, 241, 236, 0.45);
+  --placeholder: rgba(238, 241, 236, 0.34);
+  --chrome-bg: #141a17;
+  --chrome-dot: #3c453f;
+
+  --wash: linear-gradient(180deg, #15201b 0%, #0f1513 100%);
+  --tint-warm: linear-gradient(180deg, #1d1a14 0%, #14110d 100%);
+  --tint-forest: linear-gradient(180deg, #14201a 0%, #0f1512 100%);
+  --tint-sea: linear-gradient(180deg, #131e1e 0%, #0f1514 100%);
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.55);
+  --shadow-soft: 0 1px 0 rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --surface: #0e1413;
+    --surface-2: #161d1a;
+    --surface-3: #1e2622;
+    --elevated: #1b221f;
+    --ink: #eef1ec;
+    --ink-2: #c3c9c1;
+    --muted: #8b938b;
+    --line: #2a322e;
+    --line-strong: #3c453f;
+    --border-hover: rgba(238, 241, 236, 0.24);
+
+    --pounamu: #7fb98c;
+    --pounamu-soft: #16241b;
+    --kowhai: #d9a83a;
+    --kowhai-soft: #2a2212;
+    --clay: #d9784e;
+    --clay-soft: #2c1d15;
+
+    --header-bg: rgba(13, 18, 17, 0.8);
+    --field-line: rgba(238, 241, 236, 0.22);
+    --field-line-hover: rgba(238, 241, 236, 0.45);
+    --placeholder: rgba(238, 241, 236, 0.34);
+    --chrome-bg: #141a17;
+    --chrome-dot: #3c453f;
+
+    --wash: linear-gradient(180deg, #15201b 0%, #0f1513 100%);
+    --tint-warm: linear-gradient(180deg, #1d1a14 0%, #14110d 100%);
+    --tint-forest: linear-gradient(180deg, #14201a 0%, #0f1512 100%);
+    --tint-sea: linear-gradient(180deg, #131e1e 0%, #0f1514 100%);
+
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.55);
+    --shadow-soft: 0 1px 0 rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.4);
+  }
 }
 
 * {
@@ -59,7 +163,25 @@ a {
 
 ::selection {
   background: var(--pounamu);
-  color: #fff;
+  color: var(--surface);
+}
+
+/*
+ * Short cross-fade applied only while a theme switch is in flight (the
+ * toggle adds .theme-anim to <html> for ~320ms). Skipped under
+ * prefers-reduced-motion via the media query further down.
+ */
+:root.theme-anim,
+:root.theme-anim *,
+:root.theme-anim *::before,
+:root.theme-anim *::after {
+  transition:
+    background-color 280ms ease,
+    border-color 280ms ease,
+    color 280ms ease,
+    box-shadow 280ms ease,
+    fill 280ms ease,
+    stroke 280ms ease !important;
 }
 
 .mono {
@@ -169,6 +291,12 @@ a {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+  :root.theme-anim,
+  :root.theme-anim *,
+  :root.theme-anim *::before,
+  :root.theme-anim *::after {
+    transition: none !important;
   }
   html {
     scroll-behavior: auto;

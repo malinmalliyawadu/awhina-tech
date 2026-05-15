@@ -425,13 +425,13 @@ import FadeUp from "./FadeUp.astro";
     right: 0;
     bottom: 6px;
     height: 1.5px;
-    background: rgba(14, 20, 19, 0.2);
+    background: var(--field-line);
     transition: background-color 200ms ease, height 200ms ease;
     pointer-events: none;
   }
 
   .i-wrap:hover::before {
-    background: rgba(14, 20, 19, 0.45);
+    background: var(--field-line-hover);
   }
 
   .i-wrap:focus-within::before {
@@ -462,7 +462,7 @@ import FadeUp from "./FadeUp.astro";
   }
 
   .i-wrap input::placeholder {
-    color: rgba(14, 20, 19, 0.32);
+    color: var(--placeholder);
   }
 
   /* Message — separate block, but on the same paper */
@@ -499,7 +499,7 @@ import FadeUp from "./FadeUp.astro";
   }
 
   .letter-message textarea::placeholder {
-    color: rgba(14, 20, 19, 0.32);
+    color: var(--placeholder);
   }
 
   .letter-actions {
