@@ -39,8 +39,76 @@ const orgJsonLd = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script is:inline>
+      // Resolve theme before first paint — avoids a light/dark flash.
+      // Defines window.__setTheme / window.__currentTheme for the toggle.
+      (function () {
+        var d = document.documentElement;
+        function setMeta(t) {
+          var m = document.getElementById("theme-color");
+          if (!m) {
+            m = document.createElement("meta");
+            m.name = "theme-color";
+            m.id = "theme-color";
+            document.head.appendChild(m);
+          }
+          m.setAttribute("content", t === "dark" ? "#0e1413" : "#ffffff");
+        }
+        function system() {
+          return window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+        }
+        function resolve() {
+          try {
+            return localStorage.getItem("theme") || system();
+          } catch (e) {
+            return system();
+          }
+        }
+        function apply(t, persist) {
+          d.dataset.theme = t;
+          setMeta(t);
+          if (persist) {
+            try {
+              localStorage.setItem("theme", t);
+            } catch (e) {}
+          }
+        }
+        window.__currentTheme = function () {
+          return d.dataset.theme;
+        };
+        window.__setTheme = function (t) {
+          var reduce = window.matchMedia(
+            "(prefers-reduced-motion: reduce)",
+          ).matches;
+          if (!reduce) {
+            d.classList.add("theme-anim");
+            window.setTimeout(function () {
+              d.classList.remove("theme-anim");
+            }, 340);
+          }
+          apply(t, true);
+          window.dispatchEvent(
+            new CustomEvent("themechange", { detail: t }),
+          );
+        };
+        apply(resolve(), false);
+      })();
+    </script>
+
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#ffffff" />
+    <meta
+      name="theme-color"
+      content="#ffffff"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#0e1413"
+      media="(prefers-color-scheme: dark)"
+    />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonical} />
     <title>{title}</title>

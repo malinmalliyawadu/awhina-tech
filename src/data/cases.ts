@@ -15,35 +15,36 @@ export interface CaseStudy {
 export const CASES: CaseStudy[] = [
   {
     name: "Everybody Eats",
-    kicker: "Pay-as-you-feel restaraunts",
+    kicker: "Pay-as-you-feel restaurants",
     blurb:
-      "A booking system, volunteer roster, and donation flow built around their three-course pay-what-feels-right dining model — plus native iOS and Android apps for volunteers to pick up shifts on the move. Replaced four separate tools.",
+      "A booking system, volunteer roster, and donation flow built around their three-course pay-what-feels-right dining model — plus native iOS and Android apps for volunteers to pick up shifts on the move.",
     metrics: [
-      { v: "37%", l: "fewer no-shows" },
-      { v: "4 → 1", l: "tools consolidated" },
-      { v: "iOS + Android", l: "shipped alongside the web" },
+      { v: "9k+", l: "volunteers" },
+      { v: "1.2k", l: "weekly active users" },
+      { v: "3+", l: "restaurants and pop-ups" },
     ],
     scheme: "warm",
     image: "screenshots/everybody-eats-hero.png",
     imageAlt:
-      "Everybody Eats homepage — 'Making a difference one plate at a time'",
+      "Everybody Eats volunteer dashboard — shifts completed, hours contributed, and suggested volunteers",
     phoneImage: "screenshots/everybody-eats-app.png",
     phoneImageAlt:
       "Everybody Eats volunteer app — open shifts and 'What's happening' feed",
   },
   {
     name: "Fair Food NZ",
-    kicker: "Food rescue for Auckland",
+    kicker: "Food rescue for Tāmaki Makaurau",
     blurb:
-      "A logistics dashboard for 30+ donor partners, automated rescue scheduling, and a public impact ticker. Built to handle 60 tonnes of rescued kai a month.",
+      "A volunteer site and shift booking system for the crew who sort, cook, and share rescued kai in Avondale every day — browse open shifts solo, or sign up a whole team at once.",
     metrics: [
-      { v: "60 t", l: "kai routed monthly" },
-      { v: "12 hrs", l: "ops time saved / week" },
-      { v: "30+", l: "partner orgs onboarded" },
+      { v: "2,400 kg", l: "rescued kai a day" },
+      { v: "Solo + team", l: "shift sign-ups" },
+      { v: "Est. 2011", l: "feeding Avondale" },
     ],
     scheme: "forest",
     image: "screenshots/fair-food.png",
-    imageAlt: "Fair Food NZ homepage with programmes and impact statistics",
+    imageAlt:
+      "Fair Food volunteer site — 'Help turn leftovers into lifelines for whānau', with open shifts and team sign-up",
   },
   {
     name: "Compassion Soup Kitchen",

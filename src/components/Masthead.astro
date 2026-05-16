@@ -27,10 +27,17 @@ const navLinks = [
     </nav>
 
     <div class="cta">
-      <span class="status">
-        <span class="status-dot" aria-hidden="true"></span>
-        Taking on 2 charities this quarter
-      </span>
+      <button type="button" class="theme-toggle" aria-label="Switch to dark theme">
+        <!-- Lucide: moon -->
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+        </svg>
+        <!-- Lucide: sun -->
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+        </svg>
+      </button>
       <a href="#contact" class="btn btn-primary" data-cta-label="Get in touch">Get in touch</a>
     </div>
   </div>
@@ -41,7 +48,7 @@ const navLinks = [
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(255, 255, 255, 0.85);
+    background: var(--header-bg);
     backdrop-filter: saturate(140%) blur(8px);
     -webkit-backdrop-filter: saturate(140%) blur(8px);
     border-bottom: 1px solid var(--line);
@@ -108,21 +115,58 @@ const navLinks = [
     gap: 16px;
   }
 
-  .status {
-    display: inline-flex;
+  /* Hidden until the inline theme script runs (sets data-theme). With JS
+     off the button would be inert, and system dark still applies via CSS. */
+  .theme-toggle {
+    display: none;
     align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 500;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--ink-2);
+    cursor: pointer;
+    transition:
+      color 160ms ease,
+      border-color 160ms ease,
+      background 160ms ease;
   }
 
-  .status-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--pounamu);
-    box-shadow: 0 0 0 4px rgba(47, 93, 58, 0.16);
+  :global(:root[data-theme]) .theme-toggle {
+    display: inline-flex;
+  }
+
+  .theme-toggle:hover {
+    color: var(--ink);
+    border-color: var(--ink);
+    background: var(--surface-2);
+  }
+
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--pounamu);
+    outline-offset: 2px;
+  }
+
+  .theme-toggle svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Show the icon for the action the click performs:
+     moon in light mode (→ go dark), sun in dark mode (→ go light). */
+  .i-sun {
+    display: none;
+  }
+
+  :global(:root[data-theme="dark"]) .i-moon {
+    display: none;
+  }
+
+  :global(:root[data-theme="dark"]) .i-sun {
+    display: inline-flex;
   }
 
   @media (max-width: 1024px) {
@@ -138,12 +182,36 @@ const navLinks = [
   }
 
   @media (max-width: 720px) {
-    .status {
-      display: none;
-    }
     .inner {
       grid-template-columns: 1fr auto;
       gap: 16px;
     }
   }
 </style>
+
+<script>
+  // Theme toggle. The actual theme/persistence logic lives in the
+  // no-flash inline script in Base.astro (window.__setTheme).
+  const btn = document.querySelector<HTMLButtonElement>(".theme-toggle");
+  const set = (window as any).__setTheme as ((t: string) => void) | undefined;
+  const current = (window as any).__currentTheme as
+    | (() => string)
+    | undefined;
+
+  function label() {
+    if (!btn) return;
+    const dark = current?.() === "dark";
+    btn.setAttribute(
+      "aria-label",
+      dark ? "Switch to light theme" : "Switch to dark theme",
+    );
+  }
+
+  btn?.addEventListener("click", () => {
+    const next = current?.() === "dark" ? "light" : "dark";
+    set?.(next);
+  });
+
+  window.addEventListener("themechange", label);
+  label();
+</script>
