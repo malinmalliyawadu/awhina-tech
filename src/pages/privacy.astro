@@ -1,0 +1,308 @@
+---
+import Base from "../layouts/Base.astro";
+import Masthead from "../components/Masthead.astro";
+import Footer from "../components/Footer.astro";
+import FadeUp from "../components/FadeUp.astro";
+
+const title = "Privacy — Āwhina Tech";
+const description =
+  "How Āwhina Tech handles your information. Plain and specific: what we collect, why, who else can see it, and your rights under the Privacy Act 2020.";
+---
+
+<Base title={title} description={description}>
+  <Masthead />
+
+  <main class="legal">
+    <div class="inner">
+      <FadeUp>
+        <header class="head">
+          <span class="eyebrow">Privacy</span>
+          <h1 class="title">How we handle your information.</h1>
+          <p class="updated">Last updated 16 May 2026</p>
+        </header>
+      </FadeUp>
+
+      <FadeUp delay={80}>
+        <div class="prose">
+          <p class="lede">
+            We keep this short and specific, because a privacy policy you
+            can't read isn't worth much. Here's exactly what this site
+            collects, why, and what you can ask us to do about it.
+          </p>
+
+          <section>
+            <h2>What we collect</h2>
+            <p>
+              <strong>When you use the contact form:</strong> your name, your
+              email, the name of your charity if you add it, and whatever you
+              write in the message. That's all — there are no other fields.
+            </p>
+            <p>
+              <strong>When you visit any page:</strong> basic, aggregate
+              analytics — which pages were viewed, an approximate location
+              (country and region, worked out from your IP address), the kind
+              of device and browser you're on, and which links and buttons get
+              clicked. We don't attach your name or email to any of this.
+            </p>
+            <p>
+              We don't run advertising trackers, we don't sell anything to
+              anyone, and we don't build profiles of you.
+            </p>
+          </section>
+
+          <section>
+            <h2>Why we collect it</h2>
+            <ul>
+              <li>
+                The contact form is so we can write back and talk about the
+                mahi. Nothing else is done with it.
+              </li>
+              <li>
+                The analytics are so we can see which parts of the site are
+                useful and where people get stuck, and make it better. We look
+                at the totals, not at individuals.
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Who else can see it</h2>
+            <p>Two third-party services help run this site:</p>
+            <ul>
+              <li>
+                <strong>Web3Forms</strong> receives your contact-form message
+                and passes it on to our inbox. It's a form-handling service
+                operated outside Aotearoa. See
+                <a
+                  href="https://web3forms.com/privacy-policy"
+                  target="_blank"
+                  rel="noopener noreferrer">their privacy policy</a
+                >.
+              </li>
+              <li>
+                <strong>PostHog</strong> is the analytics tool that processes
+                the site-usage data described above. See
+                <a
+                  href="https://posthog.com/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer">their privacy policy</a
+                >.
+              </li>
+            </ul>
+            <p>
+              Messages from the form land in our own email inbox. Like any web
+              server, our host keeps short-lived access logs (including IP
+              addresses) for security and reliability. We don't share your
+              information with anyone beyond what's described here, and we
+              never sell it.
+            </p>
+          </section>
+
+          <section>
+            <h2>Cookies and browser storage</h2>
+            <p>
+              PostHog sets cookies so repeat visits can be grouped into
+              sessions. There are no advertising cookies. The only other thing
+              we store is your light or dark theme choice, kept in your
+              browser's local storage — it never leaves your device.
+            </p>
+          </section>
+
+          <section>
+            <h2>How long we keep it</h2>
+            <p>
+              We keep contact-form correspondence for as long as we're in
+              touch, and a reasonable period after, in case you come back to
+              us. Ask and we'll delete yours. Analytics are retained in
+              aggregate under PostHog's own retention settings.
+            </p>
+          </section>
+
+          <section>
+            <h2>Your rights</h2>
+            <p>
+              Under the Privacy Act 2020 you can ask to see the personal
+              information we hold about you and ask us to correct it. Email us
+              and we'll sort it — no charge, no forms to fill in.
+            </p>
+            <p>
+              If you're not happy with how we've handled your information, you
+              can raise it with the
+              <a
+                href="https://www.privacy.org.nz"
+                target="_blank"
+                rel="noopener noreferrer">Office of the Privacy Commissioner</a
+              >.
+            </p>
+          </section>
+
+          <section>
+            <h2>Changes</h2>
+            <p>
+              If this policy changes we'll update this page and the date at
+              the top. We won't make material changes quietly.
+            </p>
+          </section>
+
+          <section>
+            <h2>Contact</h2>
+            <p>
+              Questions about any of this — or a request about your
+              information — go to
+              <a href="mailto:kiaora@awhinatech.nz">kiaora@awhinatech.nz</a>
+              or 021 209 5657.
+            </p>
+            <p class="signoff">
+              Āwhina Tech<br />
+              <span>Te Whanganui-a-Tara · Aotearoa</span>
+            </p>
+          </section>
+        </div>
+      </FadeUp>
+    </div>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .legal {
+    background: var(--surface);
+  }
+
+  .inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 96px var(--pad-x) 88px;
+  }
+
+  .head {
+    max-width: 720px;
+    margin-bottom: 48px;
+  }
+
+  .title {
+    font-size: clamp(32px, 4.2vw, 50px);
+    line-height: 1.08;
+    letter-spacing: -0.028em;
+    font-weight: 500;
+    margin: 12px 0 0;
+    text-wrap: balance;
+  }
+
+  .updated {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin: 18px 0 0;
+  }
+
+  .prose {
+    max-width: 680px;
+  }
+
+  .lede {
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--ink);
+    margin: 0 0 8px;
+  }
+
+  .prose section {
+    margin-top: 36px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+  }
+
+  .prose h2 {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    color: var(--ink);
+    margin: 0 0 14px;
+  }
+
+  .prose p {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink-2);
+    margin: 0 0 14px;
+  }
+
+  .prose p:last-child {
+    margin-bottom: 0;
+  }
+
+  .prose strong {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .prose ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+
+  .prose li {
+    position: relative;
+    padding-left: 22px;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink-2);
+  }
+
+  .prose li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 11px;
+    height: 1px;
+    background: var(--pounamu);
+  }
+
+  .prose a {
+    color: var(--pounamu);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition: opacity 160ms ease;
+  }
+
+  .prose a:hover {
+    opacity: 0.72;
+  }
+
+  .prose a:focus-visible {
+    outline: 2px solid var(--pounamu);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .signoff {
+    border-left: 2px solid var(--pounamu);
+    padding-left: 14px;
+    font-size: 15px;
+    color: var(--ink);
+  }
+
+  .signoff span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+
+  @media (max-width: 720px) {
+    .inner {
+      padding: 64px var(--pad-x) 64px;
+    }
+    .head {
+      margin-bottom: 36px;
+    }
+  }
+</style>
