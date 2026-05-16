@@ -149,7 +149,20 @@ import FadeUp from "./FadeUp.astro";
       <div class="foot-meta">
         Aotearoa New Zealand · Mahi tahi tātou — let's work together
       </div>
-      <div class="foot-copy">© {new Date().getFullYear()} Āwhina Tech</div>
+      <div class="foot-right">
+        <a
+          class="foot-status"
+          href="https://awhina.instatus.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Service status
+        </a>
+        <div class="foot-copy">© {new Date().getFullYear()} Āwhina Tech</div>
+      </div>
     </div>
   </footer>
 </section>
@@ -651,6 +664,44 @@ import FadeUp from "./FadeUp.astro";
   .foot-copy {
     font-size: 12px;
     color: var(--muted);
+  }
+
+  /* Right-side footer group: status link + copyright. Keeps the
+     footer-inner grid at three children (auto 1fr auto). */
+  .foot-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .foot-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 160ms ease;
+  }
+
+  .foot-status svg {
+    color: var(--muted);
+    transition: color 160ms ease;
+  }
+
+  .foot-status:hover {
+    color: var(--pounamu);
+  }
+
+  .foot-status:hover svg {
+    color: var(--pounamu);
+  }
+
+  .foot-status:focus-visible {
+    outline: 2px solid var(--pounamu);
+    outline-offset: 3px;
+    border-radius: 3px;
   }
 
   @media (max-width: 1024px) {
