@@ -346,15 +346,14 @@ import { CASES } from "../data/cases";
     background: transparent;
   }
 
+  /* No visible bar — just a full-height anchor that carries the grip on the
+     seam, so the two screenshots meet edge-to-edge. */
   .compare-divider {
     position: absolute;
     top: 0;
     bottom: 0;
     left: var(--pos);
-    width: 2px;
-    margin-left: -1px;
-    background: var(--compare-handle);
-    box-shadow: var(--compare-shadow);
+    width: 0;
     pointer-events: none;
   }
 
