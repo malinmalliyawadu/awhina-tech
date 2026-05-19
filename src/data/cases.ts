@@ -8,7 +8,11 @@ export interface CaseStudy {
   scheme: CharityScheme;
   image: string;
   imageAlt: string;
-  /** Optional "before" screenshot — renders the hero as a before/after slider. */
+  /**
+   * The system this build replaced. When present, the case-study image
+   * becomes a draggable before/after slider. Leave unset for charities
+   * with no documented "before" — never fabricate one.
+   */
   beforeImage?: string;
   beforeImageAlt?: string;
   phoneImage?: string;
@@ -51,6 +55,9 @@ export const CASES: CaseStudy[] = [
     image: "screenshots/fair-food.png",
     imageAlt:
       "Fair Food volunteer site — 'Help turn leftovers into lifelines for whānau', with open shifts and team sign-up",
+    beforeImage: "screenshots/fair-food-before.png",
+    beforeImageAlt:
+      "Fair Food's volunteer signup running on SignUpGenius — a generic third-party form on a stock template, wrapped in ads and upsells",
   },
   {
     name: "Compassion Soup Kitchen",
@@ -62,5 +69,8 @@ export const CASES: CaseStudy[] = [
     image: "screenshots/compassion.png",
     imageAlt:
       "Compassion Soup Kitchen volunteer site, 'Every meal is an act of aroha'",
+    beforeImage: "screenshots/compassion-before.png",
+    beforeImageAlt:
+      "Compassion's old volunteer signup — a long generic web form asking for title, four address lines and more before you can help",
   },
 ];
