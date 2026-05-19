@@ -8,6 +8,9 @@ export interface CaseStudy {
   scheme: CharityScheme;
   image: string;
   imageAlt: string;
+  /** Optional "before" screenshot — renders the hero as a before/after slider. */
+  beforeImage?: string;
+  beforeImageAlt?: string;
   phoneImage?: string;
   phoneImageAlt?: string;
 }
@@ -27,6 +30,9 @@ export const CASES: CaseStudy[] = [
     image: "screenshots/everybody-eats-hero.png",
     imageAlt:
       "Everybody Eats volunteer dashboard — shifts completed, hours contributed, and suggested volunteers",
+    beforeImage: "screenshots/everybody-eats-before.png",
+    beforeImageAlt:
+      "The volunteer site Everybody Eats had before the rebuild — a plain events list with little of their own identity",
     phoneImage: "screenshots/everybody-eats-app.png",
     phoneImageAlt:
       "Everybody Eats volunteer app — open shifts and 'What's happening' feed",

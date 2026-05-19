@@ -58,9 +58,57 @@ import { CASES } from "../data/cases";
                   </a>
                 </div>
                 <div class="image">
-                  <div class:list={["image-frame", c.phoneImage && "has-phone"]}>
-                    <Screenshot src={c.image} alt={c.imageAlt} />
-                    {c.phoneImage && (
+                  <div
+                    class:list={[
+                      "image-frame",
+                      c.phoneImage && !c.beforeImage && "has-phone",
+                      c.beforeImage && "compare",
+                    ]}
+                  >
+                    {c.beforeImage ? (
+                      <div class="compare-stack">
+                        <div class="compare-layer">
+                          <Screenshot src={c.image} alt={c.imageAlt} />
+                          {c.phoneImage && (
+                            <div class="phone-overlay" aria-hidden="false">
+                              <div class="phone-frame">
+                                <Screenshot
+                                  src={c.phoneImage}
+                                  alt={c.phoneImageAlt ?? ""}
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        <div class="compare-layer compare-before">
+                          <Screenshot
+                            src={c.beforeImage}
+                            alt={c.beforeImageAlt ?? ""}
+                          />
+                        </div>
+                        <input
+                          class="compare-range"
+                          type="range"
+                          min="0"
+                          max="100"
+                          value="10"
+                          autocomplete="off"
+                          aria-label={`Drag to compare ${c.name}'s old volunteer site with the rebuilt one`}
+                        />
+                        <div class="compare-divider" aria-hidden="true">
+                          <span class="compare-grip">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                              <path d="M9 6l-5 6 5 6M15 6l5 6-5 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </span>
+                        </div>
+                        <span class="compare-label compare-label-before" aria-hidden="true">Before</span>
+                        <span class="compare-label compare-label-after" aria-hidden="true">After</span>
+                      </div>
+                    ) : (
+                      <Screenshot src={c.image} alt={c.imageAlt} />
+                    )}
+                    {c.phoneImage && !c.beforeImage && (
                       <div class="phone-overlay" aria-hidden="false">
                         <div class="phone-frame">
                           <Screenshot
@@ -249,6 +297,121 @@ import { CASES } from "../data/cases";
     position: relative;
   }
 
+  /* Before/after comparison ---------------------------------------- */
+  .compare-stack {
+    position: absolute;
+    inset: 0;
+    --pos: 50%;
+  }
+
+  .compare-layer {
+    position: absolute;
+    inset: 0;
+  }
+
+  .compare-layer :global(.screenshot) {
+    object-fit: cover;
+  }
+
+  /* Old site sits on top, revealed left of the handle */
+  .compare-before {
+    clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+  }
+
+  /* The real control: a native range input spanning the frame. Invisible,
+     but it gives us keyboard, screen-reader and drag support for free. */
+  .compare-range {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: ew-resize;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+  }
+  .compare-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 44px;
+    height: 100%;
+  }
+  .compare-range::-moz-range-thumb {
+    width: 44px;
+    height: 100%;
+    border: 0;
+    background: transparent;
+  }
+
+  .compare-divider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--pos);
+    width: 2px;
+    margin-left: -1px;
+    background: var(--compare-handle);
+    box-shadow: var(--compare-shadow);
+    pointer-events: none;
+  }
+
+  .compare-grip {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--compare-handle);
+    color: var(--compare-handle-ink);
+    box-shadow: var(--compare-shadow);
+    transition: transform 160ms ease;
+  }
+
+  .compare-range:hover ~ .compare-divider .compare-grip {
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+
+  .compare-range:focus-visible ~ .compare-divider .compare-grip {
+    outline: 2px solid var(--pounamu);
+    outline-offset: 3px;
+  }
+
+  .compare-label {
+    position: absolute;
+    top: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: var(--compare-label-bg);
+    color: var(--compare-label-ink);
+    backdrop-filter: blur(2px);
+    pointer-events: none;
+  }
+  .compare-label-before {
+    left: 12px;
+  }
+  .compare-label-after {
+    right: 12px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .compare-grip,
+    .compare-range:hover ~ .compare-divider .compare-grip {
+      transition: none;
+      transform: translate(-50%, -50%);
+    }
+  }
+
   /* iPhone silhouette overlay — bottom-right of the web frame */
   .phone-overlay {
     position: absolute;
@@ -341,4 +504,16 @@ import { CASES } from "../data/cases";
       });
     });
   });
+
+  // Before/after slider: mirror the native range value onto the --pos var
+  // that clips the "before" layer and positions the handle.
+  document
+    .querySelectorAll<HTMLInputElement>(".compare-range")
+    .forEach((range) => {
+      const stack = range.closest<HTMLElement>(".compare-stack");
+      if (!stack) return;
+      const sync = () => stack.style.setProperty("--pos", `${range.value}%`);
+      sync();
+      range.addEventListener("input", sync);
+    });
 </script>
