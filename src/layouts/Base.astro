@@ -5,11 +5,14 @@ import PostHog from "../components/posthog.astro";
 interface Props {
   title?: string;
   description?: string;
+  /** Unlisted pages (e.g. client hubs) set this to stay out of search. */
+  noindex?: boolean;
 }
 
 const {
   title = "Āwhina Tech — Custom websites & apps for Aotearoa's charities",
   description = "We build custom websites and apps for Aotearoa's charities. $200 NZD a month, all-in. Hosting and ongoing support included.",
+  noindex = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
@@ -99,6 +102,7 @@ const orgJsonLd = {
     </script>
 
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta
       name="theme-color"
       content="#ffffff"
