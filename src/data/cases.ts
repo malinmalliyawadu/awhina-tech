@@ -37,8 +37,8 @@ export const CASES: CaseStudy[] = [
     blurb:
       "A volunteer site and shift booking system for the crew who sort, cook, and share rescued kai in Avondale every day — browse open shifts solo, or sign up a whole team at once.",
     metrics: [
+      { v: "300+", l: "volunteers" },
       { v: "2,400 kg", l: "rescued kai a day" },
-      { v: "Solo + team", l: "shift sign-ups" },
       { v: "Est. 2011", l: "feeding Avondale" },
     ],
     scheme: "forest",
@@ -50,12 +50,8 @@ export const CASES: CaseStudy[] = [
     name: "Compassion Soup Kitchen",
     kicker: "Hot meals in Te Whanganui-a-Tara",
     blurb:
-      "A volunteer signup system, mobile-first menu board, and a quiet donation page that respects the dignity of the people who walk through the door.",
-    metrics: [
-      { v: "112", l: "active volunteers" },
-      { v: "2 min", l: "to sign up for a shift" },
-      { v: "92%", l: "shifts filled in advance" },
-    ],
+      "A volunteer signup system and a mobile-first menu board, built with care for the dignity of the people who walk through the door.",
+    metrics: [],
     scheme: "sea",
     image: "screenshots/compassion.png",
     imageAlt:

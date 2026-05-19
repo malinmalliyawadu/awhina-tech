@@ -37,14 +37,16 @@ import { CASES } from "../data/cases";
                   </div>
                   <h3 class="name">{c.name}</h3>
                   <p class="blurb">{c.blurb}</p>
-                  <div class="metrics">
-                    {c.metrics.map((m) => (
-                      <div class="metric">
-                        <div class="metric-v">{m.v}</div>
-                        <div class="metric-l">{m.l}</div>
-                      </div>
-                    ))}
-                  </div>
+                  {c.metrics.length > 0 && (
+                    <div class="metrics">
+                      {c.metrics.map((m) => (
+                        <div class="metric">
+                          <div class="metric-v">{m.v}</div>
+                          <div class="metric-l">{m.l}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   <a
                     class="case-link"
                     href="#contact"
