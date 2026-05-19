@@ -1,6 +1,7 @@
 ---
 import FadeUp from "./FadeUp.astro";
 import Screenshot from "./Screenshot.astro";
+import CompareSlider from "./CompareSlider.astro";
 import { CASES } from "../data/cases";
 ---
 
@@ -58,8 +59,21 @@ import { CASES } from "../data/cases";
                   </a>
                 </div>
                 <div class="image">
-                  <div class:list={["image-frame", c.phoneImage && "has-phone"]}>
-                    <Screenshot src={c.image} alt={c.imageAlt} />
+                  <div
+                    class:list={["image-frame", c.phoneImage && "has-phone"]}
+                  >
+                    {c.beforeImage ? (
+                      <CompareSlider
+                        before={c.beforeImage}
+                        beforeAlt={c.beforeImageAlt ?? ""}
+                        after={c.image}
+                        afterAlt={c.imageAlt}
+                        beforeLabel={c.beforeLabel}
+                        afterLabel={c.afterLabel}
+                      />
+                    ) : (
+                      <Screenshot src={c.image} alt={c.imageAlt} />
+                    )}
                     {c.phoneImage && (
                       <div class="phone-overlay" aria-hidden="false">
                         <div class="phone-frame">
