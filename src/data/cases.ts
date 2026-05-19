@@ -8,17 +8,15 @@ export interface CaseStudy {
   scheme: CharityScheme;
   image: string;
   imageAlt: string;
-  phoneImage?: string;
-  phoneImageAlt?: string;
   /**
    * The system this build replaced. When present, the case-study image
-   * becomes a draggable before/after comparison. Leave unset for charities
+   * becomes a draggable before/after slider. Leave unset for charities
    * with no documented "before" — never fabricate one.
    */
   beforeImage?: string;
   beforeImageAlt?: string;
-  beforeLabel?: string;
-  afterLabel?: string;
+  phoneImage?: string;
+  phoneImageAlt?: string;
 }
 
 export const CASES: CaseStudy[] = [
@@ -36,6 +34,9 @@ export const CASES: CaseStudy[] = [
     image: "screenshots/everybody-eats-hero.png",
     imageAlt:
       "Everybody Eats volunteer dashboard — shifts completed, hours contributed, and suggested volunteers",
+    beforeImage: "screenshots/everybody-eats-before.png",
+    beforeImageAlt:
+      "The volunteer site Everybody Eats had before the rebuild — a plain events list with little of their own identity",
     phoneImage: "screenshots/everybody-eats-app.png",
     phoneImageAlt:
       "Everybody Eats volunteer app — open shifts and 'What's happening' feed",
@@ -57,8 +58,6 @@ export const CASES: CaseStudy[] = [
     beforeImage: "screenshots/fair-food-before.png",
     beforeImageAlt:
       "Fair Food's volunteer signup running on SignUpGenius — a generic third-party form on a stock template, wrapped in ads and upsells",
-    beforeLabel: "Their old system",
-    afterLabel: "What we built",
   },
   {
     name: "Compassion Soup Kitchen",
@@ -73,7 +72,5 @@ export const CASES: CaseStudy[] = [
     beforeImage: "screenshots/compassion-before.png",
     beforeImageAlt:
       "Compassion's old volunteer signup — a long generic web form asking for title, four address lines and more before you can help",
-    beforeLabel: "Their old system",
-    afterLabel: "What we built",
   },
 ];

@@ -29,6 +29,17 @@
   --chrome-bg: #f6f5ef;
   --chrome-dot: #d6d4cc;
 
+  /*
+   * Before/after comparison control. Theme-invariant on purpose — it floats
+   * over screenshot imagery (not a themed surface), so it must read the same
+   * in light and dark. Defined only here; not repeated in the dark blocks.
+   */
+  --compare-handle: #ffffff;
+  --compare-handle-ink: #0e1413;
+  --compare-label-bg: rgba(14, 20, 19, 0.66);
+  --compare-label-ink: #ffffff;
+  --compare-shadow: 0 0 0 1px rgba(14, 20, 19, 0.14), 0 4px 14px rgba(14, 20, 19, 0.32);
+
   /* Section / card wash gradients (full value tokens, theme-swapped) */
   --wash: linear-gradient(180deg, #f4f7f1 0%, #f9faf5 100%);
   --tint-warm: linear-gradient(180deg, #fbf6ee 0%, #fdfaf3 100%);
