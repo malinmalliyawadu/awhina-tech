@@ -313,10 +313,19 @@ import { CASES } from "../data/cases";
   .compare-layer {
     position: absolute;
     inset: 0;
+    /* The stack owns all pointer interaction; let events pass through the
+       layer (and its images) so a drag starting on the image still moves
+       the divider instead of triggering the browser's native image-drag. */
+    pointer-events: none;
   }
 
   .compare-layer :global(.screenshot) {
     object-fit: cover;
+    /* Disable the browser's native image drag (the "ghost" preview that
+       otherwise hijacks the gesture and breaks the slider). */
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
   /* Old site sits on top, revealed left of the handle */
@@ -538,6 +547,11 @@ import { CASES } from "../data/cases";
       };
 
       let activePointer: number | null = null;
+
+      // Belt-and-braces: if a nested image still surfaces a dragstart
+      // (some browsers fire it before pointerdown captures), kill it so
+      // the native image-drag ghost can't hijack the gesture.
+      stack.addEventListener("dragstart", (e) => e.preventDefault());
 
       stack.addEventListener("pointerdown", (e) => {
         activePointer = e.pointerId;
