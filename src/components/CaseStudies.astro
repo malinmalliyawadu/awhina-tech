@@ -302,6 +302,12 @@ import { CASES } from "../data/cases";
     position: absolute;
     inset: 0;
     --pos: 50%;
+    cursor: ew-resize;
+    /* Let the page still scroll vertically when the gesture starts on the
+       slider, but claim horizontal drags so we can move the divider. */
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
   .compare-layer {
@@ -318,8 +324,9 @@ import { CASES } from "../data/cases";
     clip-path: inset(0 calc(100% - var(--pos)) 0 0);
   }
 
-  /* The real control: a native range input spanning the frame. Invisible,
-     but it gives us keyboard, screen-reader and drag support for free. */
+  /* A native range input spans the frame for keyboard + screen-reader
+     support. Pointer/touch dragging is handled in JS on .compare-stack
+     because styled range inputs drag unreliably on iOS Safari. */
   .compare-range {
     position: absolute;
     inset: 0;
@@ -328,7 +335,7 @@ import { CASES } from "../data/cases";
     margin: 0;
     padding: 0;
     opacity: 0;
-    cursor: ew-resize;
+    pointer-events: none;
     -webkit-appearance: none;
     appearance: none;
     background: transparent;
@@ -373,7 +380,7 @@ import { CASES } from "../data/cases";
     transition: transform 160ms ease;
   }
 
-  .compare-range:hover ~ .compare-divider .compare-grip {
+  .compare-stack:hover .compare-grip {
     transform: translate(-50%, -50%) scale(1.06);
   }
 
@@ -405,7 +412,7 @@ import { CASES } from "../data/cases";
 
   @media (prefers-reduced-motion: reduce) {
     .compare-grip,
-    .compare-range:hover ~ .compare-divider .compare-grip {
+    .compare-stack:hover .compare-grip {
       transition: none;
       transform: translate(-50%, -50%);
     }
@@ -505,14 +512,56 @@ import { CASES } from "../data/cases";
   });
 
   // Before/after slider: mirror the native range value onto the --pos var
-  // that clips the "before" layer and positions the handle.
+  // that clips the "before" layer and positions the handle. The range stays
+  // for keyboard + screen-reader support; pointer/touch drags are handled
+  // here because styled range inputs drag unreliably on iOS Safari.
   document
-    .querySelectorAll<HTMLInputElement>(".compare-range")
-    .forEach((range) => {
-      const stack = range.closest<HTMLElement>(".compare-stack");
-      if (!stack) return;
-      const sync = () => stack.style.setProperty("--pos", `${range.value}%`);
+    .querySelectorAll<HTMLElement>(".compare-stack")
+    .forEach((stack) => {
+      const range = stack.querySelector<HTMLInputElement>(".compare-range");
+      if (!range) return;
+
+      const sync = () =>
+        stack.style.setProperty("--pos", `${range.value}%`);
       sync();
       range.addEventListener("input", sync);
+
+      const setFromPointer = (clientX: number) => {
+        const rect = stack.getBoundingClientRect();
+        if (rect.width === 0) return;
+        const pct = Math.max(
+          0,
+          Math.min(100, ((clientX - rect.left) / rect.width) * 100),
+        );
+        range.value = String(pct);
+        sync();
+      };
+
+      let activePointer: number | null = null;
+
+      stack.addEventListener("pointerdown", (e) => {
+        activePointer = e.pointerId;
+        stack.setPointerCapture(e.pointerId);
+        // On mouse, click-to-jump matches range-input convention. On touch,
+        // wait for a deliberate horizontal drag so a stray tap (or the start
+        // of a vertical scroll) doesn't yank the divider.
+        if (e.pointerType === "mouse") setFromPointer(e.clientX);
+        range.focus({ preventScroll: true });
+      });
+
+      stack.addEventListener("pointermove", (e) => {
+        if (e.pointerId !== activePointer) return;
+        setFromPointer(e.clientX);
+      });
+
+      const stop = (e: PointerEvent) => {
+        if (e.pointerId !== activePointer) return;
+        activePointer = null;
+        if (stack.hasPointerCapture(e.pointerId)) {
+          stack.releasePointerCapture(e.pointerId);
+        }
+      };
+      stack.addEventListener("pointerup", stop);
+      stack.addEventListener("pointercancel", stop);
     });
 </script>
