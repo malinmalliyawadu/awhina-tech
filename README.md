@@ -14,13 +14,13 @@ The marketing site for [awhinatech.nz](https://awhinatech.nz). Static, fast, int
 ## 🌱 Local development
 
 ```bash
-npm install
-npm run dev      # http://localhost:4321
-npm run build    # → ./dist
-npm run preview  # serve the built site
+pnpm install
+pnpm run dev      # http://localhost:4321
+pnpm run build    # → ./dist
+pnpm run preview  # serve the built site
 ```
 
-Requires Node 22+.
+Requires Node 22+ and pnpm (the repo pins a version via `packageManager` — `corepack enable` once and pnpm will match it automatically).
 
 ## 📁 Project layout
 

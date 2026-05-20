@@ -10,7 +10,7 @@ const eeAuth = path.resolve(__dirname, ".auth/everybody-eats.json");
 const targets = [
   {
     // Authenticated volunteer dashboard. Needs a saved session — run
-    // `npm run screenshots:auth` once first (see scripts/auth-everybody-eats.mjs).
+    // `pnpm run screenshots:auth` once first (see scripts/auth-everybody-eats.mjs).
     name: "everybody-eats-hero",
     url: "https://volunteers.everybodyeats.nz/dashboard",
     storageState: eeAuth,
@@ -63,7 +63,7 @@ async function capture(
         process.cwd(),
         storageState
       )}.\n` +
-        `  Run \`npm run screenshots:auth\` once to sign in, then re-run.`
+        `  Run \`pnpm run screenshots:auth\` once to sign in, then re-run.`
     );
   }
 
@@ -92,7 +92,7 @@ async function capture(
       await context.close();
       throw new Error(
         `${name}: signed-out or expired session (never saw ${waitForText}).\n` +
-          `  Re-run \`npm run screenshots:auth\` to refresh the session, then retry.`
+          `  Re-run \`pnpm run screenshots:auth\` to refresh the session, then retry.`
       );
     }
   }

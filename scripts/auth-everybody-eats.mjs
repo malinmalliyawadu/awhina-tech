@@ -5,7 +5,7 @@
 // sign in by hand, then save the authenticated session. capture-screenshots.mjs
 // reuses that saved session to grab the dashboard with no browser chrome.
 //
-//   npm run screenshots:auth   ← run this once (re-run when the session expires)
+//   pnpm run screenshots:auth   ← run this once (re-run when the session expires)
 //
 // Sign in with a presentable DEMO account, not your personal one — the
 // dashboard shows the logged-in name ("Kia ora, …") in the captured shot.
@@ -53,6 +53,6 @@ try {
 await mkdir(authDir, { recursive: true });
 await context.storageState({ path: statePath });
 console.log(`\n✓ Session saved to ${path.relative(process.cwd(), statePath)}`);
-console.log("  Now run: npm run screenshots\n");
+console.log("  Now run: pnpm run screenshots\n");
 
 await browser.close();

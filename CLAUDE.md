@@ -38,10 +38,13 @@ This site's design language is hand-tuned and brittle; these skills are not opti
 ## Common commands
 
 ```bash
-npm run dev      # astro dev — http://localhost:4321
-npm run build    # astro build — outputs to ./dist
-npm run preview  # serve ./dist locally
+pnpm install     # uses corepack to match the pinned version
+pnpm run dev     # astro dev — http://localhost:4321
+pnpm run build   # astro build — outputs to ./dist
+pnpm run preview # serve ./dist locally
 ```
+
+The package manager is pnpm; `packageManager` is pinned in `package.json` and the lockfile is `pnpm-lock.yaml`. Don't commit a `package-lock.json` or `yarn.lock`.
 
 There are no tests, no linter config, and no typecheck script. `astro build` is the de facto check — if it builds, it ships.
 
