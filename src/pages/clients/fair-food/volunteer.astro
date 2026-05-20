@@ -1,0 +1,1713 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Masthead from "../../../components/Masthead.astro";
+import Footer from "../../../components/Footer.astro";
+import FadeUp from "../../../components/FadeUp.astro";
+import { clients, type Block } from "../../../data/clients";
+
+const client = clients["fair-food"];
+const project = client.projects["volunteer"];
+const title = `${project.name} — Āwhina Tech`;
+const description = `The ${project.name} project hub: links to the live site, how it works, and the technical detail underneath.`;
+
+// Lucide-style outline icon paths (24×24, currentColor, no fill). Keys are
+// referenced from src/data/clients.ts and the table of contents below.
+const ICONS: Record<string, string> = {
+  compass: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M15.5 8.5l-2.5 5.5-5.5 2.5 2.5-5.5 5.5-2.5z",
+  book: "M19 3H7a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h12z M19 3v18 M7 21h12",
+  settings:
+    "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M19.4 13a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V13z",
+  lifebuoy:
+    "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M5.6 5.6l3.2 3.2 M15.2 15.2l3.2 3.2 M15.2 8.8l3.2-3.2 M8.8 15.2l-3.2 3.2",
+  globe:
+    "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M3.6 9h16.8 M3.6 15h16.8 M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18z",
+  activity: "M22 12h-4l-3 9L9 3l-3 9H2",
+  lock: "M5 11h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z M8 11V7a4 4 0 0 1 8 0v4",
+  calendar:
+    "M8 2v4 M16 2v4 M3 10h18 M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z",
+  check: "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z M8 12l3 3 5-6",
+  file: "M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z M14 3v5h5 M9 13h6 M9 17h6",
+  mail: "M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z M3 7l9 6 9-6",
+  users:
+    "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75",
+  code: "M9 18l-6-6 6-6 M15 6l6 6-6 6",
+  server:
+    "M5 4h14a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z M5 14h14a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1z M7.5 7h.01 M7.5 17h.01",
+  database:
+    "M12 3c4.97 0 9 1.34 9 3s-4.03 3-9 3-9-1.34-9-3 4.03-3 9-3z M3 6v6c0 1.66 4.03 3 9 3s9-1.34 9-3V6 M3 12v6c0 1.66 4.03 3 9 3s9-1.34 9-3v-6",
+  box: "M21 8.5l-9-5-9 5v7l9 5 9-5z M3.3 7.5l8.7 5 8.7-5 M12 21.5v-9",
+  layers: "M12 3l9 5-9 5-9-5 9-5z M3 13l9 5 9-5",
+  shield: "M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z M9 12l2 2 4-4",
+  upload: "M12 16V4 M7 9l5-5 5 5 M5 20h14",
+  sliders:
+    "M4 21v-7 M4 10V3 M12 21v-9 M12 8V3 M20 21v-5 M20 12V3 M2 14h4 M10 8h4 M18 16h4",
+  terminal:
+    "M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z M7 9l3 3-3 3 M13 15h4",
+  beaker: "M9 3h6 M10 3v6l-5 8.5A1 1 0 0 0 5.9 19h12.2a1 1 0 0 0 .9-1.5L14 9V3",
+  save: "M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z M17 21v-8H7v8 M7 3v4h7",
+  git: "M6 3v12 M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M15 6a9 9 0 0 1-9 9",
+  share:
+    "M18 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M6 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M8.6 13.5l6.8 4 M15.4 6.5l-6.8 4",
+  palette:
+    "M12 21a9 9 0 0 1 0-18c4.97 0 9 3.58 9 8 0 2.5-2 4-4 4h-1.6a1.5 1.5 0 0 0-1.2 2.4 1.5 1.5 0 0 1-1.2 2.4z M7.5 11.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z M12 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z M16.5 11.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z",
+  scan: "M3 7V5a2 2 0 0 1 2-2h2 M17 3h2a2 2 0 0 1 2 2v2 M21 17v2a2 2 0 0 1-2 2h-2 M7 21H5a2 2 0 0 1-2-2v-2 M7 12h10",
+};
+
+// One source of truth for section ids: anchor targets on the rendered
+// sections, and hrefs in the "On this page" table of contents.
+const slugify = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+const steps = project.howItWorks.map((s) => ({ ...s, id: slugify(s.title) }));
+const tech = project.technical.map((s) => ({ ...s, id: slugify(s.title) }));
+
+const toc = [
+  { id: "quick-links", label: "Quick links", icon: "compass" },
+  { id: "how-it-works", label: "How it works", icon: "book" },
+  ...steps.map((s) => ({ id: s.id, label: s.title, icon: s.icon, sub: true })),
+  { id: "maintainers", label: "For maintainers", icon: "settings" },
+  { id: "where-things-live", label: "Where things live", icon: "server", sub: true },
+  { id: "architecture", label: "Architecture", icon: "share", sub: true },
+  { id: "tech-docs", label: "Tech & docs", icon: "book", sub: true },
+  { id: "technical-notes", label: "Technical notes", icon: "code", sub: true },
+  ...tech.map((s) => ({
+    id: s.id,
+    label: s.title,
+    icon: s.icon,
+    subsub: true,
+  })),
+  { id: "support", label: "Need a hand?", icon: "lifebuoy" },
+];
+
+// Split a paragraph on `backticks` → alternating text / inline-code segments.
+const segments = (s: string) => s.split("`");
+const isCode = (b: Block): b is { code: string[]; caption?: string } =>
+  typeof b !== "string";
+---
+
+<Base title={title} description={description}>
+  <Masthead />
+
+  <main class="hub">
+    <div class="inner">
+      <FadeUp>
+        <header class="head">
+          <span class="eyebrow">{client.name}</span>
+          <h1 class="title">{project.name}</h1>
+          <p class="lede">{project.intro}</p>
+          <div class="actions">
+            <a
+              class="btn btn-primary"
+              href={project.primary.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {project.primary.label}
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M7 17 17 7M9 7h8v8"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+              </svg>
+            </a>
+            <span class="primary-host mono">{project.primary.detail}</span>
+          </div>
+        </header>
+      </FadeUp>
+
+      <div class="layout">
+        <details class="toc" open>
+          <summary class="toc-summary">
+            <span>On this page</span>
+            <svg
+              class="toc-chevron"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="m6 9 6 6 6-6"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </svg>
+          </summary>
+          <nav class="toc-nav" aria-label="On this page">
+            <ul>
+              {
+                toc.map((t) => (
+                  <li
+                    class={
+                      t.subsub
+                        ? "toc-sub toc-subsub"
+                        : t.sub
+                          ? "toc-sub"
+                          : ""
+                    }
+                  >
+                    <a href={`#${t.id}`}>
+                      <svg
+                        class="ico"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d={ICONS[t.icon]}
+                          stroke="currentColor"
+                          stroke-width="1.7"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                      <span>{t.label}</span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+        </details>
+
+        <div class="content">
+          <FadeUp delay={70}>
+            <section id="quick-links" class="block" aria-labelledby="links-h">
+              <h2 id="links-h" class="block-title">Quick links</h2>
+              <div class="cards">
+                {
+                  project.services.map((s) => (
+                    <a
+                      class="card"
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span class="card-top">
+                        <span class="card-head">
+                          <span class="card-ico" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                              <path
+                                d={ICONS[s.icon]}
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </span>
+                          <span class="card-label">{s.label}</span>
+                        </span>
+                        <svg
+                          class="card-arrow"
+                          width="15"
+                          height="15"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M7 17 17 7M9 7h8v8"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      <span class="card-detail">{s.detail}</span>
+                    </a>
+                  ))
+                }
+              </div>
+            </section>
+          </FadeUp>
+
+          <FadeUp delay={90}>
+            <section id="how-it-works" class="block" aria-labelledby="how-h">
+              <h2 id="how-h" class="block-title">How it works</h2>
+              <ol class="steps">
+                {
+                  steps.map((step, i) => (
+                    <li id={step.id} class="step">
+                      <div class="step-rail" aria-hidden="true">
+                        <span class="step-num mono">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span class="step-badge">
+                          <svg viewBox="0 0 24 24" fill="none">
+                            <path
+                              d={ICONS[step.icon]}
+                              stroke="currentColor"
+                              stroke-width="1.7"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </span>
+                      </div>
+                      <div class="step-body">
+                        <h3 class="step-title">{step.title}</h3>
+                        {step.body.map((p) =>
+                          typeof p === "string" ? <p>{p}</p> : null,
+                        )}
+                      </div>
+                    </li>
+                  ))
+                }
+              </ol>
+            </section>
+          </FadeUp>
+
+          <FadeUp delay={110}>
+            <section id="maintainers" class="tech" aria-labelledby="tech-h">
+              <span class="eyebrow">For maintainers</span>
+              <h2 id="tech-h" class="tech-title">Under the hood</h2>
+              <p class="tech-note">
+                The technical detail — for Āwhina and any developer picking
+                this up. The {client.name} team can skip this part.
+              </p>
+
+              <h3 id="where-things-live" class="sub">Where things live</h3>
+              <div class="cards cards-infra">
+                {
+                  project.infra.map((item) =>
+                    item.href ? (
+                      <a
+                        class="card"
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <span class="card-top">
+                          <span class="card-head">
+                            <span class="card-ico" aria-hidden="true">
+                              <svg viewBox="0 0 24 24" fill="none">
+                                <path
+                                  d={ICONS[item.icon]}
+                                  stroke="currentColor"
+                                  stroke-width="1.7"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </span>
+                            <span class="card-label">{item.label}</span>
+                          </span>
+                          <svg
+                            class="card-arrow"
+                            width="15"
+                            height="15"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M7 17 17 7M9 7h8v8"
+                              stroke="currentColor"
+                              stroke-width="1.8"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </span>
+                        <span class="card-detail">{item.detail}</span>
+                      </a>
+                    ) : (
+                      <div class="card card-static">
+                        <span class="card-top">
+                          <span class="card-head">
+                            <span class="card-ico" aria-hidden="true">
+                              <svg viewBox="0 0 24 24" fill="none">
+                                <path
+                                  d={ICONS[item.icon]}
+                                  stroke="currentColor"
+                                  stroke-width="1.7"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </span>
+                            <span class="card-label">{item.label}</span>
+                          </span>
+                        </span>
+                        <span class="card-detail">{item.detail}</span>
+                      </div>
+                    ),
+                  )
+                }
+              </div>
+
+              <h3 id="architecture" class="sub">Architecture</h3>
+              <div class="diagrams">
+                <figure class="arch">
+                  <div class="diagram-head">
+                    <span class="diagram-name">Infrastructure</span>
+                    <span class="diagram-tag mono">request flow</span>
+                  </div>
+
+                  <div class="arch-flow">
+                    <div class="anode">
+                      <span class="anode-ic" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d={ICONS.users} stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                      </span>
+                      <span class="anode-t">
+                        <span class="anode-k mono">Client</span>
+                        <b>Volunteers &amp; coordinators</b>
+                        <span class="anode-sub">Web browser</span>
+                      </span>
+                    </div>
+
+                    <div class="flow" aria-hidden="true"></div>
+
+                    <div class="anode">
+                      <span class="anode-ic" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d={ICONS.globe} stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                      </span>
+                      <span class="anode-t">
+                        <span class="anode-k mono">Edge · DNS</span>
+                        <b>volunteer.fairfood.org.nz</b>
+                        <span class="anode-sub">Crazy Domains · A record</span>
+                      </span>
+                    </div>
+
+                    <div class="flow" aria-hidden="true"></div>
+
+                    <div class="anode core">
+                      <span class="anode-ic" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d={ICONS.server} stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                      </span>
+                      <span class="anode-t">
+                        <span class="anode-k mono">Application host</span>
+                        <b>Coolify</b>
+                        <span class="anode-sub">Docker · Next.js 16 standalone</span>
+                      </span>
+                    </div>
+
+                    <div class="flow flow-fan" aria-hidden="true"></div>
+
+                    <div class="svc-group">
+                      <span class="svc-group-k mono">Backing services</span>
+                      <div class="svcs">
+                        <div class="svc">
+                          <span class="svc-ic" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                              <path d={ICONS.database} stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                          </span>
+                          <span class="svc-t"><b>PostgreSQL</b><span>Prisma 7</span></span>
+                        </div>
+                        <div class="svc">
+                          <span class="svc-ic" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                              <path d={ICONS.box} stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                          </span>
+                          <span class="svc-t"><b>Garage S3</b><span>Images + documents</span></span>
+                        </div>
+                        <div class="svc">
+                          <span class="svc-ic" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                              <path d={ICONS.mail} stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                          </span>
+                          <span class="svc-t"><b>Resend</b><span>Email</span></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <figcaption class="cap">
+                    Visitors reach <code class="ic">volunteer.fairfood.org.nz</code>
+                    (DNS at Crazy Domains, an A record to the Coolify host).
+                    Coolify runs the Next.js app in Docker, which talks to
+                    PostgreSQL, Garage S3 (programme images and Resources
+                    documents) and Resend for email.
+                  </figcaption>
+                </figure>
+
+                <figure class="pipe">
+                  <div class="diagram-head">
+                    <span class="diagram-name">Deploy pipeline</span>
+                    <span class="diagram-tag mono">pull request → live</span>
+                  </div>
+
+                  <ol class="stages">
+                    <li class="stage">
+                      <span class="stage-badge" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none"><path d={ICONS.git} stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                      </span>
+                      <span class="stage-label">
+                        <span class="stage-step mono">Step 1</span>
+                        <span class="stage-name">Open a pull request</span>
+                      </span>
+                    </li>
+                    <li class="stage">
+                      <span class="stage-badge" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none"><path d={ICONS.check} stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                      </span>
+                      <span class="stage-label">
+                        <span class="stage-step mono">Step 2</span>
+                        <span class="stage-name">PR checks — unit, e2e, Claude review</span>
+                      </span>
+                    </li>
+                    <li class="stage">
+                      <span class="stage-badge" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none"><path d={ICONS.box} stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                      </span>
+                      <span class="stage-label">
+                        <span class="stage-step mono">Step 3</span>
+                        <span class="stage-name">Merge to <code class="ic">main</code> → Coolify builds</span>
+                      </span>
+                    </li>
+                    <li class="stage">
+                      <span class="stage-badge" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none"><path d={ICONS.database} stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                      </span>
+                      <span class="stage-label">
+                        <span class="stage-step mono">Step 4</span>
+                        <span class="stage-name"><code class="ic">migrate deploy</code> on start</span>
+                      </span>
+                    </li>
+                    <li class="stage end">
+                      <span class="stage-badge" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none"><path d={ICONS.globe} stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                      </span>
+                      <span class="stage-label">
+                        <span class="stage-step mono">Live</span>
+                        <span class="stage-name">Serving traffic</span>
+                      </span>
+                    </li>
+                  </ol>
+
+                  <figcaption class="cap">
+                    Pull requests run the Vitest and Playwright suites plus an
+                    automated Claude Code review. Once merged to
+                    <code class="ic">main</code>, Coolify builds the Docker image
+                    and the container applies database migrations on startup
+                    before serving traffic.
+                  </figcaption>
+                </figure>
+              </div>
+
+              <h3 id="tech-docs" class="sub">Tech &amp; docs</h3>
+              <div class="refs">
+                {
+                  project.techRefs.map((r) => (
+                    <a
+                      class="ref"
+                      href={r.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span class="ref-head">
+                        <span class="ref-name">{r.name}</span>
+                        <svg
+                          class="ref-arrow"
+                          width="13"
+                          height="13"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M7 17 17 7M9 7h8v8"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      <span class="ref-note">{r.note}</span>
+                    </a>
+                  ))
+                }
+              </div>
+
+              <h3 id="technical-notes" class="sub">Technical notes</h3>
+              <div class="prose">
+                {
+                  tech.map((sec) => (
+                    <section id={sec.id}>
+                      <h4>
+                        <span class="h4-ico" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none">
+                            <path
+                              d={ICONS[sec.icon]}
+                              stroke="currentColor"
+                              stroke-width="1.7"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </span>
+                        {sec.title}
+                      </h4>
+                      {sec.body.map((b) =>
+                        isCode(b) ? (
+                          <figure class="snippet">
+                            {b.caption && (
+                              <figcaption class="snip-cap">
+                                {b.caption}
+                              </figcaption>
+                            )}
+                            <pre class="code"><code>{b.code.join("\n")}</code></pre>
+                          </figure>
+                        ) : (
+                          <p>
+                            {segments(b).map((seg, i) =>
+                              i % 2 === 1 ? (
+                                <code class="ic">{seg}</code>
+                              ) : (
+                                seg
+                              ),
+                            )}
+                          </p>
+                        ),
+                      )}
+                    </section>
+                  ))
+                }
+              </div>
+            </section>
+          </FadeUp>
+
+          <FadeUp delay={130}>
+            <section id="support" class="support" aria-labelledby="support-h">
+              <h2 id="support-h" class="block-title">
+                <span class="title-ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                      d={ICONS.lifebuoy}
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                Need a hand?
+              </h2>
+              <p class="support-copy">
+                Anything not working, or a change you'd like — get in touch and
+                we'll sort it.
+              </p>
+              <p class="signoff">
+                <a href={`mailto:${client.support.email}`}
+                  >{client.support.email}</a
+                >
+                · {client.support.phone}<br />
+                <span>{client.support.org} — {client.support.location}</span>
+              </p>
+            </section>
+          </FadeUp>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Base>
+
+<script>
+  // TOC progressive enhancement. Both jobs fail-safe — the anchors and the
+  // native <details> work with no JS at all:
+  //  1. Keep the rail expanded on desktop even if a narrow-screen visitor
+  //     collapsed it before resizing up (on desktop the summary is
+  //     pointer-events:none, so it can't be reopened by click).
+  //  2. Scrollspy: mark the section currently in view in the table of contents.
+  const toc = document.querySelector<HTMLDetailsElement>(".toc");
+  if (toc) {
+    const desktop = window.matchMedia("(min-width: 1025px)");
+    const syncOpen = () => {
+      if (desktop.matches) toc.open = true;
+    };
+    syncOpen();
+    desktop.addEventListener("change", syncOpen);
+  }
+
+  const targets = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>(".toc-nav a"),
+  )
+    .map((a) => {
+      const el = document.getElementById(a.hash.slice(1));
+      return el ? { a, el } : null;
+    })
+    .filter((t): t is { a: HTMLAnchorElement; el: HTMLElement } => t !== null);
+
+  if (targets.length) {
+    let current: HTMLAnchorElement | null = null;
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
+      let active = targets[0].a;
+      for (const { a, el } of targets) {
+        if (el.getBoundingClientRect().top - 120 <= 0) active = a;
+      }
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 4
+      ) {
+        active = targets[targets.length - 1].a;
+      }
+      if (active !== current) {
+        current?.removeAttribute("aria-current");
+        active.setAttribute("aria-current", "true");
+        current = active;
+      }
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+  }
+</script>
+
+<style>
+  .hub {
+    background: var(--surface);
+  }
+
+  .inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 96px var(--pad-x) 88px;
+  }
+
+  /* Header */
+  .head {
+    max-width: 760px;
+    margin-bottom: 56px;
+  }
+
+  .title {
+    font-size: clamp(34px, 4.6vw, 56px);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    font-weight: 500;
+    margin: 12px 0 0;
+    text-wrap: balance;
+  }
+
+  .lede {
+    font-size: 18px;
+    line-height: 1.62;
+    color: var(--ink-2);
+    margin: 18px 0 0;
+    max-width: 62ch;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+  }
+
+  .primary-host {
+    color: var(--muted);
+  }
+
+  /* Two-column shell: sticky table of contents + content */
+  .layout {
+    display: grid;
+    grid-template-columns: 218px minmax(0, 1fr);
+    gap: 56px;
+    align-items: start;
+  }
+
+  /* Table of contents — sticky rail on desktop */
+  .toc {
+    position: sticky;
+    top: 96px;
+  }
+
+  .toc-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 10px 14px;
+    border-bottom: 1px solid var(--line);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    list-style: none;
+    pointer-events: none;
+    cursor: default;
+  }
+
+  .toc-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .toc-chevron {
+    display: none;
+  }
+
+  .toc-nav {
+    padding: 12px 0 0;
+  }
+
+  .toc-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    font-size: 14px;
+    line-height: 1.3;
+    color: var(--ink-2);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    transition:
+      color 160ms ease,
+      background 160ms ease;
+  }
+
+  .toc-nav .ico {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    color: var(--muted);
+    transition: color 160ms ease;
+  }
+
+  .toc-nav a:hover {
+    color: var(--pounamu);
+    background: var(--surface-2);
+  }
+
+  .toc-nav a:hover .ico {
+    color: var(--pounamu);
+  }
+
+  .toc-nav a:focus-visible {
+    outline: 2px solid var(--pounamu);
+    outline-offset: -2px;
+  }
+
+  .toc-nav a[aria-current="true"] {
+    color: var(--pounamu);
+    font-weight: 600;
+    background: var(--pounamu-soft);
+  }
+
+  .toc-nav a[aria-current="true"] .ico {
+    color: var(--pounamu);
+  }
+
+  .toc-sub a {
+    padding-left: 18px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .toc-sub .ico {
+    width: 13px;
+    height: 13px;
+  }
+
+  .toc-subsub a {
+    padding-left: 30px;
+    font-size: 12.5px;
+  }
+
+  .toc-subsub .ico {
+    width: 12px;
+    height: 12px;
+  }
+
+  /* Anchor targets clear the sticky masthead */
+  .block,
+  .step,
+  .tech,
+  .sub,
+  .support,
+  .prose section {
+    scroll-margin-top: 96px;
+  }
+
+  /* Section scaffold */
+  .block {
+    margin-top: 72px;
+  }
+
+  .content > .fade-up:first-child .block {
+    margin-top: 0;
+  }
+
+  .block-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .title-ico {
+    display: inline-flex;
+    color: var(--pounamu);
+  }
+
+  .title-ico svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Card grid (links + infra facts) */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .cards-infra {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px 22px;
+    background: var(--elevated);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--ink);
+    transition:
+      border-color 180ms ease,
+      transform 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  a.card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
+  }
+
+  a.card:focus-visible {
+    outline: 2px solid var(--pounamu);
+    outline-offset: 2px;
+  }
+
+  .card-static {
+    background: var(--surface-2);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .card-ico {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: var(--radius-sm);
+    background: var(--pounamu-soft);
+    color: var(--pounamu);
+  }
+
+  .card-ico svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .card-label {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.012em;
+    color: var(--ink);
+  }
+
+  .card-arrow {
+    flex-shrink: 0;
+    color: var(--muted);
+    transition:
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  a.card:hover .card-arrow {
+    color: var(--pounamu);
+    transform: translate(2px, -2px);
+  }
+
+  .card-detail {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  /* How it works — numbered steps with an icon badge */
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 24px;
+    padding: 28px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .step:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .step-rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .step-num {
+    color: var(--muted);
+  }
+
+  .step-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: var(--elevated);
+    border: 1px solid var(--line);
+    color: var(--pounamu);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .step-badge svg {
+    width: 21px;
+    height: 21px;
+  }
+
+  .step-title {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    color: var(--ink);
+    margin: 2px 0 10px;
+  }
+
+  .step-body p {
+    font-size: 16px;
+    line-height: 1.62;
+    color: var(--ink-2);
+    margin: 0 0 10px;
+    max-width: 64ch;
+  }
+
+  .step-body p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Maintainer band */
+  .tech {
+    margin-top: 80px;
+    padding: 48px;
+    background: var(--wash);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .tech-title {
+    font-size: clamp(24px, 2.6vw, 32px);
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+    font-weight: 500;
+    margin: 12px 0 0;
+  }
+
+  .tech-note {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 12px 0 0;
+    max-width: 58ch;
+  }
+
+  .sub {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 40px 0 18px;
+  }
+
+  /* Architecture diagrams */
+  .diagrams {
+    display: grid;
+    gap: 18px;
+  }
+
+  .arch,
+  .pipe {
+    margin: 0;
+    padding: 28px;
+    background-color: var(--elevated);
+    background-image: radial-gradient(var(--line) 1px, transparent 1.5px);
+    background-size: 22px 22px;
+    background-position: -7px -7px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .diagram-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .diagram-name {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  .diagram-tag {
+    color: var(--muted);
+  }
+
+  /* Infrastructure — vertical spine */
+  .arch-flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .anode {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    max-width: 360px;
+    padding: 14px 18px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+  }
+
+  .anode.core {
+    max-width: 384px;
+    border-color: var(--pounamu);
+    border-left-color: var(--pounamu);
+    background: var(--pounamu-soft);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--pounamu) 13%, transparent);
+  }
+
+  .anode-ic {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: var(--radius-sm);
+    background: var(--pounamu-soft);
+    color: var(--pounamu);
+  }
+
+  .anode.core .anode-ic {
+    background: var(--pounamu);
+    color: var(--surface);
+  }
+
+  .anode-ic svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .anode-t {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+
+  .anode-k {
+    color: var(--muted);
+  }
+
+  .anode-t b {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.014em;
+    color: var(--ink);
+  }
+
+  .anode-sub {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  /* Spine connector: line + arrowhead, flush to the cards */
+  .flow {
+    position: relative;
+    width: 2px;
+    height: 30px;
+    background: var(--border-hover);
+  }
+
+  .flow::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 7px;
+    height: 7px;
+    border-right: 2px solid var(--muted);
+    border-bottom: 2px solid var(--muted);
+    transform: translate(-50%, -1px) rotate(45deg);
+  }
+
+  .svc-group {
+    position: relative;
+    width: 100%;
+    padding: 24px 16px 16px;
+    border: 1px dashed var(--field-line);
+    border-radius: var(--radius-md);
+  }
+
+  .svc-group-k {
+    position: absolute;
+    top: -8px;
+    left: 16px;
+    padding: 0 8px;
+    background: var(--elevated);
+    color: var(--muted);
+  }
+
+  .svcs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .svc {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    min-width: 0;
+  }
+
+  .svc-ic {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--pounamu);
+  }
+
+  .svc-ic svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .svc-t {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .svc-t b {
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: -0.012em;
+    color: var(--ink);
+  }
+
+  .svc-t span {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .cap {
+    margin: 22px 0 0;
+    padding-top: 16px;
+    border-top: 1px dashed var(--line);
+    font-size: 13.5px;
+    line-height: 1.62;
+    color: var(--muted);
+  }
+
+  /* Deploy pipeline — numbered timeline with a through-line */
+  .stages {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 6px;
+  }
+
+  .stage {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .stage:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 22px;
+    left: 50%;
+    width: calc(100% + 6px);
+    height: 2px;
+    background: var(--border-hover);
+    z-index: -1;
+  }
+
+  .stage:nth-last-child(2)::after {
+    background: var(--pounamu);
+  }
+
+  .stage-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--elevated);
+    border: 1px solid var(--line);
+    color: var(--pounamu);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .stage-badge svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .stage.end .stage-badge {
+    background: var(--pounamu);
+    border-color: var(--pounamu);
+    color: var(--surface);
+  }
+
+  .stage-label {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .stage-step {
+    color: var(--muted);
+  }
+
+  .stage-name {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--ink-2);
+    max-width: 16ch;
+  }
+
+  /* Tech & docs reference grid */
+  .refs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .ref {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 12px 15px;
+    background: var(--elevated);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition:
+      border-color 160ms ease,
+      background 160ms ease;
+  }
+
+  .ref:hover {
+    border-color: var(--border-hover);
+    background: var(--surface-2);
+  }
+
+  .ref:focus-visible {
+    outline: 2px solid var(--pounamu);
+    outline-offset: 2px;
+  }
+
+  .ref-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .ref-name {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.012em;
+    color: var(--ink);
+  }
+
+  .ref-arrow {
+    flex-shrink: 0;
+    color: var(--muted);
+    transition:
+      color 160ms ease,
+      transform 160ms ease;
+  }
+
+  .ref:hover .ref-arrow {
+    color: var(--pounamu);
+    transform: translate(2px, -2px);
+  }
+
+  .ref-note {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  /* Technical notes prose + code */
+  .prose section {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .prose section:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .prose h4 {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.014em;
+    color: var(--ink);
+    margin: 0 0 12px;
+  }
+
+  .h4-ico {
+    display: inline-flex;
+    color: var(--pounamu);
+  }
+
+  .h4-ico svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .prose p {
+    font-size: 15px;
+    line-height: 1.62;
+    color: var(--ink-2);
+    margin: 0 0 12px;
+    max-width: 70ch;
+  }
+
+  .prose p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Inline + fenced code */
+  .ic {
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+    padding: 1px 6px;
+    background: var(--surface-3);
+    border-radius: 4px;
+    color: var(--ink);
+    word-break: break-word;
+  }
+
+  .snippet {
+    margin: 0 0 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .snip-cap {
+    padding: 8px 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .code {
+    margin: 0;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--ink-2);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .code code {
+    font: inherit;
+    white-space: pre;
+  }
+
+  /* Support */
+  .support {
+    margin-top: 72px;
+  }
+
+  .support-copy {
+    font-size: 16px;
+    line-height: 1.62;
+    color: var(--ink-2);
+    margin: 0 0 18px;
+    max-width: 56ch;
+  }
+
+  .signoff {
+    border-left: 2px solid var(--pounamu);
+    padding-left: 14px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  .signoff a {
+    color: var(--pounamu);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition: opacity 160ms ease;
+  }
+
+  .signoff a:hover {
+    opacity: 0.72;
+  }
+
+  .signoff a:focus-visible {
+    outline: 2px solid var(--pounamu);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .signoff span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+
+  /* Tablet / mobile: TOC becomes a collapsible disclosure above the content */
+  @media (max-width: 1024px) {
+    .layout {
+      display: block;
+    }
+
+    .toc {
+      position: static;
+      margin: 0 0 40px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--surface-2);
+    }
+
+    .toc-summary {
+      padding: 15px 18px;
+      border-bottom: 0;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .toc[open] .toc-summary {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-summary:focus-visible {
+      outline: 2px solid var(--pounamu);
+      outline-offset: -2px;
+      border-radius: var(--radius-md);
+    }
+
+    .toc-chevron {
+      display: block;
+      color: var(--muted);
+      transition: transform 200ms ease;
+    }
+
+    .toc[open] .toc-chevron {
+      transform: rotate(180deg);
+    }
+
+    .toc-nav {
+      padding: 8px 10px 12px;
+    }
+
+    .content > .fade-up:first-child .block {
+      margin-top: 0;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .inner {
+      padding: 64px var(--pad-x) 64px;
+    }
+    .head {
+      margin-bottom: 40px;
+    }
+    .block,
+    .support {
+      margin-top: 56px;
+    }
+    .cards,
+    .cards-infra,
+    .refs {
+      grid-template-columns: 1fr;
+    }
+    .step {
+      grid-template-columns: 44px 1fr;
+      gap: 18px;
+      padding: 22px 0;
+    }
+    .step-num {
+      display: none;
+    }
+    .step-badge {
+      width: 38px;
+      height: 38px;
+    }
+    .step-badge svg {
+      width: 18px;
+      height: 18px;
+    }
+    .tech {
+      margin-top: 56px;
+      padding: 28px 20px;
+    }
+    .arch,
+    .pipe {
+      padding: 20px;
+    }
+    .svcs {
+      grid-template-columns: 1fr;
+    }
+    .stages {
+      flex-direction: column;
+      gap: 0;
+    }
+    .stage {
+      flex-direction: row;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 7px 0;
+    }
+    .stage:not(:last-child)::after {
+      top: 22px;
+      left: 22px;
+      width: 2px;
+      height: 100%;
+    }
+    .stage-label {
+      align-items: flex-start;
+      text-align: left;
+    }
+    .stage-name {
+      max-width: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toc-chevron {
+      transition: none;
+    }
+  }
+</style>
