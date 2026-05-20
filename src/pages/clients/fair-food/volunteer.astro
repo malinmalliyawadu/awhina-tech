@@ -1,13 +1,14 @@
 ---
-import Base from "../../layouts/Base.astro";
-import Masthead from "../../components/Masthead.astro";
-import Footer from "../../components/Footer.astro";
-import FadeUp from "../../components/FadeUp.astro";
-import { clients, type Block } from "../../data/clients";
+import Base from "../../../layouts/Base.astro";
+import Masthead from "../../../components/Masthead.astro";
+import Footer from "../../../components/Footer.astro";
+import FadeUp from "../../../components/FadeUp.astro";
+import { clients, type Block } from "../../../data/clients";
 
 const client = clients["fair-food"];
-const title = `${client.name} — Client hub · Āwhina Tech`;
-const description = `The ${client.name} client hub: links to the live site, how it works, and the technical detail underneath. Unlisted.`;
+const project = client.projects["volunteer"];
+const title = `${project.name} — Āwhina Tech`;
+const description = `The ${project.name} project hub: links to the live site, how it works, and the technical detail underneath.`;
 
 // Lucide-style outline icon paths (24×24, currentColor, no fill). Keys are
 // referenced from src/data/clients.ts and the table of contents below.
@@ -61,8 +62,8 @@ const slugify = (s: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
-const steps = client.howItWorks.map((s) => ({ ...s, id: slugify(s.title) }));
-const tech = client.technical.map((s) => ({ ...s, id: slugify(s.title) }));
+const steps = project.howItWorks.map((s) => ({ ...s, id: slugify(s.title) }));
+const tech = project.technical.map((s) => ({ ...s, id: slugify(s.title) }));
 
 const toc = [
   { id: "quick-links", label: "Quick links", icon: "compass" },
@@ -95,17 +96,17 @@ const isCode = (b: Block): b is { code: string[]; caption?: string } =>
     <div class="inner">
       <FadeUp>
         <header class="head">
-          <span class="eyebrow">{client.kicker}</span>
-          <h1 class="title">{client.name}</h1>
-          <p class="lede">{client.intro}</p>
+          <span class="eyebrow">{client.name}</span>
+          <h1 class="title">{project.name}</h1>
+          <p class="lede">{project.intro}</p>
           <div class="actions">
             <a
               class="btn btn-primary"
-              href={client.primary.href}
+              href={project.primary.href}
               target="_blank"
               rel="noopener noreferrer"
             >
-              {client.primary.label}
+              {project.primary.label}
               <svg
                 width="14"
                 height="14"
@@ -121,7 +122,7 @@ const isCode = (b: Block): b is { code: string[]; caption?: string } =>
                   stroke-linejoin="round"></path>
               </svg>
             </a>
-            <span class="primary-host mono">{client.primary.detail}</span>
+            <span class="primary-host mono">{project.primary.detail}</span>
           </div>
         </header>
       </FadeUp>
@@ -189,7 +190,7 @@ const isCode = (b: Block): b is { code: string[]; caption?: string } =>
               <h2 id="links-h" class="block-title">Quick links</h2>
               <div class="cards">
                 {
-                  client.services.map((s) => (
+                  project.services.map((s) => (
                     <a
                       class="card"
                       href={s.href}
@@ -284,7 +285,7 @@ const isCode = (b: Block): b is { code: string[]; caption?: string } =>
               <h3 id="where-things-live" class="sub">Where things live</h3>
               <div class="cards cards-infra">
                 {
-                  client.infra.map((item) =>
+                  project.infra.map((item) =>
                     item.href ? (
                       <a
                         class="card"
@@ -512,7 +513,7 @@ const isCode = (b: Block): b is { code: string[]; caption?: string } =>
               <h3 id="tech-docs" class="sub">Tech &amp; docs</h3>
               <div class="refs">
                 {
-                  client.techRefs.map((r) => (
+                  project.techRefs.map((r) => (
                     <a
                       class="ref"
                       href={r.url}

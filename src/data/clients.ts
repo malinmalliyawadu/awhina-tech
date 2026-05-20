@@ -1,9 +1,10 @@
-// Client hubs — one structured entry per charity we build for. These pages are
-// unlisted (no nav/footer link, noindex, kept out of the sitemap) and shared
-// with the client by direct link. Add a new client by adding a key here and a
-// matching page under src/pages/clients/.
+// Per-client project hubs — one Client entry per charity we build for, with
+// one Project entry per product we run for that charity. Pages live at
+// /clients/<client>/<project>, are unlisted (no nav/footer link) and shared
+// with the client by direct link. Add a new project = a new key under the
+// client's `projects` map and a matching page under src/pages/clients/.
 //
-// `icon` is a key into the ICONS map in the client-hub page (Lucide outline
+// `icon` is a key into the ICONS map in the project-hub page (Lucide outline
 // paths). Keep the two in sync; an unknown key just renders no icon.
 
 /** A fenced command / env block, rendered monospace with an optional label. */
@@ -42,12 +43,12 @@ export interface TechRef {
   note: string;
 }
 
-export interface Client {
+/** One product Āwhina runs for a client (e.g. their volunteer portal). */
+export interface Project {
   slug: string;
+  /** Display name of the project, e.g. "Fair Food Volunteer". */
   name: string;
-  /** Short eyebrow label above the title. */
-  kicker: string;
-  /** One-paragraph "what this is" for the top of the page. */
+  /** One-paragraph "what this is" at the top of the page. */
   intro: string;
   /** The primary thing the client opens day to day. */
   primary: LinkItem;
@@ -61,15 +62,22 @@ export interface Client {
   techRefs: TechRef[];
   /** Technical handover notes — for Āwhina and any developer. */
   technical: DocSection[];
+}
+
+export interface Client {
+  slug: string;
+  name: string;
+  /** Products / projects Āwhina runs for this client, keyed by slug. */
+  projects: Record<string, Project>;
+  /** The Āwhina contact shown in "Need a hand?" — shared across projects. */
   support: { org: string; email: string; phone: string; location: string };
 }
 
-const fairFood: Client = {
-  slug: "fair-food",
-  name: "Fair Food",
-  kicker: "Client hub",
+const fairFoodVolunteer: Project = {
+  slug: "volunteer",
+  name: "Fair Food Volunteer",
   intro:
-    "Your volunteer site — where people sign up for shifts across your programmes, and where coordinators manage who's coming in. This page is the map: what's where, how the everyday things work, and the technical detail underneath.",
+    "The volunteer site — where people sign up for shifts across your programmes, and where coordinators manage who's coming in. This page is the map for this project: what's where, how the everyday things work, and the technical detail underneath.",
   primary: {
     label: "Open the volunteer site",
     href: "https://volunteer.fairfood.org.nz",
@@ -296,29 +304,6 @@ const fairFood: Client = {
       ],
     },
     {
-      title: "Backups & recovery",
-      icon: "save",
-      body: [
-        "Not set up yet — this is the recommended plan. Today there are no automated backups: Garage runs `replication_factor = 1` (one copy, one host) and Postgres has no scheduled dump, so a disk or host loss would take volunteer accounts, bookings and uploaded documents with it.",
-        "Only two things are irreplaceable — the Postgres database and the Garage objects (programme images and the Resources documents). The app itself isn't: it rebuilds from `main`, so recovering it is just a redeploy.",
-        "Follow a 3-2-1 rule — at least one copy off the Coolify host and off this provider. Postgres: a daily `pg_dump` (Coolify has built-in scheduled database backups) written to an offsite bucket on a different provider — not the same Garage — kept ~30 days, with a weekly long-retention copy on top.",
-        {
-          caption: "nightly db dump → offsite",
-          code: [
-            'pg_dump "$DATABASE_URL" | gzip > ff-$(date +%F).sql.gz',
-            "rclone copy ff-$(date +%F).sql.gz offsite:fairfood/db/",
-            "# then prune dumps older than 30 days",
-          ],
-        },
-        "Objects: mirror the Garage bucket offsite on the same schedule. An offsite copy matters more for disaster recovery than on-host replication, though raising `replication_factor` is worth it if a second node ever exists.",
-        {
-          caption: "nightly object mirror",
-          code: ["rclone sync garage:fairfood offsite:fairfood/objects/"],
-        },
-        "Recovery: redeploy the app from `main`, restore the latest dump (`gunzip | psql`), then `rclone copy` the objects back into Garage. Aim for at most ~24 hours of data loss and back online within a few hours. Test a real restore into a throwaway environment each quarter — an untested backup isn't a backup.",
-      ],
-    },
-    {
       title: "Analytics & tracking",
       icon: "activity",
       body: [
@@ -330,9 +315,7 @@ const fairFood: Client = {
       title: "Security",
       icon: "scan",
       body: [
-        "In place: Dependabot opens grouped weekly pull requests for npm and GitHub Actions every Monday 9am NZ — grouped by Next, React, Prisma, Radix, plus a catch-all minor-and-patch group, capped at ten open at a time (`.github/dependabot.yaml`). Dependabot security updates are on too, so vulnerable-dependency PRs land the moment a patch is published. CodeQL is on via GitHub's default setup — JavaScript/TypeScript + Actions, default query suite, weekly. GitHub secret scanning is on. Every non-draft pull request also gets an automated Claude Code review.",
-        "Still off, all free for a public repo — flip them on under Settings → Code security: push protection (blocks high-confidence secrets at `git push` so they never enter history — the catch *before* a leak rather than the alert after), plus the two secondary toggles that pair with secret scanning — non-provider patterns, and validity checks that test whether a leaked secret is still live.",
-        "Cheap improvements when there's time: a `dependency-review-action` step on pull requests to surface newly-introduced vulnerable deps; security headers (CSP, X-Frame-Options, Referrer-Policy, Permissions-Policy) added via Next.js's `headers()` config; and rate limiting on the sign-in and password-reset endpoints.",
+        "Dependabot opens grouped weekly pull requests for npm and GitHub Actions every Monday 9am NZ — grouped by Next, React, Prisma, Radix, plus a catch-all minor-and-patch group, capped at ten open at a time (`.github/dependabot.yaml`). Dependabot security updates are on too, so vulnerable-dependency PRs land the moment a patch is published. CodeQL is on via GitHub's default setup — JavaScript/TypeScript + Actions, default query suite, weekly. GitHub secret scanning is on. Every non-draft pull request also gets an automated Claude Code review.",
       ],
     },
     {
@@ -370,6 +353,14 @@ const fairFood: Client = {
       ],
     },
   ],
+};
+
+const fairFood: Client = {
+  slug: "fair-food",
+  name: "Fair Food",
+  projects: {
+    volunteer: fairFoodVolunteer,
+  },
   support: {
     org: "Āwhina Tech",
     email: "kiaora@awhinatech.nz",
