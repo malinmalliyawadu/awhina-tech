@@ -13,10 +13,10 @@
     "screenshots:auth": "node scripts/auth-everybody-eats.mjs"
   },
   "dependencies": {
-    "astro": "^6.3.3"
+    "astro": "^6.4.2"
   },
   "devDependencies": {
-    "@astrojs/sitemap": "^3.7.2",
+    "@astrojs/sitemap": "^3.7.3",
     "playwright": "^1.60.0"
   }
 }
