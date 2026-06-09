@@ -44,6 +44,7 @@
   --compare-label-bg: rgba(36, 29, 18, 0.66);
   --compare-label-ink: #fffdf7;
   --compare-shadow: 0 0 0 1px rgba(36, 29, 18, 0.14), 0 4px 14px rgba(36, 29, 18, 0.32);
+  --compare-seam-shadow: 0 0 0 1px rgba(36, 29, 18, 0.12), 0 0 10px rgba(36, 29, 18, 0.28);
 
   /* Section / card wash gradients (full value tokens, theme-swapped) */
   --wash: linear-gradient(180deg, #f1ead8 0%, #f7f1e3 100%);

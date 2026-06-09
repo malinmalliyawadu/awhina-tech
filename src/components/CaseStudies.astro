@@ -85,13 +85,17 @@ import { CASES } from "../data/cases";
                             src={c.beforeImage}
                             alt={c.beforeImageAlt ?? ""}
                           />
+                          <span class="compare-label compare-label-before" aria-hidden="true">Before</span>
+                        </div>
+                        <div class="compare-label-clip" aria-hidden="true">
+                          <span class="compare-label compare-label-after">After</span>
                         </div>
                         <input
                           class="compare-range"
                           type="range"
                           min="0"
                           max="100"
-                          value="10"
+                          value="25"
                           autocomplete="off"
                           aria-label={`Drag to compare ${c.name}'s old volunteer site with the rebuilt one`}
                         />
@@ -102,8 +106,6 @@ import { CASES } from "../data/cases";
                             </svg>
                           </span>
                         </div>
-                        <span class="compare-label compare-label-before" aria-hidden="true">Before</span>
-                        <span class="compare-label compare-label-after" aria-hidden="true">After</span>
                       </div>
                     ) : (
                       <Screenshot src={c.image} alt={c.imageAlt} />
@@ -300,7 +302,9 @@ import { CASES } from "../data/cases";
   .compare-stack {
     position: absolute;
     inset: 0;
-    --pos: 50%;
+    /* Matches the range input's initial value — avoids a visible jump when
+       the sync script kicks in, and gives no-JS visitors the same split. */
+    --pos: 25%;
     cursor: ew-resize;
     /* Let the page still scroll vertically when the gesture starts on the
        slider, but claim horizontal drags so we can move the divider. */
@@ -361,14 +365,17 @@ import { CASES } from "../data/cases";
     background: transparent;
   }
 
-  /* No visible bar — just a full-height anchor that carries the grip on the
-     seam, so the two screenshots meet edge-to-edge. */
+  /* A hairline seam keeps the split legible where the two screenshots have
+     similar tones; the grip rides its centre. */
   .compare-divider {
     position: absolute;
     top: 0;
     bottom: 0;
     left: var(--pos);
-    width: 0;
+    width: 2px;
+    margin-left: -1px;
+    background: var(--compare-handle);
+    box-shadow: var(--compare-seam-shadow);
     pointer-events: none;
   }
 
@@ -379,8 +386,8 @@ import { CASES } from "../data/cases";
     transform: translate(-50%, -50%);
     display: grid;
     place-items: center;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     background: var(--compare-handle);
     color: var(--compare-handle-ink);
@@ -395,6 +402,15 @@ import { CASES } from "../data/cases";
   .compare-range:focus-visible ~ .compare-divider .compare-grip {
     outline: 2px solid var(--pounamu);
     outline-offset: 3px;
+  }
+
+  /* Each label lives inside (or is clipped to) the region it names, so
+     "Before" can never sit over the rebuilt site and vice versa. */
+  .compare-label-clip {
+    position: absolute;
+    inset: 0;
+    clip-path: inset(0 0 0 var(--pos));
+    pointer-events: none;
   }
 
   .compare-label {
@@ -529,10 +545,78 @@ import { CASES } from "../data/cases";
       const range = stack.querySelector<HTMLInputElement>(".compare-range");
       if (!range) return;
 
-      const sync = () =>
+      const caseName = stack
+        .closest("article")
+        ?.querySelector(".name")
+        ?.textContent?.trim();
+
+      // interacted: any press/keystroke — cancels the attention nudge.
+      // used: the seam actually moved — fires the one-shot analytics event.
+      let interacted = false;
+      let used = false;
+      const markInteracted = () => {
+        interacted = true;
+        if (used) return;
+        used = true;
+        (window as any).posthog?.capture("case_compare_used", {
+          case_name: caseName,
+        });
+      };
+
+      const sync = () => {
         stack.style.setProperty("--pos", `${range.value}%`);
+        range.setAttribute(
+          "aria-valuetext",
+          `${Math.round(Number(range.value))}% — old site shown`,
+        );
+      };
       sync();
-      range.addEventListener("input", sync);
+      range.addEventListener("input", () => {
+        markInteracted();
+        sync();
+      });
+
+      // Native arrows move 1% per press — 100 taps to cross. Step them up
+      // to 5%; Home/End still jump to the extremes natively.
+      range.addEventListener("keydown", (e) => {
+        let delta = 0;
+        if (e.key === "ArrowRight" || e.key === "ArrowUp") delta = 5;
+        else if (e.key === "ArrowLeft" || e.key === "ArrowDown") delta = -5;
+        if (!delta) return;
+        e.preventDefault();
+        range.value = String(
+          Math.max(0, Math.min(100, Number(range.value) + delta)),
+        );
+        markInteracted();
+        sync();
+      });
+
+      // One-shot nudge when the card scrolls into view: ease the seam out
+      // and back so the drag affordance explains itself. Skipped under
+      // reduced motion; abandoned the moment the visitor touches it.
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            if (!entries.some((e) => e.isIntersecting)) return;
+            io.disconnect();
+            if (interacted) return;
+            const start = Number(range.value);
+            const t0 = performance.now();
+            const dur = 1100;
+            const amp = 9;
+            const tick = (t: number) => {
+              if (interacted) return;
+              const p = Math.min(1, (t - t0) / dur);
+              range.value = String(start + amp * Math.sin(Math.PI * p));
+              stack.style.setProperty("--pos", `${range.value}%`);
+              if (p < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+          },
+          { threshold: 0.6 },
+        );
+        io.observe(stack);
+      }
 
       const setFromPointer = (clientX: number) => {
         const rect = stack.getBoundingClientRect();
@@ -542,6 +626,7 @@ import { CASES } from "../data/cases";
           Math.min(100, ((clientX - rect.left) / rect.width) * 100),
         );
         range.value = String(pct);
+        markInteracted();
         sync();
       };
 
@@ -553,6 +638,7 @@ import { CASES } from "../data/cases";
       stack.addEventListener("dragstart", (e) => e.preventDefault());
 
       stack.addEventListener("pointerdown", (e) => {
+        interacted = true; // cancel the nudge, even for a tap that never drags
         activePointer = e.pointerId;
         stack.setPointerCapture(e.pointerId);
         // On mouse, click-to-jump matches range-input convention. On touch,
