@@ -104,10 +104,8 @@ import FadeUp from "./FadeUp.astro";
   }
 
   .title {
-    font-size: clamp(32px, 4.2vw, 52px);
-    line-height: 1.08;
-    letter-spacing: -0.028em;
-    font-weight: 500;
+    font-size: clamp(30px, 3.8vw, 46px);
+    line-height: 1.12;
     margin: 8px 0 0;
   }
 
@@ -133,7 +131,10 @@ import FadeUp from "./FadeUp.astro";
 
   .narrative .kicker {
     color: var(--ink);
+    font-family: var(--font-display);
+    font-style: italic;
     font-weight: 500;
+    font-size: 19px;
   }
 
   .card {
@@ -152,9 +153,9 @@ import FadeUp from "./FadeUp.astro";
   }
 
   .portrait {
-    width: 148px;
-    height: 148px;
-    border-radius: 18px;
+    width: 156px;
+    height: 156px;
+    border-radius: var(--radius-blob);
     object-fit: cover;
     background: var(--pounamu-soft);
     border: 1px solid var(--line);
@@ -164,18 +165,16 @@ import FadeUp from "./FadeUp.astro";
   }
 
   .name {
-    font-size: 22px;
+    font-size: 24px;
     line-height: 1.2;
-    letter-spacing: -0.018em;
-    font-weight: 600;
     margin: 0;
   }
 
   .caption {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 15px;
+    letter-spacing: 0.01em;
     color: var(--muted);
     display: inline-flex;
     align-items: center;
@@ -187,8 +186,9 @@ import FadeUp from "./FadeUp.astro";
     content: "";
     display: inline-block;
     width: 18px;
-    height: 1px;
-    background: var(--pounamu);
+    height: 2px;
+    border-radius: 2px;
+    background: var(--clay);
     flex-shrink: 0;
   }
 

@@ -1,63 +1,78 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Karla:ital,wght@0,300..800;1,300..800&family=JetBrains+Mono:wght@400;500&display=swap");
 
 :root {
   color-scheme: light;
 
-  --surface: #ffffff;
-  --surface-2: #fafaf7;
-  --surface-3: #f3f2ed;
-  --elevated: #ffffff;
-  --ink: #0e1413;
-  --ink-2: #2a2f2d;
-  --muted: #6b716e;
-  --line: #e5e4dd;
-  --line-strong: #1a1f1d;
-  --border-hover: rgba(14, 20, 19, 0.18);
+  --surface: #faf5ec;
+  --surface-2: #f4ecdd;
+  --surface-3: #ece1cc;
+  --elevated: #fffdf7;
+  --ink: #241d12;
+  --ink-2: #4c4233;
+  --muted: #6f6453;
+  --line: #e2d7c2;
+  --line-strong: #2a2316;
+  --border-hover: rgba(36, 29, 18, 0.2);
 
-  --pounamu: #2f5d3a;
-  --pounamu-soft: #e9efe6;
-  --kowhai: #b8881b;
-  --kowhai-soft: #fbf2db;
+  --pounamu: #2e5c44;
+  --pounamu-deep: #234a36;
+  --pounamu-soft: #e3ead9;
+  --kowhai: #a87a14;
+  --kowhai-soft: #f6ebcd;
   --clay: #b04a1f;
-  --clay-soft: #f5e3d8;
+  --clay-soft: #f3ddcc;
+
+  /* Text/ink that sits on top of a --pounamu fill (buttons, pills) */
+  --on-pounamu: #fcf9f1;
+  --accent-ring: rgba(46, 92, 68, 0.18);
 
   /* Header backdrop, form affordances, browser-chrome (mock) surfaces */
-  --header-bg: rgba(255, 255, 255, 0.85);
-  --field-line: rgba(14, 20, 19, 0.2);
-  --field-line-hover: rgba(14, 20, 19, 0.45);
-  --placeholder: rgba(14, 20, 19, 0.32);
-  --chrome-bg: #f6f5ef;
-  --chrome-dot: #d6d4cc;
+  --header-bg: rgba(250, 245, 236, 0.85);
+  --field-line: rgba(36, 29, 18, 0.22);
+  --field-line-hover: rgba(36, 29, 18, 0.45);
+  --placeholder: rgba(36, 29, 18, 0.34);
+  --chrome-bg: #f1e8d6;
+  --chrome-dot: #d8ccb2;
 
   /*
    * Before/after comparison control. Theme-invariant on purpose — it floats
    * over screenshot imagery (not a themed surface), so it must read the same
    * in light and dark. Defined only here; not repeated in the dark blocks.
    */
-  --compare-handle: #ffffff;
-  --compare-handle-ink: #0e1413;
-  --compare-label-bg: rgba(14, 20, 19, 0.66);
-  --compare-label-ink: #ffffff;
-  --compare-shadow: 0 0 0 1px rgba(14, 20, 19, 0.14), 0 4px 14px rgba(14, 20, 19, 0.32);
+  --compare-handle: #fffdf7;
+  --compare-handle-ink: #241d12;
+  --compare-label-bg: rgba(36, 29, 18, 0.66);
+  --compare-label-ink: #fffdf7;
+  --compare-shadow: 0 0 0 1px rgba(36, 29, 18, 0.14), 0 4px 14px rgba(36, 29, 18, 0.32);
 
   /* Section / card wash gradients (full value tokens, theme-swapped) */
-  --wash: linear-gradient(180deg, #f4f7f1 0%, #f9faf5 100%);
-  --tint-warm: linear-gradient(180deg, #fbf6ee 0%, #fdfaf3 100%);
-  --tint-forest: linear-gradient(180deg, #f1f4ec 0%, #f7f9f3 100%);
-  --tint-sea: linear-gradient(180deg, #eef2f1 0%, #f4f7f6 100%);
+  --wash: linear-gradient(180deg, #f1ead8 0%, #f7f1e3 100%);
+  --tint-warm: linear-gradient(180deg, #f6e8d4 0%, #f9f0e1 100%);
+  --tint-forest: linear-gradient(180deg, #ebecd6 0%, #f3f2e2 100%);
+  --tint-sea: linear-gradient(180deg, #e7ecdf 0%, #f0f3ea 100%);
 
-  --font-sans: "Inter Tight", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  /* Ambient glows behind hero / pricing headline areas */
+  --hero-glow: radial-gradient(56% 70% at 24% 0%, rgba(176, 74, 31, 0.07), transparent 70%),
+    radial-gradient(50% 80% at 82% 12%, rgba(46, 92, 68, 0.08), transparent 70%);
+  --price-glow: radial-gradient(60% 100% at 0% 0%, rgba(168, 122, 20, 0.1), transparent 60%);
+
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Karla", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+  /* Organic blob used for icon badges, portraits, decorative marks */
+  --radius-blob: 58% 42% 55% 45% / 52% 48% 62% 38%;
 
   --pad-x: 64px;
   --container: 1240px;
 
-  --shadow-card: 0 1px 2px rgba(14, 20, 19, 0.04), 0 6px 20px rgba(14, 20, 19, 0.06);
-  --shadow-soft: 0 1px 0 rgba(14, 20, 19, 0.03), 0 1px 2px rgba(14, 20, 19, 0.05);
+  --shadow-card: 0 1px 2px rgba(60, 44, 22, 0.05), 0 10px 28px rgba(60, 44, 22, 0.08);
+  --shadow-soft: 0 1px 0 rgba(60, 44, 22, 0.03), 0 2px 4px rgba(60, 44, 22, 0.05);
+
+  --grain-opacity: 0.05;
 }
 
 /*
@@ -71,76 +86,96 @@
 :root[data-theme="dark"] {
   color-scheme: dark;
 
-  --surface: #0e1413;
-  --surface-2: #161d1a;
-  --surface-3: #1e2622;
-  --elevated: #1b221f;
-  --ink: #eef1ec;
-  --ink-2: #c3c9c1;
-  --muted: #8b938b;
-  --line: #2a322e;
-  --line-strong: #3c453f;
-  --border-hover: rgba(238, 241, 236, 0.24);
+  --surface: #181310;
+  --surface-2: #211a14;
+  --surface-3: #2b2219;
+  --elevated: #251d16;
+  --ink: #f2eadb;
+  --ink-2: #cfc4b0;
+  --muted: #97897a;
+  --line: #383021;
+  --line-strong: #4e4330;
+  --border-hover: rgba(242, 234, 219, 0.24);
 
-  --pounamu: #7fb98c;
-  --pounamu-soft: #16241b;
+  --pounamu: #8cc39a;
+  --pounamu-deep: #a5d2b1;
+  --pounamu-soft: #22301f;
   --kowhai: #d9a83a;
-  --kowhai-soft: #2a2212;
-  --clay: #d9784e;
-  --clay-soft: #2c1d15;
+  --kowhai-soft: #322712;
+  --clay: #dd8253;
+  --clay-soft: #362114;
 
-  --header-bg: rgba(13, 18, 17, 0.8);
-  --field-line: rgba(238, 241, 236, 0.22);
-  --field-line-hover: rgba(238, 241, 236, 0.45);
-  --placeholder: rgba(238, 241, 236, 0.34);
-  --chrome-bg: #141a17;
-  --chrome-dot: #3c453f;
+  --on-pounamu: #14211a;
+  --accent-ring: rgba(140, 195, 154, 0.2);
 
-  --wash: linear-gradient(180deg, #15201b 0%, #0f1513 100%);
-  --tint-warm: linear-gradient(180deg, #1d1a14 0%, #14110d 100%);
-  --tint-forest: linear-gradient(180deg, #14201a 0%, #0f1512 100%);
-  --tint-sea: linear-gradient(180deg, #131e1e 0%, #0f1514 100%);
+  --header-bg: rgba(22, 17, 14, 0.8);
+  --field-line: rgba(242, 234, 219, 0.24);
+  --field-line-hover: rgba(242, 234, 219, 0.46);
+  --placeholder: rgba(242, 234, 219, 0.36);
+  --chrome-bg: #1d1712;
+  --chrome-dot: #4e4330;
 
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.55);
+  --wash: linear-gradient(180deg, #241d14 0%, #1b1510 100%);
+  --tint-warm: linear-gradient(180deg, #2a1f14 0%, #1d160f 100%);
+  --tint-forest: linear-gradient(180deg, #20231a 0%, #171810 100%);
+  --tint-sea: linear-gradient(180deg, #1c211d 0%, #141713 100%);
+
+  --hero-glow: radial-gradient(56% 70% at 24% 0%, rgba(221, 130, 83, 0.07), transparent 70%),
+    radial-gradient(50% 80% at 82% 12%, rgba(140, 195, 154, 0.07), transparent 70%);
+  --price-glow: radial-gradient(60% 100% at 0% 0%, rgba(217, 168, 58, 0.08), transparent 60%);
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5), 0 12px 32px rgba(0, 0, 0, 0.55);
   --shadow-soft: 0 1px 0 rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.4);
+
+  --grain-opacity: 0.07;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
 
-    --surface: #0e1413;
-    --surface-2: #161d1a;
-    --surface-3: #1e2622;
-    --elevated: #1b221f;
-    --ink: #eef1ec;
-    --ink-2: #c3c9c1;
-    --muted: #8b938b;
-    --line: #2a322e;
-    --line-strong: #3c453f;
-    --border-hover: rgba(238, 241, 236, 0.24);
+    --surface: #181310;
+    --surface-2: #211a14;
+    --surface-3: #2b2219;
+    --elevated: #251d16;
+    --ink: #f2eadb;
+    --ink-2: #cfc4b0;
+    --muted: #97897a;
+    --line: #383021;
+    --line-strong: #4e4330;
+    --border-hover: rgba(242, 234, 219, 0.24);
 
-    --pounamu: #7fb98c;
-    --pounamu-soft: #16241b;
+    --pounamu: #8cc39a;
+    --pounamu-deep: #a5d2b1;
+    --pounamu-soft: #22301f;
     --kowhai: #d9a83a;
-    --kowhai-soft: #2a2212;
-    --clay: #d9784e;
-    --clay-soft: #2c1d15;
+    --kowhai-soft: #322712;
+    --clay: #dd8253;
+    --clay-soft: #362114;
 
-    --header-bg: rgba(13, 18, 17, 0.8);
-    --field-line: rgba(238, 241, 236, 0.22);
-    --field-line-hover: rgba(238, 241, 236, 0.45);
-    --placeholder: rgba(238, 241, 236, 0.34);
-    --chrome-bg: #141a17;
-    --chrome-dot: #3c453f;
+    --on-pounamu: #14211a;
+    --accent-ring: rgba(140, 195, 154, 0.2);
 
-    --wash: linear-gradient(180deg, #15201b 0%, #0f1513 100%);
-    --tint-warm: linear-gradient(180deg, #1d1a14 0%, #14110d 100%);
-    --tint-forest: linear-gradient(180deg, #14201a 0%, #0f1512 100%);
-    --tint-sea: linear-gradient(180deg, #131e1e 0%, #0f1514 100%);
+    --header-bg: rgba(22, 17, 14, 0.8);
+    --field-line: rgba(242, 234, 219, 0.24);
+    --field-line-hover: rgba(242, 234, 219, 0.46);
+    --placeholder: rgba(242, 234, 219, 0.36);
+    --chrome-bg: #1d1712;
+    --chrome-dot: #4e4330;
 
-    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.55);
+    --wash: linear-gradient(180deg, #241d14 0%, #1b1510 100%);
+    --tint-warm: linear-gradient(180deg, #2a1f14 0%, #1d160f 100%);
+    --tint-forest: linear-gradient(180deg, #20231a 0%, #171810 100%);
+    --tint-sea: linear-gradient(180deg, #1c211d 0%, #141713 100%);
+
+    --hero-glow: radial-gradient(56% 70% at 24% 0%, rgba(221, 130, 83, 0.07), transparent 70%),
+      radial-gradient(50% 80% at 82% 12%, rgba(140, 195, 154, 0.07), transparent 70%);
+    --price-glow: radial-gradient(60% 100% at 0% 0%, rgba(217, 168, 58, 0.08), transparent 60%);
+
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5), 0 12px 32px rgba(0, 0, 0, 0.55);
     --shadow-soft: 0 1px 0 rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.4);
+
+    --grain-opacity: 0.07;
   }
 }
 
@@ -162,10 +197,33 @@ body {
   background: var(--surface);
   color: var(--ink);
   font-family: var(--font-sans);
-  font-feature-settings: "ss01", "cv11", "tnum" 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  letter-spacing: -0.005em;
+  letter-spacing: 0.002em;
+}
+
+/* Paper grain — a fixed, non-interactive film over everything. Kept very
+   faint; the warmth should read as texture, not noise. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* Display face for all headings — components size them individually. */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 540;
+  font-variation-settings: "SOFT" 60;
+  letter-spacing: -0.01em;
 }
 
 a {
@@ -174,7 +232,7 @@ a {
 
 ::selection {
   background: var(--pounamu);
-  color: var(--surface);
+  color: var(--on-pounamu);
 }
 
 /*
@@ -203,36 +261,39 @@ a {
   color: var(--muted);
 }
 
+/* Eyebrow — a quiet, handwritten-feeling lead-in above each section title. */
 .eyebrow {
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--pounamu);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  font-weight: 480;
+  letter-spacing: 0.01em;
+  color: var(--clay);
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .eyebrow::before {
   content: "";
   display: inline-block;
-  width: 18px;
-  height: 1px;
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-blob);
   background: currentColor;
+  opacity: 0.85;
 }
 
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 18px;
+  padding: 13px 22px;
   font-family: inherit;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: -0.005em;
-  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.002em;
+  border-radius: 999px;
   border: 1px solid transparent;
   cursor: pointer;
   text-decoration: none;
@@ -240,29 +301,35 @@ a {
     background 160ms ease,
     color 160ms ease,
     border-color 160ms ease,
-    transform 160ms ease;
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.btn:active {
+  transform: scale(0.98);
 }
 
 .btn-primary {
-  background: var(--ink);
-  color: var(--surface);
-  border-color: var(--ink);
+  background: var(--pounamu);
+  color: var(--on-pounamu);
+  border-color: var(--pounamu);
+  box-shadow: var(--shadow-soft);
 }
 
 .btn-primary:hover {
-  background: var(--pounamu);
-  border-color: var(--pounamu);
+  background: var(--pounamu-deep);
+  border-color: var(--pounamu-deep);
 }
 
 .btn-ghost {
   background: transparent;
   color: var(--ink);
-  border-color: var(--line);
+  border-color: var(--field-line);
 }
 
 .btn-ghost:hover {
   border-color: var(--ink);
-  background: var(--surface-2);
+  background: var(--elevated);
 }
 
 .btn-link {
@@ -271,7 +338,7 @@ a {
   gap: 6px;
   color: var(--ink);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   border-bottom: 1px solid var(--ink);
   padding-bottom: 2px;
   transition: color 160ms ease, border-color 160ms ease;

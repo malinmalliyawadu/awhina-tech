@@ -53,7 +53,7 @@ const orgJsonLd = {
             m.id = "theme-color";
             document.head.appendChild(m);
           }
-          m.setAttribute("content", t === "dark" ? "#0e1413" : "#ffffff");
+          m.setAttribute("content", t === "dark" ? "#181310" : "#faf5ec");
         }
         function system() {
           return window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -101,12 +101,12 @@ const orgJsonLd = {
     <meta name="description" content={description} />
     <meta
       name="theme-color"
-      content="#ffffff"
+      content="#faf5ec"
       media="(prefers-color-scheme: light)"
     />
     <meta
       name="theme-color"
-      content="#0e1413"
+      content="#181310"
       media="(prefers-color-scheme: dark)"
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

@@ -73,8 +73,6 @@ const compare = [
   .title {
     font-size: clamp(32px, 4.2vw, 52px);
     line-height: 1.08;
-    letter-spacing: -0.028em;
-    font-weight: 500;
     margin: 8px 0 0;
   }
 
@@ -88,6 +86,10 @@ const compare = [
 
   .table-wrap {
     overflow-x: auto;
+    background: var(--elevated);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
   }
 
   .compare {
@@ -108,8 +110,8 @@ const compare = [
 
   .compare thead th {
     font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
+    font-weight: 700;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--muted);
     border-bottom: 1px solid var(--line-strong);

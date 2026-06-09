@@ -229,8 +229,6 @@ const URLS: Record<string, string> = {
   .title {
     font-size: clamp(32px, 4.2vw, 52px);
     line-height: 1.08;
-    letter-spacing: -0.028em;
-    font-weight: 500;
     margin: 8px 0 0;
   }
 
@@ -288,9 +286,9 @@ const URLS: Record<string, string> = {
     background: transparent;
     color: var(--muted);
     font-family: inherit;
-    font-size: 13.5px;
-    font-weight: 500;
-    letter-spacing: -0.005em;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.002em;
     cursor: pointer;
     white-space: nowrap;
     transition: color 220ms ease;
@@ -360,10 +358,10 @@ const URLS: Record<string, string> = {
   }
 
   .icon-badge {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    background: var(--elevated);
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-blob);
+    background: var(--pounamu-soft);
     border: 1px solid var(--line);
     color: var(--pounamu);
     display: inline-flex;
@@ -375,8 +373,6 @@ const URLS: Record<string, string> = {
   .panel-title {
     font-size: clamp(26px, 2.6vw, 34px);
     line-height: 1.12;
-    letter-spacing: -0.025em;
-    font-weight: 500;
     margin: 4px 0 0;
     max-width: 22ch;
   }
