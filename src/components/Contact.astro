@@ -68,7 +68,7 @@ import FadeUp from "./FadeUp.astro";
                   />
                 </span>
                 and I help run
-                <span class="i-wrap" data-input>
+                <span class="no-break"><span class="i-wrap" data-input>
                   <label for="contact-charity" class="sr-only">Your charity</label>
                   <span class="i-mirror" aria-hidden="true">your charity</span>
                   <input
@@ -77,9 +77,9 @@ import FadeUp from "./FadeUp.astro";
                     autocomplete="organization"
                     placeholder="your charity"
                   />
-                </span>.
+                </span>.</span>
                 You can reach me at
-                <span class="i-wrap" data-input>
+                <span class="no-break"><span class="i-wrap" data-input>
                   <label for="contact-email" class="sr-only">Your email</label>
                   <span class="i-mirror" aria-hidden="true">you@charity.org.nz</span>
                   <input
@@ -90,7 +90,7 @@ import FadeUp from "./FadeUp.astro";
                     autocomplete="email"
                     placeholder="you@charity.org.nz"
                   />
-                </span>.
+                </span>.</span>
               </p>
 
               <div class="letter-message">
@@ -313,8 +313,6 @@ import FadeUp from "./FadeUp.astro";
   .title {
     font-size: clamp(34px, 4.4vw, 56px);
     line-height: 1.06;
-    letter-spacing: -0.03em;
-    font-weight: 500;
     margin: 14px 0 18px;
     text-wrap: balance;
   }
@@ -328,22 +326,25 @@ import FadeUp from "./FadeUp.astro";
   }
 
   .signoff {
-    border-left: 2px solid var(--pounamu);
+    border-left: 2px solid var(--clay);
     padding: 2px 0 2px 14px;
     margin-bottom: 28px;
   }
 
   .signoff-line {
-    font-size: 15px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 17px;
     font-weight: 500;
     color: var(--ink);
   }
 
   .signoff-meta {
-    font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
     margin-top: 4px;
   }
 
@@ -379,7 +380,7 @@ import FadeUp from "./FadeUp.astro";
   }
 
   .letter-paper {
-    background: var(--surface-2);
+    background: var(--tint-warm);
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     padding: 38px 38px 32px;
@@ -388,10 +389,18 @@ import FadeUp from "./FadeUp.astro";
 
   .letter-prose {
     margin: 0;
-    font-size: 19px;
+    font-family: var(--font-display);
+    font-weight: 440;
+    font-size: 20px;
     line-height: 1.85;
     color: var(--ink-2);
-    letter-spacing: -0.005em;
+    letter-spacing: 0.002em;
+  }
+
+  /* Keep an inline input glued to its trailing punctuation — otherwise the
+     full stop can wrap to a line of its own. */
+  .no-break {
+    white-space: nowrap;
   }
 
   /* Inline expanding input */
@@ -459,11 +468,11 @@ import FadeUp from "./FadeUp.astro";
 
   .msg-label {
     display: block;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 15px;
+    letter-spacing: 0.01em;
+    color: var(--clay);
     margin-bottom: 12px;
   }
 
@@ -472,14 +481,15 @@ import FadeUp from "./FadeUp.astro";
     background: transparent;
     border: 0;
     padding: 0;
-    font-family: inherit;
-    font-size: 17px;
-    line-height: 1.6;
+    font-family: var(--font-display);
+    font-weight: 440;
+    font-size: 18px;
+    line-height: 1.7;
     color: var(--ink);
     outline: none;
     resize: none;
     min-height: 76px;
-    letter-spacing: -0.005em;
+    letter-spacing: 0.002em;
     overflow: hidden;
   }
 
@@ -559,9 +569,7 @@ import FadeUp from "./FadeUp.astro";
 
   .thanks-title {
     margin: 4px 0 8px;
-    font-size: 22px;
-    font-weight: 500;
-    letter-spacing: -0.02em;
+    font-size: 24px;
     line-height: 1.2;
   }
 

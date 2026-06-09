@@ -109,8 +109,6 @@ const includes = [
   .title {
     font-size: clamp(32px, 4.2vw, 52px);
     line-height: 1.08;
-    letter-spacing: -0.028em;
-    font-weight: 500;
     margin: 8px 0 0;
   }
 
@@ -129,9 +127,7 @@ const includes = [
     padding: 48px;
     align-items: end;
     border-bottom: 1px solid var(--line);
-    background:
-      radial-gradient(60% 100% at 0% 0%, rgba(47, 93, 58, 0.06), transparent 60%),
-      var(--surface);
+    background: var(--price-glow), var(--surface);
   }
 
   .price-row {
@@ -148,9 +144,11 @@ const includes = [
   }
 
   .price {
+    font-family: var(--font-display);
+    font-weight: 530;
+    font-variation-settings: "SOFT" 70;
     font-size: clamp(72px, 10vw, 128px);
-    font-weight: 500;
-    letter-spacing: -0.045em;
+    letter-spacing: -0.02em;
     line-height: 0.9;
     color: var(--ink);
   }
@@ -176,7 +174,7 @@ const includes = [
     height: 7px;
     border-radius: 50%;
     background: var(--pounamu);
-    box-shadow: 0 0 0 4px rgba(47, 93, 58, 0.16);
+    box-shadow: 0 0 0 4px var(--accent-ring);
   }
 
   .pitch {
@@ -210,9 +208,9 @@ const includes = [
   }
 
   .check {
-    width: 24px;
-    height: 24px;
-    border-radius: 6px;
+    width: 26px;
+    height: 26px;
+    border-radius: var(--radius-blob);
     background: var(--pounamu-soft);
     color: var(--pounamu);
     display: inline-flex;
@@ -223,8 +221,8 @@ const includes = [
 
   .include-h {
     font-size: 15px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
+    font-weight: 700;
+    letter-spacing: 0.002em;
     margin-bottom: 4px;
   }
 
