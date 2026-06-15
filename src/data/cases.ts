@@ -27,7 +27,7 @@ export const CASES: CaseStudy[] = [
       "A booking system, volunteer roster, and donation flow built around their three-course pay-what-feels-right dining model — plus native iOS and Android apps for volunteers to pick up shifts on the move.",
     metrics: [
       { v: "9k+", l: "volunteers" },
-      { v: "1.2k", l: "weekly active users" },
+      { v: "1.5k", l: "weekly active users" },
       { v: "3+", l: "restaurants and pop-ups" },
     ],
     scheme: "warm",
@@ -39,7 +39,7 @@ export const CASES: CaseStudy[] = [
       "The volunteer site Everybody Eats had before the rebuild — a plain events list with little of their own identity",
     phoneImage: "screenshots/everybody-eats-app.png",
     phoneImageAlt:
-      "Everybody Eats volunteer app — open shifts and 'What's happening' feed",
+      "Everybody Eats volunteer app home screen — next confirmed shift, open spots needed, and the 'What's happening' feed",
   },
   {
     name: "Fair Food NZ",
@@ -47,7 +47,7 @@ export const CASES: CaseStudy[] = [
     blurb:
       "A volunteer site and shift booking system for the crew who sort, cook, and share rescued kai in Avondale every day — browse open shifts solo, or sign up a whole team at once.",
     metrics: [
-      { v: "300+", l: "volunteers" },
+      { v: "400+", l: "volunteers" },
       { v: "2,400 kg", l: "rescued kai a day" },
       { v: "Est. 2011", l: "feeding Avondale" },
     ],
