@@ -48,8 +48,8 @@ export const CASES: CaseStudy[] = [
       "A volunteer site and shift booking system for the crew who sort, cook, and share rescued kai in Avondale every day — browse open shifts solo, or sign up a whole team at once.",
     metrics: [
       { v: "400+", l: "volunteers" },
-      { v: "2,400 kg", l: "rescued kai a day" },
-      { v: "Est. 2011", l: "feeding Avondale" },
+      { v: "60+", l: "shifts a month" },
+      { v: "100", l: "Lighthouse score" },
     ],
     scheme: "forest",
     image: "screenshots/fair-food.png",
