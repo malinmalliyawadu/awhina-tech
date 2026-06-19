@@ -49,7 +49,7 @@ export const CASES: CaseStudy[] = [
     metrics: [
       { v: "400+", l: "volunteers" },
       { v: "60+", l: "shifts a month" },
-      { v: "100", l: "Lighthouse score" },
+      { v: "100", l: "Lighthouse performance score" },
     ],
     scheme: "forest",
     image: "screenshots/fair-food.png",
