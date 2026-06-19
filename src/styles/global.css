@@ -1,4 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Karla:ital,wght@0,300..800;1,300..800&family=JetBrains+Mono:wght@400;500&display=swap");
+/* Fonts are loaded via <link> + preconnect in Base.astro, not @import here.
+   @import forces a chained, render-blocking request (CSS → @import → font CSS
+   → fonts) that delays LCP; a <link> in <head> lets the browser discover it
+   immediately. Keep the two font sources in sync. */
 
 :root {
   color-scheme: light;
