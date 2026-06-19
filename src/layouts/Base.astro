@@ -5,11 +5,14 @@ import PostHog from "../components/posthog.astro";
 interface Props {
   title?: string;
   description?: string;
+  /** Unlisted pages (e.g. per-client hubs) opt out of indexing. */
+  noindex?: boolean;
 }
 
 const {
   title = "Āwhina Tech — Custom websites & apps for Aotearoa's charities",
   description = "We build custom websites and apps for Aotearoa's charities. $200 NZD a month, all-in. Hosting and ongoing support included.",
+  noindex = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
@@ -17,19 +20,53 @@ const ogImage = new URL("/og.png", Astro.site).toString();
 
 const orgJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": ["Organization", "ProfessionalService"],
   name: "Āwhina Tech",
   alternateName: "Awhina Tech",
   url: Astro.site?.toString(),
   logo: new URL("/favicon.svg", Astro.site).toString(),
+  image: ogImage,
   description,
+  slogan: "Stop renting the tools your charity runs on.",
   email: "kia.ora@awhinatech.nz",
+  priceRange: "$200/month",
   areaServed: { "@type": "Country", name: "New Zealand" },
+  foundingLocation: {
+    "@type": "Place",
+    name: "Wellington, New Zealand",
+  },
   address: {
     "@type": "PostalAddress",
     addressLocality: "Wellington",
     addressRegion: "Te Whanganui-a-Tara",
     addressCountry: "NZ",
+  },
+  founder: {
+    "@type": "Person",
+    name: "Malin Malliya Wadu",
+    jobTitle: "Founder & Developer",
+    sameAs: [
+      "https://github.com/malinmalliyawadu",
+      "https://www.linkedin.com/in/malin-malliya-wadu-94956522/",
+    ],
+  },
+  knowsAbout: [
+    "Custom web development",
+    "Software for charities",
+    "Volunteer management systems",
+    "Nonprofit technology",
+  ],
+  makesOffer: {
+    "@type": "Offer",
+    name: "Custom websites and apps for charities",
+    description:
+      "Custom websites and apps for Aotearoa's charities — hosting, ongoing development, bug fixes, and support included.",
+    priceSpecification: {
+      "@type": "UnitPriceSpecification",
+      price: "200",
+      priceCurrency: "NZD",
+      unitText: "MONTH",
+    },
   },
 };
 ---
@@ -39,6 +76,14 @@ const orgJsonLd = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Discover the font origins early so the request isn't chained behind CSS. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Karla:ital,wght@0,300..800;1,300..800&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
 
     <script is:inline>
       // Resolve theme before first paint — avoids a light/dark flash.
@@ -99,6 +144,7 @@ const orgJsonLd = {
     </script>
 
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta
       name="theme-color"
       content="#faf5ec"
@@ -119,16 +165,31 @@ const orgJsonLd = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image:width" content="2400" />
+    <meta property="og:image:height" content="1260" />
+    <meta
+      property="og:image:alt"
+      content="Āwhina Tech — custom websites and apps for Aotearoa's charities"
+    />
     <meta property="og:locale" content="en_NZ" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    <meta
+      name="twitter:image:alt"
+      content="Āwhina Tech — custom websites and apps for Aotearoa's charities"
+    />
 
-    <script type="application/ld+json" set:html={JSON.stringify(orgJsonLd)} />
+    {
+      !noindex && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify(orgJsonLd)}
+        />
+      )
+    }
     <PostHog />
   </head>
   <body>
