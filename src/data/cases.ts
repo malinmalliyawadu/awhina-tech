@@ -28,7 +28,7 @@ export const CASES: CaseStudy[] = [
     metrics: [
       { v: "9k+", l: "volunteers" },
       { v: "1.5k", l: "weekly active users" },
-      { v: "3+", l: "restaurants and pop-ups" },
+      { v: "23", l: "restaurants and pop-ups" },
     ],
     scheme: "warm",
     image: "screenshots/everybody-eats-hero.png",
