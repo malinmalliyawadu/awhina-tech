@@ -26,8 +26,8 @@ export const CASES: CaseStudy[] = [
     blurb:
       "A booking system, volunteer roster, and donation flow built around their three-course pay-what-feels-right dining model — plus native iOS and Android apps for volunteers to pick up shifts on the move.",
     metrics: [
-      { v: "9k+", l: "volunteers" },
-      { v: "1.5k", l: "weekly active users" },
+      { v: "10k+", l: "volunteers" },
+      { v: "2k", l: "weekly active users" },
       { v: "23", l: "restaurants and pop-ups" },
     ],
     scheme: "warm",
@@ -47,8 +47,8 @@ export const CASES: CaseStudy[] = [
     blurb:
       "A volunteer site and shift booking system for the crew who sort, cook, and share rescued kai in Avondale every day — browse open shifts solo, or sign up a whole team at once.",
     metrics: [
-      { v: "400+", l: "volunteers" },
-      { v: "60+", l: "shifts a month" },
+      { v: "500+", l: "volunteers" },
+      { v: "90+", l: "shifts a month" },
       { v: "100", l: "Lighthouse performance score" },
     ],
     scheme: "forest",
