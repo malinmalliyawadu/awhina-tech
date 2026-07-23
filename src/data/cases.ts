@@ -24,7 +24,7 @@ export const CASES: CaseStudy[] = [
     name: "Everybody Eats",
     kicker: "Pay-as-you-feel restaurants",
     blurb:
-      "A booking system, volunteer roster, and donation flow built around their three-course pay-what-feels-right dining model — plus native iOS and Android apps for volunteers to pick up shifts on the move.",
+      "A booking system, volunteer roster, and donation flow built around their three-course pay-what-feels-right dining model — plus native iOS and Android apps for volunteers to pick up shifts on the move. We also rebuilt their public site, everybodyeats.nz, from the ground up.",
     metrics: [
       { v: "10k+", l: "volunteers" },
       { v: "2k", l: "weekly active users" },
