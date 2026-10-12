@@ -47,7 +47,7 @@ export const CASES: CaseStudy[] = [
     blurb:
       "A volunteer site and shift booking system for the crew who sort, cook, and share rescued kai in Avondale every day — browse open shifts solo, or sign up a whole team at once.",
     metrics: [
-      { v: "800+", l: "volunteers" },
+      { v: "900+", l: "volunteers" },
       { v: "100+", l: "shifts a month" },
       { v: "100", l: "Lighthouse performance score" },
     ],
@@ -68,9 +68,12 @@ export const CASES: CaseStudy[] = [
     scheme: "sea",
     image: "screenshots/compassion.png",
     imageAlt:
-      "Compassion Soup Kitchen volunteer site, 'Every meal is an act of aroha'",
+      "Compassion Soup Kitchen staff dashboard: active volunteers, pending applications, shifts this week, and recent sign-ups",
     beforeImage: "screenshots/compassion-before.png",
     beforeImageAlt:
       "Compassion's old volunteer signup — a long generic web form asking for title, four address lines and more before you can help",
+    phoneImage: "screenshots/compassion-app.png",
+    phoneImageAlt:
+      "Compassion volunteer app home screen: 'Kia ora, Aroha', the next rostered shift with details and directions, and booked training",
   },
 ];

@@ -22,8 +22,19 @@ const targets = [
     url: "https://volunteer.fairfood.org.nz/",
   },
   {
+    // Staff dashboard, captured from a LOCAL seeded instance of the Compassion
+    // app (never prod: the dashboard lists volunteers by name), served on
+    // :3011. scripts/compassion-demo-data.cts has the full setup steps.
     name: "compassion",
-    url: "https://compassion.awhinatech.nz/",
+    url: "http://localhost:3011/staff/dashboard",
+    colorScheme: "light",
+    login: {
+      url: "http://localhost:3011/login",
+      // The Compassion repo's public dev-seed admin. Only ever sent to localhost.
+      email: "admin@soupkitchen.org.nz",
+      password: "admin123!",
+    },
+    waitForText: /kia ora/i,
   },
 ];
 
@@ -55,8 +66,11 @@ async function dismissCookies(page) {
 
 async function capture(
   browser,
-  { name, url, storageState, colorScheme, waitForText }
+  { name, url, storageState, colorScheme, waitForText, login }
 ) {
+  if (login && new URL(login.url).hostname !== "localhost") {
+    throw new Error(`${name}: refusing to send seed credentials to ${login.url}`);
+  }
   if (storageState && !existsSync(storageState)) {
     throw new Error(
       `${name}: no saved session at ${path.relative(
@@ -76,6 +90,22 @@ async function capture(
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
   });
   const page = await context.newPage();
+  if (login) {
+    try {
+      await page.goto(login.url, { waitUntil: "load", timeout: 15000 });
+    } catch {
+      await context.close();
+      throw new Error(
+        `${name}: nothing answering at ${login.url}. Start the local instance first.`
+      );
+    }
+    await page.getByLabel("Email").fill(login.email);
+    await page.getByLabel("Password").fill(login.password);
+    await page.getByRole("button", { name: /^sign in$/i }).click();
+    await page.waitForURL((u) => !u.pathname.startsWith("/login"), {
+      timeout: 20000,
+    });
+  }
   console.log(`→ ${name}: ${url}`);
   try {
     await page.goto(url, { waitUntil: "networkidle", timeout: 45000 });
@@ -111,10 +141,18 @@ async function capture(
   await context.close();
 }
 
+// `pnpm run screenshots compassion` captures just the named targets.
+const only = process.argv.slice(2);
+const selected = only.length ? targets.filter((t) => only.includes(t.name)) : targets;
+if (only.length && selected.length !== only.length) {
+  console.error(`✗ unknown target in: ${only.join(", ")}`);
+  process.exit(1);
+}
+
 const browser = await chromium.launch();
 let failed = false;
 try {
-  for (const t of targets) {
+  for (const t of selected) {
     try {
       await capture(browser, t);
     } catch (err) {
