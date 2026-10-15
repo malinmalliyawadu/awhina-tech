@@ -1,4 +1,4 @@
-export type CharityScheme = "warm" | "forest" | "sea";
+export type CharityScheme = "warm" | "forest" | "sea" | "tide";
 
 export interface CaseStudy {
   name: string;
@@ -75,5 +75,19 @@ export const CASES: CaseStudy[] = [
     phoneImage: "screenshots/compassion-app.png",
     phoneImageAlt:
       "Compassion volunteer app home screen: 'Kia ora, Aroha', the next rostered shift with details and directions, and booked training",
+  },
+  {
+    name: "Satisfy Food Rescue",
+    kicker: "Food rescue for Rangiora and North Canterbury",
+    blurb:
+      "A roster for the warehouse sorting floor and the driver routes. Coordinators see which shifts open up when someone is away, who is due a refresher, and new applications from their Infoodle form. Volunteers book and cover shifts, do refresher modules, and join the seasonal harvest pool in native iOS and Android apps or on the web.",
+    metrics: [],
+    scheme: "tide",
+    image: "screenshots/satisfy.png",
+    imageAlt:
+      "Satisfy Food Rescue coordinator dashboard: today's roster, coverage gaps left by volunteers who are away, training that needs attention, and pending applications",
+    phoneImage: "screenshots/satisfy-app.png",
+    phoneImageAlt:
+      "Satisfy volunteer app home screen: 'Kia ora, Margaret.', the next shift with who else is on it, and a banner saying a refresher is due soon",
   },
 ];
