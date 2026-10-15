@@ -54,6 +54,7 @@
   --tint-warm: linear-gradient(180deg, #f6e8d4 0%, #f9f0e1 100%);
   --tint-forest: linear-gradient(180deg, #ebecd6 0%, #f3f2e2 100%);
   --tint-sea: linear-gradient(180deg, #e7ecdf 0%, #f0f3ea 100%);
+  --tint-tide: linear-gradient(180deg, #e2eceb 0%, #eef3f1 100%);
 
   /* Ambient glows behind hero / pricing headline areas */
   --hero-glow: radial-gradient(56% 70% at 24% 0%, rgba(176, 74, 31, 0.07), transparent 70%),
@@ -123,6 +124,7 @@
   --tint-warm: linear-gradient(180deg, #2a1f14 0%, #1d160f 100%);
   --tint-forest: linear-gradient(180deg, #20231a 0%, #171810 100%);
   --tint-sea: linear-gradient(180deg, #1c211d 0%, #141713 100%);
+  --tint-tide: linear-gradient(180deg, #172123 0%, #111718 100%);
 
   --hero-glow: radial-gradient(56% 70% at 24% 0%, rgba(221, 130, 83, 0.07), transparent 70%),
     radial-gradient(50% 80% at 82% 12%, rgba(140, 195, 154, 0.07), transparent 70%);
@@ -171,6 +173,7 @@
     --tint-warm: linear-gradient(180deg, #2a1f14 0%, #1d160f 100%);
     --tint-forest: linear-gradient(180deg, #20231a 0%, #171810 100%);
     --tint-sea: linear-gradient(180deg, #1c211d 0%, #141713 100%);
+    --tint-tide: linear-gradient(180deg, #172123 0%, #111718 100%);
 
     --hero-glow: radial-gradient(56% 70% at 24% 0%, rgba(221, 130, 83, 0.07), transparent 70%),
       radial-gradient(50% 80% at 82% 12%, rgba(140, 195, 154, 0.07), transparent 70%);
