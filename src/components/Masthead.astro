@@ -171,21 +171,18 @@ const navLinks = [
     display: inline-flex;
   }
 
+  /* With the nav hidden there are only two grid items: brand left, CTA right. */
   @media (max-width: 1024px) {
     .nav {
       display: none;
     }
     .inner {
-      grid-template-columns: auto 1fr auto;
-    }
-    .nav {
-      display: none;
+      grid-template-columns: 1fr auto;
     }
   }
 
   @media (max-width: 720px) {
     .inner {
-      grid-template-columns: 1fr auto;
       gap: 12px;
     }
     .brand {
