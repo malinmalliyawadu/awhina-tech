@@ -42,11 +42,21 @@ pnpm install     # uses corepack to match the pinned version
 pnpm run dev     # astro dev — http://localhost:4321
 pnpm run build   # astro build — outputs to ./dist
 pnpm run preview # serve ./dist locally
+pnpm run check   # astro check - typecheck .astro/.ts files
+pnpm run check:links # after a build: every local href/src/#fragment in dist resolves
 ```
 
 The package manager is pnpm; `packageManager` is pinned in `package.json` and the lockfile is `pnpm-lock.yaml`. Don't commit a `package-lock.json` or `yarn.lock`.
 
-There are no tests, no linter config, and no typecheck script. `astro build` is the de facto check — if it builds, it ships.
+There are no tests and no linter config. `astro check` stays on TypeScript 6 until it supports 7 (Dependabot ignores the TypeScript major).
+
+## CI
+
+- `.github/workflows/ci.yml` runs two jobs on every PR and push to `main`:
+  - `build`: typecheck, build, local link check. This is the required status check on `main`.
+  - `docker`: builds the production image, boots it, and checks nginx serves the site with the right `Cache-Control` headers.
+- `.github/dependabot.yaml` covers npm, GitHub Actions and the Dockerfile base images, weekly, with a 3-day cooldown on new releases.
+- `.github/workflows/dependabot-auto-merge.yml` turns on auto-merge for Dependabot minor/patch bumps; majors wait for a human. Merging to `main` deploys via Coolify, so the required checks are what stand between a bump and production.
 
 ## File layout
 
@@ -79,8 +89,6 @@ Production runs on **Coolify** via the included `Dockerfile` + `nginx.conf`:
 3. In Coolify: build pack = Dockerfile, ports exposes = `80`, domains = `awhinatech.nz` + `www.awhinatech.nz`
 
 DNS is on Cloudflare, grey-clouded A record pointing to the Coolify host. TLS is handled by Coolify/Traefik via Let's Encrypt — **don't switch to "Flexible" SSL on Cloudflare**, it'll loop.
-
-A `.github/workflows/deploy.yml` for GitHub Pages still exists but is **stale** — the project has moved to Coolify. The Astro config no longer has the `base: "/awhina-tech"` path that GH Pages needs, so that workflow's output would 404 on assets. Safe to delete when convenient.
 
 ## Things not to do
 

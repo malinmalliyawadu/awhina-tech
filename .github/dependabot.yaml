@@ -7,9 +7,18 @@ updates:
       day: monday
       time: "09:00"
       timezone: Pacific/Auckland
+    # Let new releases age a few days before we take them, so a compromised or
+    # broken publish is usually caught and yanked first. Security updates
+    # aren't delayed.
+    cooldown:
+      default-days: 3
     open-pull-requests-limit: 10
     labels:
       - dependencies
+    ignore:
+      # astro check doesn't support TypeScript 7 yet. Lift this once it does.
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
     groups:
       minor-and-patch:
         update-types:
@@ -31,6 +40,30 @@ updates:
       day: monday
       time: "09:00"
       timezone: Pacific/Auckland
+    cooldown:
+      default-days: 3
     labels:
       - dependencies
       - github-actions
+    groups:
+      actions:
+        patterns:
+          - "*"
+
+  # Base images in the production Dockerfile (Node build stage, nginx runtime).
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Pacific/Auckland
+    cooldown:
+      default-days: 3
+    labels:
+      - dependencies
+      - docker
+    ignore:
+      # Node majors are a deliberate upgrade: CI pins the same major in ci.yml.
+      - dependency-name: node
+        update-types: ["version-update:semver-major"]

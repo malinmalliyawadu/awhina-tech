@@ -1,5 +1,7 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"]
+  // compassion-demo-data.cts runs against the Compassion repo's Prisma client,
+  // which isn't a dependency here.
+  "exclude": ["dist", "scripts/compassion-demo-data.cts"]
 }

@@ -8,6 +8,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "check": "astro check",
+    "check:links": "node scripts/check-links.mjs",
     "astro": "astro",
     "screenshots": "node scripts/capture-screenshots.mjs",
     "screenshots:auth": "node scripts/auth-everybody-eats.mjs"
@@ -16,7 +18,9 @@
     "astro": "^7.3.8"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
     "@astrojs/sitemap": "^3.7.4",
-    "playwright": "^1.64.0"
+    "playwright": "^1.64.0",
+    "typescript": "^6.0.3"
   }
 }
