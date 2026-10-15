@@ -65,7 +65,15 @@ const slugify = (s: string) =>
 const steps = project.howItWorks.map((s) => ({ ...s, id: slugify(s.title) }));
 const tech = project.technical.map((s) => ({ ...s, id: slugify(s.title) }));
 
-const toc = [
+type TocEntry = {
+  id: string;
+  label: string;
+  icon: string;
+  sub?: boolean;
+  subsub?: boolean;
+};
+
+const toc: TocEntry[] = [
   { id: "quick-links", label: "Quick links", icon: "compass" },
   { id: "how-it-works", label: "How it works", icon: "book" },
   ...steps.map((s) => ({ id: s.id, label: s.title, icon: s.icon, sub: true })),

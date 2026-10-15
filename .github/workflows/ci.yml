@@ -6,9 +6,17 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
@@ -17,4 +25,55 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm run build
+      - name: Typecheck
+        run: pnpm run check
+      - name: Build
+        run: pnpm run build
+      - name: Check local links
+        run: pnpm run check:links
+
+  # Builds the production image exactly as Coolify does, then boots it and
+  # checks nginx serves the site with the caching headers nginx.conf promises.
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          load: true
+          push: false
+          tags: awhina-tech:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Smoke test
+        run: |
+          docker run -d --name site -p 8080:80 awhina-tech:ci
+
+          for _ in $(seq 1 60); do
+            status=$(docker inspect -f '{{.State.Health.Status}}' site)
+            [ "$status" = healthy ] && break
+            sleep 1
+          done
+          [ "$status" = healthy ] || { echo "Container not healthy: $status"; docker logs site; exit 1; }
+
+          header() { curl -fsS -o /dev/null -D - "http://localhost:8080$1" | tr -d '\r' | grep -i "^$2:"; }
+          expect() { echo "$1" | grep -qi "$2" || { echo "Expected '$2', got '$1'"; exit 1; }; }
+
+          expect "$(header / cache-control)" "no-cache"
+          expect "$(header / content-type)" "text/html"
+
+          asset=$(curl -fsS http://localhost:8080/ | grep -o '/_astro/[^"]*\.css' | head -n 1)
+          [ -n "$asset" ] || { echo "No /_astro/ asset referenced from /"; exit 1; }
+          expect "$(header "$asset" cache-control)" "immutable"
+
+          for path in /privacy /sitemap-index.xml /robots.txt /og.png; do
+            curl -fsS -o /dev/null "http://localhost:8080$path" || { echo "GET $path failed"; exit 1; }
+          done
+
+          echo "Image builds, boots healthy, and serves the site."
+      - name: Container logs
+        if: failure()
+        run: docker logs site || true
