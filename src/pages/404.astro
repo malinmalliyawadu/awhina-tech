@@ -1,0 +1,215 @@
+---
+import Base from "../layouts/Base.astro";
+import Masthead from "../components/Masthead.astro";
+import Footer from "../components/Footer.astro";
+
+// nginx serves this page for any unknown URL (with a real 404 status), so
+// every link here must be root-absolute: it can be rendered at any depth.
+const title = "Page not found - Āwhina Tech";
+const description = "There's no page at this address.";
+---
+
+<Base title={title} description={description} noindex>
+  <Masthead />
+
+  <main class="missing">
+    <div class="inner">
+      <div class="copy">
+        <span class="eyebrow">Page not found</span>
+        <h1 class="title">There's no page at this address.</h1>
+        <p class="lede">
+          The link might be out of date, or there could be a typo in the
+          address. Everything about our mahi starts from the home page.
+        </p>
+        <p class="path" data-path hidden>
+          You asked for <code data-path-text></code>
+        </p>
+        <div class="actions">
+          <a href="/" class="btn btn-primary">Go to the home page</a>
+          <a href="/#work" class="btn btn-ghost">See the work</a>
+        </div>
+        <p class="help">
+          Still can't find it? Email{" "}
+          <a href="mailto:kiaora@awhinatech.nz">kiaora@awhinatech.nz</a>{" "}
+          and we'll point you to it.
+        </p>
+      </div>
+
+      <svg class="koru" viewBox="0 0 400 400" fill="none" aria-hidden="true">
+        <path
+          pathLength="100"
+          d="M 40 200 A 160 160 0 0 1 360 200 A 128 128 0 0 1 104 200 A 102 102 0 0 1 308 200 A 82 82 0 0 1 144 200 A 65 65 0 0 1 274 200 A 52 52 0 0 1 170 200 A 42 42 0 0 1 254 200"
+          stroke="currentColor"
+          stroke-linecap="round"></path>
+      </svg>
+    </div>
+  </main>
+
+  <Footer />
+</Base>
+
+<script>
+  // Echo the address the visitor asked for, so a typo is easy to spot.
+  // Skipped when someone opens /404 directly.
+  const path = decodeURIComponent(location.pathname);
+  if (!/^\/404(\.html)?\/?$/.test(path)) {
+    const row = document.querySelector<HTMLElement>("[data-path]");
+    const text = document.querySelector<HTMLElement>("[data-path-text]");
+    if (row && text) {
+      text.textContent = path;
+      row.hidden = false;
+    }
+  }
+</script>
+
+<style>
+  /* This page is short, so let it fill the viewport and keep the footer at
+     the bottom. Scoped to this page: the stylesheet only loads here. */
+  :global(body) {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
+
+  .missing {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: var(--hero-glow), var(--surface);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+
+  .inner {
+    flex: 1;
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 112px var(--pad-x) 120px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.62fr);
+    gap: 64px;
+    align-items: center;
+  }
+
+  .copy {
+    max-width: 620px;
+  }
+
+  .title {
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.06;
+    letter-spacing: -0.022em;
+    font-weight: 530;
+    font-variation-settings: "SOFT" 70;
+    margin: 20px 0 0;
+    text-wrap: balance;
+  }
+
+  .lede {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    margin: 24px 0 0;
+    max-width: 52ch;
+  }
+
+  .path {
+    margin: 20px 0 0;
+    font-size: 15px;
+    color: var(--muted);
+    overflow-wrap: anywhere;
+  }
+
+  .path code {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 2px 7px;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 36px;
+  }
+
+  .actions .btn:focus-visible,
+  .help a:focus-visible {
+    outline: 2px solid var(--pounamu);
+    outline-offset: 3px;
+  }
+
+  .help {
+    margin: 28px 0 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .help a {
+    color: var(--pounamu);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    border-radius: 2px;
+    transition: opacity 160ms ease;
+  }
+
+  .help a:hover {
+    opacity: 0.72;
+  }
+
+  /* The koru from the hero, at full strength and drawn in once on load:
+     a new frond unfurling, rather than an error glyph. */
+  .koru {
+    justify-self: center;
+    width: 100%;
+    max-width: 360px;
+    aspect-ratio: 1;
+    color: var(--pounamu);
+  }
+
+  .koru path {
+    stroke-width: 9;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 0;
+    animation: unfurl 1600ms cubic-bezier(0.3, 0.6, 0.2, 1) 120ms both;
+  }
+
+  @keyframes unfurl {
+    from {
+      stroke-dashoffset: 100;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .koru path {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding: 72px var(--pad-x) 88px;
+    }
+
+    .koru {
+      order: -1;
+      justify-self: start;
+      max-width: 120px;
+    }
+
+    .koru path {
+      stroke-width: 16;
+    }
+  }
+</style>

@@ -156,7 +156,8 @@ const orgJsonLd = {
       media="(prefers-color-scheme: dark)"
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="canonical" href={canonical} />
+    {/* A canonical on a noindex page is a mixed signal to search engines. */}
+    {!noindex && <link rel="canonical" href={canonical} />}
     <title>{title}</title>
 
     <meta property="og:type" content="website" />

@@ -73,6 +73,14 @@ jobs:
             curl -fsS -o /dev/null "http://localhost:8080$path" || { echo "GET $path failed"; exit 1; }
           done
 
+          # Unknown URLs must be a real 404 with our page, not a soft-404
+          # fallback to the home page.
+          for path in /does-not-exist /404 /_astro/missing.css; do
+            status=$(curl -sS -o /tmp/missing.html -w '%{http_code}' "http://localhost:8080$path")
+            [ "$status" = 404 ] || { echo "GET $path: expected 404, got $status"; exit 1; }
+            grep -q "There's no page at this address" /tmp/missing.html || { echo "GET $path did not serve the 404 page"; exit 1; }
+          done
+
           echo "Image builds, boots healthy, and serves the site."
       - name: Container logs
         if: failure()
