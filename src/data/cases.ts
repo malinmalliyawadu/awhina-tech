@@ -26,7 +26,7 @@ export const CASES: CaseStudy[] = [
     blurb:
       "A booking system, volunteer roster, and donation flow built around their three-course pay-what-feels-right dining model — plus native iOS and Android apps for volunteers to pick up shifts on the move. We also rebuilt their public site, everybodyeats.nz, from the ground up.",
     metrics: [
-      { v: "10k+", l: "volunteers" },
+      { v: "11k+", l: "volunteers" },
       { v: "2.4k", l: "weekly active users" },
       { v: "23", l: "restaurants and pop-ups" },
     ],
@@ -47,7 +47,7 @@ export const CASES: CaseStudy[] = [
     blurb:
       "A volunteer site and shift booking system for the crew who sort, cook, and share rescued kai in Avondale every day — browse open shifts solo, or sign up a whole team at once.",
     metrics: [
-      { v: "900+", l: "volunteers" },
+      { v: "1,000+", l: "volunteers" },
       { v: "100+", l: "shifts a month" },
       { v: "100", l: "Lighthouse performance score" },
     ],
@@ -64,7 +64,7 @@ export const CASES: CaseStudy[] = [
     kicker: "Hot meals in Te Whanganui-a-Tara",
     blurb:
       "A volunteer signup system and a mobile-first menu board, built with care for the dignity of the people who walk through the door.",
-    metrics: [],
+    metrics: [{ v: "100+", l: "volunteers" }],
     scheme: "sea",
     image: "screenshots/compassion.png",
     imageAlt:
